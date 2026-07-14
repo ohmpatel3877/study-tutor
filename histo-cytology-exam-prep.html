@@ -62,6 +62,9 @@ nav button.active{background:var(--accent);border-color:var(--accent);color:#fff
 .topic-btn .topic-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
 /* Question card */
 .q-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:14px;animation:fadeIn .3s}
+.q-img{max-width:100%;max-height:400px;border-radius:8px;margin:12px 0;cursor:zoom-in;border:1px solid var(--border);object-fit:contain}
+.q-img.zoomed{position:fixed;top:0;left:0;width:100vw;height:100vh;max-height:100vh;z-index:9999;cursor:zoom-out;object-fit:contain;background:rgba(0,0,0,.85);border:none;border-radius:0}
+.fc-img{max-width:100%;max-height:200px;border-radius:8px;margin-bottom:10px;object-fit:contain}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:6px}
 .q-num{font-size:.78rem;color:var(--muted)}
@@ -245,6 +248,7 @@ nav button.active{background:var(--accent);border-color:var(--accent);color:#fff
   <button data-tab="resources">📂 Resources</button>
   <button data-tab="insights">📈 Insights</button>
   <button data-tab="io">💾 Import/Export</button>
+  <button data-tab="aitutor">🤖 AI Tutor</button>
 </nav>
 
 <div class="main">
@@ -499,6 +503,48 @@ nav button.active{background:var(--accent);border-color:var(--accent);color:#fff
         <button class="btn btn-sm btn-outline" onclick="webdavTest()">Test Connection</button>
       </div>
       <div id="webdavStatus" style="font-size:.78rem;color:var(--muted);margin-top:6px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- AI TUTOR -->
+<div id="aitutor" class="hidden">
+  <div class="card" id="aiSetupCard">
+    <h3>🤖 AI Study Tutor</h3>
+    <p style="margin-bottom:12px">Get AI-powered explanations, generate practice questions, and build personalized study plans.</p>
+    <div id="aiSetupForm">
+      <label style="display:block;margin-bottom:8px;font-size:.85rem">Enter your OpenAI API key (saved locally in this browser only):
+        <input type="password" id="aiApiKey" class="search-box" placeholder="sk-..." style="margin:4px 0 0;width:100%">
+      </label>
+      <button class="btn" onclick="saveAiKey()" style="margin-top:6px">Save & Enable AI</button>
+      <p style="font-size:.72rem;color:var(--muted);margin-top:6px">Uses GPT-4o Mini — costs ~$0.001 per question. Key never leaves your browser.</p>
+    </div>
+    <div id="aiReadyForm" style="display:none">
+      <p style="color:var(--green);font-size:.85rem">✅ AI Tutor ready</p>
+      <button class="btn btn-outline btn-sm" onclick="clearAiKey()" style="margin-top:4px">Change API Key</button>
+    </div>
+  </div>
+
+  <!-- AI Chat -->
+  <div class="card">
+    <h3>💬 Chat with AI Tutor</h3>
+    <div id="aiChatMessages" style="max-height:400px;overflow-y:auto;margin:12px 0;padding:8px;background:var(--card2);border-radius:var(--radius);min-height:100px">
+      <p style="color:var(--muted);font-size:.85rem;text-align:center;padding:20px">Ask anything about histology, cytology, lab procedures, staining, or exam prep...</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <input class="search-box" id="aiChatInput" placeholder="e.g. Explain the difference between keratinizing and non-keratinizing squamous epithelium..." style="margin:0;flex:1" onkeydown="if(event.key==='Enter')sendAiChat()">
+      <button class="btn" onclick="sendAiChat()">Send</button>
+    </div>
+  </div>
+
+  <!-- AI Quick Actions -->
+  <div class="card">
+    <h3>⚡ Quick Actions</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="btn btn-sm" onclick="aiExplainTopic()">📚 Explain a Topic</button>
+      <button class="btn btn-sm btn-outline" onclick="aiGenerateQuestions()">🎲 Generate Questions</button>
+      <button class="btn btn-sm btn-outline" onclick="aiStudyPlan()">📋 Study Plan</button>
+      <button class="btn btn-sm btn-outline" onclick="aiQuizMe()">🧠 Quiz Me (Adaptive)</button>
     </div>
   </div>
 </div>
@@ -1837,6 +1883,7 @@ function renderExamQuestion() {
       <span class="q-topic">${icon} ${q.topic}</span>
       <span class="q-type ${q.type}">${typeLabel}</span>
       <span class="sm2-badge ${status}">${status}</span>
+      <button class="btn btn-sm btn-outline" onclick="askAiAboutQuestion(${q.id})" title="Get AI explanation">🤖 Ask AI</button>
     </span>
   </div>
   <div class="q-text">${q.q}</div>`;
@@ -2082,9 +2129,11 @@ function renderAdaptiveCard() {
       <span style="display:flex;gap:6px;align-items:center">
         <span class="q-topic">${icon} ${q.topic}</span>
         <span class="sm2-badge ${status}">${status}</span>
+        <button class="btn btn-sm btn-outline" onclick="askAiAboutQuestion(${q.id})" title="Get AI explanation">🤖</button>
       </span>
     </div>
-    <div class="q-text">${q.q}</div>`;
+  <div class="q-text">${q.q}</div>
+  ${q.img ? `<img src="${q.img}" class="q-img" onclick="this.classList.toggle('zoomed')" alt="Slide image">` : ''}`;
 
   // Show answer immediately (review mode)
   const letters = 'ABCD';
@@ -2158,6 +2207,7 @@ function renderFlashcard() {
       <div class="flashcard-front">
         <div class="fc-topic">${icon} ${q.topic} — ${q.type.toUpperCase()}</div>
         <h3>${q.q}</h3>
+        ${q.img ? `<img src="${q.img}" class="fc-img" alt="Slide image">` : ''}
         <div class="flash-hint">Click to reveal</div>
       </div>
       <div class="flashcard-back">
@@ -2803,6 +2853,206 @@ document.addEventListener('keydown', e => {
 });
 
 // ═══════════════════════════════════════════════════════════
+// AI TUTOR (OpenAI API)
+// ═══════════════════════════════════════════════════════════
+const AI_SYSTEM_PROMPT = `You are an expert histology and cytology tutor helping a student at the Michener Institute preparing for CSMLS and CT ASCP exams. You are knowledgeable about:
+- Tissue processing, microtomy, embedding, sectioning
+- H&E staining, special stains (PAS, GMS, Masson's trichrome, etc.)
+- Immunohistochemistry (IHC) markers and protocols
+- Cell biology, organelles, cell cycle
+- Tissue types: epithelial, connective, muscle, nervous
+- Organ systems histology
+- Gynecological cytology (Pap smears, Bethesda system)
+- Non-gynecological cytology (sputum, urine, FNA, body fluids)
+- FNA technique, smear preparation
+- Fixation (formalin, alcohol, cytology fixatives)
+- Quality assurance, lab safety, troubleshooting
+- Case studies and clinical correlations
+
+When explaining, use the Socratic method — guide the student with questions before revealing answers. Be concise but thorough. Use analogies when helpful. Format responses with clear headings and bullet points.`;
+
+let aiChatHistory = [];
+
+function getAiKey() { return localStorage.getItem('ai_api_key') || ''; }
+
+function saveAiKey() {
+  const key = document.getElementById('aiApiKey').value.trim();
+  if (!key || !key.startsWith('sk-')) { alert('Please enter a valid OpenAI API key (starts with sk-)'); return; }
+  localStorage.setItem('ai_api_key', key);
+  document.getElementById('aiSetupForm').style.display = 'none';
+  document.getElementById('aiReadyForm').style.display = 'block';
+}
+
+function clearAiKey() {
+  localStorage.removeItem('ai_api_key');
+  document.getElementById('aiSetupForm').style.display = 'block';
+  document.getElementById('aiReadyForm').style.display = 'none';
+  document.getElementById('aiApiKey').value = '';
+}
+
+function checkAiKey() {
+  const hasKey = !!getAiKey();
+  document.getElementById('aiSetupForm').style.display = hasKey ? 'none' : 'block';
+  document.getElementById('aiReadyForm').style.display = hasKey ? 'block' : 'none';
+}
+
+async function callOpenAI(messages, maxTokens = 1024) {
+  const key = getAiKey();
+  if (!key) { showTab('aitutor'); alert('Set your API key in the AI Tutor tab first.'); return null; }
+  try {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+      body: JSON.stringify({ model: 'gpt-4o-mini', messages, max_tokens: maxTokens, temperature: 0.7 })
+    });
+    if (!res.ok) { const err = await res.json(); alert('API Error: ' + (err.error?.message || res.status)); return null; }
+    const data = await res.json();
+    return data.choices[0].message.content;
+  } catch(e) { alert('Network error: ' + e.message); return null; }
+}
+
+function addAiMessage(role, content) {
+  const container = document.getElementById('aiChatMessages');
+  if (container.querySelector('p')) container.innerHTML = '';
+  const div = document.createElement('div');
+  div.style.cssText = role === 'user' ? 'text-align:right;margin:8px 0' : 'text-align:left;margin:8px 0';
+  const bubble = document.createElement('div');
+  bubble.style.cssText = role === 'user'
+    ? 'display:inline-block;background:var(--accent);color:#fff;padding:10px 14px;border-radius:12px 12px 2px 12px;max-width:80%;font-size:.88rem;text-align:left'
+    : 'display:inline-block;background:var(--card2);color:var(--text);padding:10px 14px;border-radius:12px 12px 12px 2px;max-width:80%;font-size:.88rem;text-align:left;border:1px solid var(--border)';
+  bubble.innerHTML = content.replace(/\n/g, '<br>');
+  div.appendChild(bubble);
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendAiChat() {
+  const input = document.getElementById('aiChatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  addAiMessage('user', msg);
+  aiChatHistory.push({ role: 'user', content: msg });
+  addAiMessage('assistant', '<em style="color:var(--muted)">Thinking...</em>');
+  const reply = await callOpenAI([{ role: 'system', content: AI_SYSTEM_PROMPT }, ...aiChatHistory.slice(-10)]);
+  if (reply) {
+    aiChatHistory.push({ role: 'assistant', content: reply });
+    document.getElementById('aiChatMessages').lastChild.remove();
+    addAiMessage('assistant', reply);
+  }
+}
+
+async function aiExplainTopic() {
+  const topic = prompt('Which topic do you want explained?\n\nAvailable: ' + TOPICS.join(', '));
+  if (!topic) return;
+  addAiMessage('user', 'Explain ' + topic + ' in detail for my cytology exam');
+  addAiMessage('assistant', '<em style="color:var(--muted)">Generating explanation...</em>');
+  const qs = QUESTIONS.filter(q => q.topic === topic);
+  const context = qs.slice(0, 5).map(q => q.q + ' → ' + (q.opts ? q.opts[q.ans] : q.ans)).join('\n');
+  const reply = await callOpenAI([
+    { role: 'system', content: AI_SYSTEM_PROMPT },
+    { role: 'user', content: `Explain "${topic}" comprehensively for a cytology student. Include key concepts, clinical relevance, and common exam questions. Here are some questions from this topic for context:\n${context}` }
+  ], 1500);
+  if (reply) {
+    document.getElementById('aiChatMessages').lastChild.remove();
+    addAiMessage('assistant', reply);
+  }
+}
+
+async function aiGenerateQuestions() {
+  const topic = prompt('Generate questions on which topic?\n\nAvailable: ' + TOPICS.join(', '));
+  if (!topic) return;
+  addAiMessage('user', 'Generate 5 practice questions on ' + topic);
+  addAiMessage('assistant', '<em style="color:var(--muted)">Generating questions...</em>');
+  const existing = QUESTIONS.filter(q => q.topic === topic).slice(0, 3).map(q => q.q).join('\n');
+  const reply = await callOpenAI([
+    { role: 'system', content: AI_SYSTEM_PROMPT },
+    { role: 'user', content: `Generate 5 high-quality MCQ practice questions on "${topic}" for a cytology exam. Format each as:\n\nQ: [question]\nA) [option]\nB) [option]\nC) [option]\nD) [option]\nCorrect: [letter]\nExplanation: [brief explanation]\n\nHere are existing questions for reference (avoid duplicates):\n${existing}` }
+  ], 2000);
+  if (reply) {
+    document.getElementById('aiChatMessages').lastChild.remove();
+    addAiMessage('assistant', reply.replace(/\n/g, '<br>'));
+  }
+}
+
+async function aiStudyPlan() {
+  // Analyze SM-2 data
+  const weakTopics = {};
+  const strongTopics = {};
+  QUESTIONS.forEach(q => {
+    if (q.sm2) {
+      if (q.sm2.ease < 2.0 || q.sm2.repetition === 0) weakTopics[q.topic] = (weakTopics[q.topic] || 0) + 1;
+      else strongTopics[q.topic] = (strongTopics[q.topic] || 0) + 1;
+    }
+  });
+  const weak = Object.entries(weakTopics).sort((a,b) => b[1]-a[1]).map(([t,c]) => `${t} (${c} weak)`).join(', ');
+  const strong = Object.entries(strongTopics).sort((a,b) => b[1]-a[1]).map(([t,c]) => `${t} (${c} strong)`).join(', ');
+  const stats = `Attempted: ${appState.totalAttempted}, Correct: ${appState.totalCorrect}, Accuracy: ${appState.totalAttempted ? Math.round(appState.totalCorrect/appState.totalAttempted*100) : 0}%, Best Streak: ${appState.bestStreak}`;
+
+  addAiMessage('user', 'Generate a study plan based on my performance');
+  addAiMessage('assistant', '<em style="color:var(--muted)">Analyzing your data and generating study plan...</em>');
+  const reply = await callOpenAI([
+    { role: 'system', content: AI_SYSTEM_PROMPT },
+    { role: 'user', content: `Create a personalized study plan for a Michener Institute cytology student.\n\nPerformance: ${stats}\nWeak areas: ${weak || 'No data yet'}\nStrong areas: ${strong || 'No data yet'}\n\nProvide:\n1. Priority topics to focus on (with specific subtopics)\n2. A 1-week daily study schedule\n3. Active recall strategies for weak areas\n4. Tips for the CSMLS/ASCP exams\n5. How many questions to practice daily` }
+  ], 1500);
+  if (reply) {
+    document.getElementById('aiChatMessages').lastChild.remove();
+    addAiMessage('assistant', reply.replace(/\n/g, '<br>'));
+  }
+}
+
+async function aiQuizMe() {
+  // Find weakest topics from SM-2 data
+  const topicScores = {};
+  QUESTIONS.forEach(q => {
+    if (q.sm2) {
+      if (!topicScores[q.topic]) topicScores[q.topic] = { total: 0, ease: 0 };
+      topicScores[q.topic].total++;
+      topicScores[q.topic].ease += q.sm2.ease;
+    }
+  });
+  const weakest = Object.entries(topicScores)
+    .map(([t, s]) => ({ topic: t, avgEase: s.ease / s.total }))
+    .sort((a, b) => a.avgEase - b.avgEase)
+    .slice(0, 3)
+    .map(x => x.topic);
+
+  const focus = weakest.length ? weakest.join(', ') : TOPICS.slice(0, 3).join(', ');
+  addAiMessage('user', `Quiz me on: ${focus}`);
+  addAiMessage('assistant', '<em style="color:var(--muted)">Generating adaptive quiz...</em>');
+  const reply = await callOpenAI([
+    { role: 'system', content: AI_SYSTEM_PROMPT },
+    { role: 'user', content: `Give me a challenging 3-question mini-quiz focusing on: ${focus}. For each question:\n1. Show the question with 4 options (A-D)\n2. Wait for my answer (I'll type the letter)\n3. Then reveal if I'm correct and explain\n\nStart with question 1.` }
+  ], 1200);
+  if (reply) {
+    document.getElementById('aiChatMessages').lastChild.remove();
+    addAiMessage('assistant', reply.replace(/\n/g, '<br>'));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// ASK AI BUTTON ON QUESTIONS
+// ═══════════════════════════════════════════════════════════
+async function askAiAboutQuestion(qId) {
+  const q = QUESTIONS.find(x => x.id === qId);
+  if (!q) return;
+  if (!getAiKey()) { showTab('aitutor'); alert('Set your API key in the AI Tutor tab first.'); return; }
+  showTab('aitutor');
+  const qText = q.q.replace(/<[^>]*>/g, '');
+  const correctAns = q.opts ? q.opts[q.ans] : q.ans;
+  addAiMessage('user', `Explain this question in detail:\n"${qText}"\nCorrect answer: ${correctAns}`);
+  addAiMessage('assistant', '<em style="color:var(--muted)">Generating detailed explanation...</em>');
+  const reply = await callOpenAI([
+    { role: 'system', content: AI_SYSTEM_PROMPT },
+    { role: 'user', content: `Explain this cytology/histology question in detail. Use the Socratic method — first ask guiding questions, then provide a thorough explanation.\n\nQuestion: ${qText}\n${q.opts ? 'Options: ' + q.opts.map((o,i) => 'ABCD'[i]+') '+o).join(', ') : ''}\nCorrect answer: ${correctAns}\nExplanation given: ${q.exp}\n\nProvide:\n1. Why the correct answer is right (with underlying biology/histology)\n2. Why each wrong answer is wrong\n3. A memory trick to remember this\n4. Clinical relevance\n5. Related exam topics to study` }
+  ], 1500);
+  if (reply) {
+    document.getElementById('aiChatMessages').lastChild.remove();
+    addAiMessage('assistant', reply.replace(/\n/g, '<br>'));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
 // PWA REGISTRATION
 // ═══════════════════════════════════════════════════════════
 if ('serviceWorker' in navigator) {
@@ -2825,6 +3075,7 @@ if ('serviceWorker' in navigator) {
   } catch(e) { /* ignore */ }
 
   renderDashboard();
+  checkAiKey();
 })();
 </script>
 </body>
