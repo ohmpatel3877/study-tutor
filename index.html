@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyTutor — Adaptive Exam Prep</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#0f0f13;color:#e2e2ef;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+h1{font-size:2.5rem;background:linear-gradient(135deg,#7c5cfc,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;margin-bottom:8px}
+.sub{color:#8888aa;font-size:1.05rem;margin-bottom:40px;text-align:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;max-width:800px;width:100%}
+.card{background:#1a1a24;border:1px solid #2a2a40;border-radius:16px;padding:28px;transition:all .3s;cursor:pointer;text-decoration:none;color:inherit}
+.card:hover{border-color:#7c5cfc;transform:translateY(-4px);box-shadow:0 12px 40px rgba(124,92,252,.15)}
+.card h2{font-size:1.3rem;color:#a78bfa;margin-bottom:8px}
+.card p{color:#8888aa;font-size:.9rem;line-height:1.5;margin-bottom:12px}
+.card .tag{display:inline-block;background:#22223a;color:#7c5cfc;padding:4px 10px;border-radius:8px;font-size:.75rem;font-weight:600;margin-right:4px;margin-bottom:4px}
+.features{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.features span{background:#22223a;color:#8888aa;padding:3px 8px;border-radius:6px;font-size:.7rem}
+.footer{margin-top:40px;color:#555;font-size:.8rem}
+</style>
+</head>
+<body>
+<h1>📚 StudyTutor</h1>
+<p class="sub">Adaptive exam prep with spaced repetition, Socratic hints & learning insights</p>
+<div class="cards">
+  <a class="card" href="tutor.html">
+    <h2>🧠 StudyTutor (General)</h2>
+    <p>Configure for any course. Import/export questions as JSON. Built-in spaced repetition, adaptive review, confidence tracking, and tutoring modes.</p>
+    <div>
+      <span class="tag">Any Course</span>
+      <span class="tag">Customizable</span>
+      <span class="tag">Import/Export</span>
+    </div>
+    <div class="features">
+      <span>🧠 SM-2 Spaced Rep</span>
+      <span>💡 Socratic Hints</span>
+      <span>📊 Insights</span>
+      <span>🎯 Adaptive</span>
+    </div>
+  </a>
+  <a class="card" href="histo-cytology-exam-prep.html">
+    <h2>🔬 Histo/Cytology Prep</h2>
+    <p>Michener 2nd Year — 150+ questions across 16 topics. Exam mode, flashcards, and review system for histology and cytology.</p>
+    <div>
+      <span class="tag">Histology</span>
+      <span class="tag">Cytology</span>
+      <span class="tag">Michener</span>
+    </div>
+    <div class="features">
+      <span>🎨 7 Themes</span>
+      <span>⏱ Timed Exams</span>
+      <span>🃏 Flashcards</span>
+      <span>📈 Progress</span>
+    </div>
+  </a>
+</div>
+<div class="footer">Open source — adapt for any program</div>
+</body>
+</html>

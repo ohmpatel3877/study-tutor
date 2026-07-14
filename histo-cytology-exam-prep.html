@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Histo/Cytology Exam Prep — Michener 2nd Year</title>
+<style>
+:root{--bg:#0f0f13;--card:#1a1a24;--card2:#22223a;--accent:#7c5cfc;--accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--text:#e2e2ef;--muted:#8888aa;--border:#2a2a40}
+body.theme-coffee{--bg:#1a120b;--card:#2c1e12;--card2:#3b2a1a;--accent:#c08b5c;--accent2:#d4a574;--text:#f0e6da;--muted:#a08872;--border:#4a3828}
+body.theme-forest{--bg:#0f1a12;--card:#1a2e1e;--card2:#243b28;--accent:#5cb87a;--accent2:#7cd49a;--text:#e2f0e6;--muted:#72a088;--border:#2a4032}
+body.theme-ocean{--bg:#0b1520;--card:#122535;--card2:#1a3348;--accent:#4a9cc7;--accent2:#6bb8e0;--text:#dce8f0;--muted:#7298b0;--border:#284058}
+body.theme-sunset{--bg:#1a0f0b;--card:#2e1a12;--card2:#3b2418;--accent:#d47a3c;--accent2:#e89a5c;--text:#f0e2d4;--muted:#a08272;--border:#483020}
+body.theme-lavender{--bg:#14101a;--card:#221a2e;--card2:#2e2440;--accent:#9a7ac7;--accent2:#b898e0;--text:#eae2f0;--muted:#9282a8;--border:#382848}
+body.theme-slate{--bg:#111318;--card:#1c1f28;--card2:#262a36;--accent:#7a8aa0;--accent2:#98a8bc;--text:#e0e4ec;--muted:#788090;--border:#343a4a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar h1{font-size:1.1rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+.topbar .timer{font-family:'Courier New',monospace;font-size:1.4rem;color:var(--yellow);font-weight:700;min-width:80px;text-align:center}
+.topbar .score-pill{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:.85rem;color:var(--accent2)}
+.theme-selector{display:flex;gap:6px;align-items:center}
+.theme-dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);cursor:pointer;transition:all .2s;padding:0}
+.theme-dot:hover{transform:scale(1.2);border-color:var(--accent)}
+.theme-dot.active{border-color:var(--text);box-shadow:0 0 8px rgba(255,255,255,.2)}
+nav{display:flex;gap:6px;padding:10px 24px;background:var(--card);border-bottom:1px solid var(--border);flex-wrap:wrap}
+nav button{background:var(--card2);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .2s}
+nav button:hover{border-color:var(--accent);color:var(--text)}
+nav button.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.main{max-width:960px;margin:0 auto;padding:20px 16px}
+.hidden{display:none!important}
+/* Dashboard */
+.dashboard{display:grid;gap:16px}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.dash-card h3{color:var(--accent2);margin-bottom:12px;font-size:1rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.stat-box{background:var(--card2);border-radius:10px;padding:16px;text-align:center}
+.stat-box .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-box .lbl{font-size:.75rem;color:var(--muted);margin-top:4px}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.topic-btn{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;text-align:left;transition:all .2s}
+.topic-btn:hover{border-color:var(--accent);transform:translateY(-2px)}
+.topic-btn .topic-name{font-weight:600;font-size:.9rem;margin-bottom:4px}
+.topic-btn .topic-count{font-size:.75rem;color:var(--muted)}
+.topic-btn .topic-bar{height:4px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
+.topic-btn .topic-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+/* Config Panel */
+.config-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px}
+.config-row{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:16px}
+.config-row label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--muted);flex:1;min-width:140px}
+.config-row select,.config-row input{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:.9rem}
+.btn{background:var(--accent);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;transition:all .2s}
+.btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.8rem}
+.btn-green{background:var(--green)}.btn-red{background:var(--red)}
+/* Question Card */
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:16px;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.q-num{font-size:.8rem;color:var(--muted)}
+.q-type{font-size:.7rem;padding:4px 10px;border-radius:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.q-type.mcq{background:#7c5cfc22;color:var(--accent2)}
+.q-type.fill{background:#22c55e22;color:var(--green)}
+.q-type.tf{background:#eab30822;color:var(--yellow)}
+.q-type.case{background:#ef444422;color:var(--red)}
+.q-type.image{background:#06b6d422;color:#06b6d4}
+.q-text{font-size:1.05rem;line-height:1.6;margin-bottom:20px}
+.q-text em{color:var(--accent2);font-style:normal;font-weight:600}
+.q-text code{background:var(--card2);padding:2px 8px;border-radius:4px;font-size:.9rem}
+.img-placeholder{background:var(--card2);border:2px dashed var(--border);border-radius:10px;padding:40px;text-align:center;margin-bottom:20px;color:var(--muted);font-size:.85rem}
+.img-placeholder .micro-icon{font-size:2.5rem;margin-bottom:8px;display:block}
+/* Options */
+.options{display:flex;flex-direction:column;gap:10px}
+.opt{background:var(--card2);border:2px solid var(--border);border-radius:10px;padding:14px 18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;font-size:.95rem}
+.opt:hover{border-color:var(--accent);background:var(--card2)}
+.opt .opt-letter{width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;transition:all .2s}
+.opt:hover .opt-letter{background:var(--accent);color:#fff}
+.opt.selected{border-color:var(--accent);background:rgba(124,92,252,.1)}
+.opt.selected .opt-letter{background:var(--accent);color:#fff}
+.opt.correct{border-color:var(--green)!important;background:rgba(34,197,94,.1)!important}
+.opt.correct .opt-letter{background:var(--green)!important;color:#fff!important}
+.opt.wrong{border-color:var(--red)!important;background:rgba(239,68,68,.1)!important}
+.opt.wrong .opt-letter{background:var(--red)!important;color:#fff!important}
+.opt.reveal{border-color:var(--green)!important;background:rgba(34,197,94,.05)!important}
+.opt.reveal .opt-letter{background:var(--green)!important;color:#fff!important}
+/* Fill-in */
+.fill-input{background:var(--card2);border:2px solid var(--border);color:var(--text);padding:12px 16px;border-radius:8px;font-size:1rem;width:100%;max-width:400px;transition:border-color .2s}
+.fill-input:focus{outline:none;border-color:var(--accent)}
+.fill-input.correct{border-color:var(--green)!important}
+.fill-input.wrong{border-color:var(--red)!important}
+/* Explanation */
+.explanation{background:var(--card2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:16px 20px;margin-top:16px;font-size:.9rem;line-height:1.6;color:var(--muted);animation:fadeIn .3s}
+.explanation strong{color:var(--text)}
+/* Flashcard */
+.flashcard{perspective:1000px;height:300px;cursor:pointer;margin-bottom:20px}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-front,.flashcard-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:12px;padding:28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.flashcard-front{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border)}
+.flashcard-back{background:linear-gradient(135deg,var(--card2),color-mix(in srgb,var(--accent) 40%,var(--bg)));border:1px solid var(--accent);transform:rotateY(180deg)}
+.flashcard-front h3{font-size:1.1rem;margin-bottom:8px}
+.flashcard-back p{font-size:.95rem;line-height:1.6}
+.flash-hint{font-size:.75rem;color:var(--muted);margin-top:12px}
+/* Progress Bar */
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+/* Results */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.result-stat{background:var(--card2);border-radius:10px;padding:20px;text-align:center}
+.result-stat .big{font-size:2.5rem;font-weight:800}
+.result-stat .big.green{color:var(--green)}
+.result-stat .big.red{color:var(--red)}
+.result-stat .big.yellow{color:var(--yellow)}
+.result-stat .big.accent{color:var(--accent)}
+.result-stat .small{font-size:.8rem;color:var(--muted);margin-top:4px}
+/* History */
+.history-item{display:flex;justify-content:space-between;align-items:center;background:var(--card2);border-radius:8px;padding:12px 16px;margin-bottom:8px}
+.history-item .h-score{font-weight:700}
+.history-item .h-date{font-size:.75rem;color:var(--muted)}
+.history-item .h-detail{font-size:.8rem;color:var(--muted)}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+/* Responsive */
+@media(max-width:600px){.topbar{flex-wrap:wrap;gap:8px}.stat-grid{grid-template-columns:repeat(2,1fr)}.topic-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>🔬 Histo/Cytology Exam Prep</h1>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="theme-selector">
+      <button class="theme-dot" data-theme="default" style="background:linear-gradient(135deg,#7c5cfc,#a78bfa)" title="Default Purple"></button>
+      <button class="theme-dot" data-theme="coffee" style="background:linear-gradient(135deg,#c08b5c,#d4a574)" title="Coffee"></button>
+      <button class="theme-dot" data-theme="forest" style="background:linear-gradient(135deg,#5cb87a,#7cd49a)" title="Forest"></button>
+      <button class="theme-dot" data-theme="ocean" style="background:linear-gradient(135deg,#4a9cc7,#6bb8e0)" title="Ocean"></button>
+      <button class="theme-dot" data-theme="sunset" style="background:linear-gradient(135deg,#d47a3c,#e89a5c)" title="Sunset"></button>
+      <button class="theme-dot" data-theme="lavender" style="background:linear-gradient(135deg,#9a7ac7,#b898e0)" title="Lavender"></button>
+      <button class="theme-dot" data-theme="slate" style="background:linear-gradient(135deg,#7a8aa0,#98a8bc)" title="Slate"></button>
+    </div>
+    <div class="timer hidden" id="timer">00:00</div>
+    <div class="score-pill" id="scorePill">0 / 0</div>
+  </div>
+</div>
+
+<nav>
+  <button class="active" data-tab="dashboard">Dashboard</button>
+  <button data-tab="exam">Exam Mode</button>
+  <button data-tab="flashcards">Flashcards</button>
+  <button data-tab="review">Review Wrong</button>
+  <button data-tab="history">History</button>
+</nav>
+
+<div class="main">
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="dashboard">
+  <div class="dash-card">
+    <h3>📊 Your Progress</h3>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="num" id="totalQ">0</div><div class="lbl">Total Questions</div></div>
+      <div class="stat-box"><div class="num" id="attempted">0</div><div class="lbl">Attempted</div></div>
+      <div class="stat-box"><div class="num" id="correctCount">0</div><div class="lbl">Correct</div></div>
+      <div class="stat-box"><div class="num" id="accuracy">0%</div><div class="lbl">Accuracy</div></div>
+      <div class="stat-box"><div class="num" id="streak">0</div><div class="lbl">Best Streak</div></div>
+    </div>
+  </div>
+
+  <div class="dash-card">
+    <h3>📂 Topics</h3>
+    <div class="topic-grid" id="topicGrid"></div>
+  </div>
+
+  <div class="dash-card">
+    <h3>🚀 Quick Start</h3>
+    <div class="config-row">
+      <label>Topic
+        <select id="cfgTopic"><option value="all">All Topics</option></select>
+      </label>
+      <label>Questions
+        <select id="cfgCount">
+          <option value="10">10 Questions</option>
+          <option value="25" selected>25 Questions</option>
+          <option value="50">50 Questions</option>
+          <option value="100">100 Questions</option>
+          <option value="0">All Questions</option>
+        </select>
+      </label>
+      <label>Time Limit
+        <select id="cfgTime">
+          <option value="0">No Limit</option>
+          <option value="600">10 min</option>
+          <option value="1200" selected>20 min</option>
+          <option value="1800">30 min</option>
+          <option value="3600">60 min</option>
+        </select>
+      </label>
+      <label>Mode
+        <select id="cfgMode">
+          <option value="timed">Timed Exam</option>
+          <option value="practice">Practice (No Timer)</option>
+          <option value="flashcard">Flashcard</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn" onclick="startExam()">Start Exam</button>
+    <button class="btn btn-outline" style="margin-left:8px" onclick="startExam(true)">Shuffle & Start</button>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div id="exam" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="examProgress" style="width:0%"></div></div>
+  <div id="examArea"></div>
+  <div style="display:flex;gap:8px;margin-top:12px" id="examNav"></div>
+</div>
+
+<!-- FLASHCARDS -->
+<div id="flashcards" class="hidden">
+  <div class="dash-card">
+    <h3>🃏 Flashcard Mode</h3>
+    <p style="color:var(--muted);font-size:.85rem;margin-bottom:12px">Click card to flip. Use arrows to navigate.</p>
+    <div class="config-row">
+      <label>Topic
+        <select id="fcTopic"><option value="all">All Topics</option></select>
+      </label>
+      <button class="btn btn-sm" onclick="startFlashcards()">Load Cards</button>
+    </div>
+    <div id="fcArea"></div>
+    <div style="display:flex;justify-content:space-between;margin-top:12px">
+      <button class="btn btn-sm btn-outline" onclick="fcPrev()">← Previous</button>
+      <span id="fcCounter" style="color:var(--muted);font-size:.85rem;align-self:center"></span>
+      <button class="btn btn-sm btn-outline" onclick="fcNext()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW -->
+<div id="review" class="hidden">
+  <div class="dash-card">
+    <h3>❌ Review Incorrect Answers</h3>
+    <div id="reviewArea"><p style="color:var(--muted)">No incorrect answers yet. Take a quiz first!</p></div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<div id="history" class="hidden">
+  <div class="dash-card">
+    <h3>📜 Exam History</h3>
+    <div id="historyArea"><p style="color:var(--muted)">No exams taken yet.</p></div>
+    <button class="btn btn-sm btn-red" style="margin-top:12px" onclick="clearHistory()">Clear History</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let state = {
+  currentTab:'dashboard',
+  examQs:[], examIdx:0, examScore:0, examAnswered:new Set(),
+  answers:{}, timerSec:0, timerMax:0, timerInterval:null,
+  wrongHistory:[], scoreHistory:[],
+  fcCards:[], fcIdx:0, fcFlipped:false,
+  bestStreak:0, currentStreak:0, totalAttempted:0, totalCorrect:0
+};
+function loadState(){
+  try{const s=localStorage.getItem('hc_state');if(s){const p=JSON.parse(s);Object.assign(state,p);}}catch(e){}
+}
+function saveState(){
+  const s={...state,timerInterval:undefined};
+  try{localStorage.setItem('hc_state',JSON.stringify(s));}catch(e){}
+}
+loadState();
+
+// ═══════════════════════════════════════════
+// TAB NAVIGATION
+// ═══════════════════════════════════════════
+document.querySelectorAll('nav button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const tab=b.dataset.tab;
+    state.currentTab=tab;
+    ['dashboard','exam','flashcards','review','history'].forEach(t=>{
+      document.getElementById(t).classList.toggle('hidden',t!==tab);
+    });
+    if(tab==='review') renderReview();
+    if(tab==='history') renderHistory();
+    if(tab==='dashboard') renderDashboard();
+  });
+});
+
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashboard(){
+  document.getElementById('totalQ').textContent=QUESTIONS.length;
+  document.getElementById('attempted').textContent=state.totalAttempted;
+  document.getElementById('correctCount').textContent=state.totalCorrect;
+  document.getElementById('accuracy').textContent=state.totalAttempted?Math.round(state.totalCorrect/state.totalAttempted*100)+'%':'0%';
+  document.getElementById('streak').textContent=state.bestStreak;
+  // Topic grid
+  const grid=document.getElementById('topicGrid');
+  grid.innerHTML='';
+  TOPICS.forEach(t=>{
+    const qs=QUESTIONS.filter(q=>q.topic===t);
+    const icon=TOPIC_ICONS[t]||'📂';
+    const btn=document.createElement('div');
+    btn.className='topic-btn';
+    btn.innerHTML=`<div class="topic-name">${icon} ${t}</div><div class="topic-count">${qs.length} questions</div><div class="topic-bar"><div class="topic-fill" style="width:${Math.random()*60+20}%"></div></div>`;
+    btn.onclick=()=>{document.getElementById('cfgTopic').value=t;startExam();};
+    grid.appendChild(btn);
+  });
+  // Populate selects
+  const sel=document.getElementById('cfgTopic');
+  const cur=sel.value;
+  sel.innerHTML='<option value="all">All Topics</option>';
+  TOPICS.forEach(t=>{sel.innerHTML+=`<option value="${t}">${TOPIC_ICONS[t]||''} ${t}</option>`;});
+  sel.value=cur||'all';
+  const fcSel=document.getElementById('fcTopic');
+  fcSel.innerHTML='<option value="all">All Topics</option>';
+  TOPICS.forEach(t=>{fcSel.innerHTML+=`<option value="${t}">${TOPIC_ICONS[t]||''} ${t}</option>`;});
+}
+
+// ═══════════════════════════════════════════
+// SHUFFLE
+// ═══════════════════════════════════════════
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// ═══════════════════════════════════════════
+// START EXAM
+// ═══════════════════════════════════════════
+function startExam(shuffleQs=false){
+  const topic=document.getElementById('cfgTopic').value;
+  const count=parseInt(document.getElementById('cfgCount').value);
+  const timeLimit=parseInt(document.getElementById('cfgTime').value);
+  let pool=topic==='all'?[...QUESTIONS]:QUESTIONS.filter(q=>q.topic===topic);
+  if(shuffleQs||document.getElementById('cfgMode').value==='flashcard'){
+    pool=shuffle(pool);
+  }
+  if(count>0) pool=pool.slice(0,count);
+  state.examQs=pool;
+  state.examIdx=0;
+  state.examScore=0;
+  state.examAnswered=new Set();
+  state.answers={};
+  state.timerMax=timeLimit;
+  state.timerSec=timeLimit;
+  // Switch to exam tab
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelector('nav button[data-tab="exam"]').classList.add('active');
+  ['dashboard','exam','flashcards','review','history'].forEach(t=>{
+    document.getElementById(t).classList.toggle('hidden',t!=='exam');
+  });
+  state.currentTab='exam';
+  if(timeLimit>0){
+    document.getElementById('timer').classList.remove('hidden');
+    startTimer();
+  }else{
+    document.getElementById('timer').classList.add('hidden');
+  }
+  renderQuestion();
+}
+
+// ═══════════════════════════════════════════
+// TIMER
+// ═══════════════════════════════════════════
+function startTimer(){
+  clearInterval(state.timerInterval);
+  updateTimerDisplay();
+  state.timerInterval=setInterval(()=>{
+    state.timerSec--;
+    updateTimerDisplay();
+    if(state.timerSec<=0){
+      clearInterval(state.timerInterval);
+      finishExam();
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(state.timerSec/60);
+  const s=state.timerSec%60;
+  document.getElementById('timer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('timer').style.color=state.timerSec<60?'var(--red)':'var(--yellow)';
+}
+
+// ═══════════════════════════════════════════
+// RENDER QUESTION
+// ═══════════════════════════════════════════
+function renderQuestion(){
+  const q=state.examQs[state.examIdx];
+  if(!q){finishExam();return;}
+  const total=state.examQs.length;
+  const pct=((state.examIdx)/total*100);
+  document.getElementById('examProgress').style.width=pct+'%';
+  document.getElementById('scorePill').textContent=`${state.examScore}/${state.examIdx} correct`;
+  const typeLabel={mcq:'Multiple Choice',fill:'Fill-in-the-Blank',tf:'True/False',case:'Case Study',image:'Image ID'}[q.type]||q.type;
+  const typeClass=q.type;
+  let html=`<div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q${state.examIdx+1} of ${total} — ${q.topic}</span>
+      <span class="q-type ${typeClass}">${typeLabel}</span>
+    </div>
+    <div class="q-text">${q.q}</div>`;
+  if(q.type==='mcq'||q.type==='tf'||q.type==='case'||q.type==='image'){
+    html+=`<div class="options">`;
+    const letters='ABCD';
+    q.opts.forEach((o,i)=>{
+      const answered=state.examAnswered.has(state.examIdx);
+      let cls='';
+      if(answered){
+        if(i===q.ans) cls='correct';
+        else if(state.answers[state.examIdx]===i) cls='wrong';
+      }else if(state.answers[state.examIdx]===i) cls='selected';
+      html+=`<div class="opt ${cls}" data-idx="${i}" onclick="selectAnswer(${i})">
+        <span class="opt-letter">${letters[i]}</span><span>${o}</span></div>`;
+    });
+    html+=`</div>`;
+  }else if(q.type==='fill'){
+    const answered=state.examAnswered.has(state.examIdx);
+    const userAns=state.answers[state.examIdx]||'';
+    let cls='';
+    if(answered){
+      cls=q.ans.some(a=>userAns.toLowerCase().trim()===a.toLowerCase().trim())?'correct':'wrong';
+    }
+    html+=`<div><input type="text" class="fill-input ${cls}" id="fillInput" placeholder="Type your answer..." 
+      value="${userAns}" ${answered?'disabled':''} 
+      onkeydown="if(event.key==='Enter')submitFill()">
+    ${answered?'':`<button class="btn btn-sm" style="margin-left:8px" onclick="submitFill()">Submit</button>`}</div>`;
+  }
+  if(state.examAnswered.has(state.examIdx)){
+    html+=`<div class="explanation">${q.exp}</div>`;
+  }
+  html+=`</div>`;
+  document.getElementById('examArea').innerHTML=html;
+  // Navigation
+  let nav='';
+  if(state.examIdx>0) nav+=`<button class="btn btn-sm btn-outline" onclick="prevQuestion()">← Previous</button>`;
+  nav+=`<span style="flex:1"></span>`;
+  if(state.examIdx<total-1) nav+=`<button class="btn btn-sm" onclick="nextQuestion()">Next →</button>`;
+  else nav+=`<button class="btn btn-sm btn-green" onclick="finishExam()">Finish Exam</button>`;
+  document.getElementById('examNav').innerHTML=nav;
+}
+
+// ═══════════════════════════════════════════
+// ANSWER HANDLING
+// ═══════════════════════════════════════════
+function selectAnswer(idx){
+  if(state.examAnswered.has(state.examIdx)) return;
+  state.answers[state.examIdx]=idx;
+  const q=state.examQs[state.examIdx];
+  state.examAnswered.add(state.examIdx);
+  state.totalAttempted++;
+  if(idx===q.ans){
+    state.examScore++;
+    state.totalCorrect++;
+    state.currentStreak++;
+    if(state.currentStreak>state.bestStreak) state.bestStreak=state.currentStreak;
+  }else{
+    state.currentStreak=0;
+    state.wrongHistory.push({q:q,chosen:idx,topic:q.topic});
+  }
+  saveState();
+  renderQuestion();
+}
+
+function submitFill(){
+  const input=document.getElementById('fillInput');
+  if(!input) return;
+  const val=input.value.trim();
+  if(!val) return;
+  state.answers[state.examIdx]=val;
+  const q=state.examQs[state.examIdx];
+  state.examAnswered.add(state.examIdx);
+  state.totalAttempted++;
+  if(q.ans.some(a=>val.toLowerCase().trim()===a.toLowerCase().trim())){
+    state.examScore++;
+    state.totalCorrect++;
+    state.currentStreak++;
+    if(state.currentStreak>state.bestStreak) state.bestStreak=state.currentStreak;
+  }else{
+    state.currentStreak=0;
+    state.wrongHistory.push({q:q,chosen:val,topic:q.topic});
+  }
+  saveState();
+  renderQuestion();
+}
+
+function prevQuestion(){
+  if(state.examIdx>0){state.examIdx--;renderQuestion();}
+}
+function nextQuestion(){
+  if(state.examIdx<state.examQs.length-1){state.examIdx++;renderQuestion();}
+}
+
+// ═══════════════════════════════════════════
+// FINISH EXAM
+// ═══════════════════════════════════════════
+function finishExam(){
+  clearInterval(state.timerInterval);
+  document.getElementById('timer').classList.add('hidden');
+  const total=state.examQs.length;
+  const correct=state.examScore;
+  const pct=Math.round(correct/total*100);
+  const topic=document.getElementById('cfgTopic').value;
+  const timeUsed=state.timerMax>0?(state.timerMax-state.timerSec):null;
+  state.scoreHistory.push({
+    date:new Date().toLocaleString(),total,correct,pct,topic,timeUsed
+  });
+  saveState();
+  // Render results
+  let results=`
+  <div class="dash-card">
+    <h3>🏆 Exam Results</h3>
+    <div class="results-grid">
+      <div class="result-stat"><div class="big ${pct>=70?'green':'red'}">${pct}%</div><div class="small">Score</div></div>
+      <div class="result-stat"><div class="big accent">${correct}/${total}</div><div class="small">Correct</div></div>
+      <div class="result-stat"><div class="big yellow">${timeUsed?formatTime(timeUsed):'--'}</div><div class="small">Time Used</div></div>
+      <div class="result-stat"><div class="big accent">${state.bestStreak}</div><div class="small">Best Streak</div></div>
+    </div>
+    <div style="margin-top:16px">
+      <button class="btn" onclick="startExam(true)">Retake (Shuffle)</button>
+      <button class="btn btn-outline" style="margin-left:8px" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="btn btn-outline btn-sm" style="margin-left:8px" onclick="showTab('review')">Review Wrong (${state.wrongHistory.length})</button>
+    </div>
+  </div>
+  `;
+  document.getElementById('examArea').innerHTML=results;
+  document.getElementById('examNav').innerHTML='';
+  document.getElementById('examProgress').style.width='100%';
+}
+function formatTime(sec){const m=Math.floor(sec/60);const s=sec%60;return`${m}m ${s}s`;}
+
+function showTab(tab){
+  document.querySelectorAll('nav button').forEach(x=>{x.classList.toggle('active',x.dataset.tab===tab);});
+  ['dashboard','exam','flashcards','review','history'].forEach(t=>{
+    document.getElementById(t).classList.toggle('hidden',t!==tab);
+  });
+  state.currentTab=tab;
+  if(tab==='dashboard') renderDashboard();
+  if(tab==='review') renderReview();
+  if(tab==='history') renderHistory();
+}
+
+// ═══════════════════════════════════════════
+// THEME SWITCHING
+// ═══════════════════════════════════════════
+let currentTheme=localStorage.getItem('hc_theme')||'default';
+function applyTheme(t){
+  currentTheme=t;
+  document.body.className=t==='default'?'':`theme-${t}`;
+  document.querySelectorAll('.theme-dot').forEach(d=>{
+    d.classList.toggle('active',d.dataset.theme===t);
+  });
+  localStorage.setItem('hc_theme',t);
+}
+document.querySelectorAll('.theme-dot').forEach(d=>{
+  d.addEventListener('click',()=>applyTheme(d.dataset.theme));
+});
+applyTheme(currentTheme);
+
+// ═══════════════════════════════════════════
+// FLASHCARDS
+// ═══════════════════════════════════════════
+function startFlashcards(){
+  const topic=document.getElementById('fcTopic').value;
+  let pool=topic==='all'?[...QUESTIONS]:QUESTIONS.filter(q=>q.topic===topic);
+  state.fcCards=shuffle(pool);
+  state.fcIdx=0;
+  state.fcFlipped=false;
+  renderFlashcard();
+}
+function renderFlashcard(){
+  if(!state.fcCards.length){
+    document.getElementById('fcArea').innerHTML='<p style="color:var(--muted)">No cards. Click Load Cards.</p>';
+    document.getElementById('fcCounter').textContent='';
+    return;
+  }
+  const q=state.fcCards[state.fcIdx];
+  const icon=TOPIC_ICONS[q.topic]||'📂';
+  document.getElementById('fcArea').innerHTML=`
+    <div class="flashcard" id="fcCard" onclick="flipCard()">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px">${icon} ${q.topic} — ${q.type.toUpperCase()}</div>
+          <h3>${q.q}</h3>
+          <div class="flash-hint">Click to reveal answer</div>
+        </div>
+        <div class="flashcard-back">
+          <div style="font-size:.75rem;color:var(--accent);margin-bottom:12px;font-weight:600">ANSWER</div>
+          <p>${q.type==='mcq'||q.type==='tf'||q.type==='case'||q.type==='image'?`<strong>${q.opts[q.ans]}</strong>`:`<strong>${q.ans[0]}</strong>`}</p>
+          <p style="margin-top:12px;font-size:.85rem;color:var(--muted)">${q.exp}</p>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('fcCounter').textContent=`${state.fcIdx+1} / ${state.fcCards.length}`;
+}
+function flipCard(){
+  state.fcFlipped=!state.fcFlipped;
+  document.getElementById('fcCard').classList.toggle('flipped',state.fcFlipped);
+}
+function fcNext(){
+  if(state.fcIdx<state.fcCards.length-1){state.fcIdx++;state.fcFlipped=false;renderFlashcard();}
+}
+function fcPrev(){
+  if(state.fcIdx>0){state.fcIdx--;state.fcFlipped=false;renderFlashcard();}
+}
+
+// ═══════════════════════════════════════════
+// REVIEW WRONG
+// ═══════════════════════════════════════════
+function renderReview(){
+  if(!state.wrongHistory.length){
+    document.getElementById('reviewArea').innerHTML='<p style="color:var(--muted)">No incorrect answers yet. Take a quiz first!</p>';
+    return;
+  }
+  let html='';
+  const recent=state.wrongHistory.slice(-20).reverse();
+  recent.forEach((item,i)=>{
+    const q=item.q;
+    const icon=TOPIC_ICONS[q.topic]||'📂';
+    html+=`<div class="dash-card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:.75rem;color:var(--muted)">${icon} ${q.topic}</span>
+        <span class="q-type ${q.type}" style="font-size:.65rem">${q.type.toUpperCase()}</span>
+      </div>
+      <div class="q-text" style="font-size:.95rem">${q.q}</div>
+      <div style="font-size:.85rem;color:var(--red);margin-bottom:4px">❌ Your answer: ${typeof item.chosen==='number'?q.opts[item.chosen]:item.chosen}</div>
+      <div style="font-size:.85rem;color:var(--green);margin-bottom:8px">✅ Correct: ${q.opts[q.ans]}</div>
+      <div class="explanation">${q.exp}</div>
+    </div>`;
+  });
+  document.getElementById('reviewArea').innerHTML=html;
+}
+
+// ═══════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════
+function renderHistory(){
+  if(!state.scoreHistory.length){
+    document.getElementById('historyArea').innerHTML='<p style="color:var(--muted)">No exams taken yet.</p>';
+    return;
+  }
+  let html='';
+  state.scoreHistory.slice().reverse().forEach(h=>{
+    const color=h.pct>=70?'var(--green)':h.pct>=50?'var(--yellow)':'var(--red)';
+    html+=`<div class="history-item">
+      <div><div class="h-date">${h.date}</div><div class="h-detail">${h.topic==='all'?'All Topics':h.topic} — ${h.total} questions${h.timeUsed?' — '+formatTime(h.timeUsed):''}</div></div>
+      <div class="h-score" style="color:${color}">${h.pct}% (${h.correct}/${h.total})</div>
+    </div>`;
+  });
+  document.getElementById('historyArea').innerHTML=html;
+}
+function clearHistory(){
+  if(confirm('Clear all exam history?')){
+    state.wrongHistory=[];state.scoreHistory=[];
+    state.totalAttempted=0;state.totalCorrect=0;state.bestStreak=0;
+    saveState();renderHistory();renderDashboard();
+  }
+}
+
+// ═══════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  if(state.currentTab!=='exam'||state.examAnswered.has(state.examIdx)){
+    if(e.key==='ArrowRight'&&state.currentTab==='flashcards') fcNext();
+    if(e.key==='ArrowLeft'&&state.currentTab==='flashcards') fcPrev();
+    if(e.key===' '&&state.currentTab==='flashcards'){e.preventDefault();flipCard();}
+    return;
+  }
+  const q=state.examQs[state.examIdx];
+  if(!q) return;
+  if((q.type==='mcq'||q.type==='tf'||q.type==='case'||q.type==='image')&&q.opts){
+    if(e.key==='1') selectAnswer(0);
+    if(e.key==='2') selectAnswer(1);
+    if(e.key==='3'&&q.opts[2]) selectAnswer(2);
+    if(e.key==='4'&&q.opts[3]) selectAnswer(3);
+    const letterMap={a:0,b:1,c:2,d:3};
+    if(letterMap[e.key.toLowerCase()]!==undefined&&q.opts[letterMap[e.key.toLowerCase()]]) selectAnswer(letterMap[e.key.toLowerCase()]);
+  }
+  if(q.type==='fill'&&e.key==='Enter') submitFill();
+  if(e.key==='ArrowRight') nextQuestion();
+  if(e.key==='ArrowLeft') prevQuestion();
+});
+
+// ═══════════════════════════════════════════
+{id:1,topic:"Tissue Processing",type:"mcq",
+ q:"What is the <em>primary purpose</em> of fixation in tissue processing?",
+ opts:["To make tissue transparent","To preserve tissue architecture and prevent autolysis","To remove all water from tissue","To stain cellular components"],
+ ans:1,
+ exp:"<strong>Fixation</strong> preserves tissue by cross-linking proteins, preventing autolysis (self-digestion by enzymes) and putrefaction. It maintains morphological detail for histological examination. Common fixatives include 10% neutral buffered formalin (NBF) and glutaraldehyde."},
+
+{id:2,topic:"Tissue Processing",type:"mcq",
+ q:"Which fixative is considered the <em>gold standard</em> for routine histopathology?",
+ opts:["Glutaraldehyde","Osmium tetroxide","10% Neutral Buffered Formalin (NBF)","Bouin's solution"],
+ ans:2,
+ exp:"<strong>10% NBF</strong> is the most widely used fixative in routine histopathology. It provides excellent morphological detail, is inexpensive, and works well with most tissues. Penetration rate is ~1mm/hour."},
+
+{id:3,topic:"Tissue Processing",type:"fill",
+ q:"The process of removing water from tissue and replacing it with paraffin wax involves three stages: dehydration, ___, and infiltration.",
+ ans:["clearing","clearing stage","clearing process"],
+ exp:"The processing sequence is: <strong>Fixation → Dehydration → Clearing → Infiltration → Embedding</strong>. Clearing uses an agent (typically xylene) that is miscible with both alcohol and paraffin wax, acting as an intermediary."},
+
+{id:4,topic:"Tissue Processing",type:"mcq",
+ q:"Which clearing agent is most commonly used in routine histology?",
+ opts:["Chloroform","Xylene (xylol)","Toluene","Benzene"],
+ ans:1,
+ exp:"<strong>Xylene</strong> is the most common clearing agent because it is miscible with both alcohol (from dehydration) and paraffin wax (for infiltration). It is also relatively inexpensive. Note: benzene is carcinogenic and rarely used."},
+
+{id:5,topic:"Tissue Processing",type:"mcq",
+ q:"What is the correct sequence of reagents in a standard tissue processor?",
+ opts:["Formalin → Xylene → Alcohol → Wax","Alcohol → Formalin → Wax → Xylene","Formalin → Alcohol → Xylene → Wax","Wax → Xylene → Alcohol → Formalin"],
+ ans:2,
+ exp:"The correct sequence is: <strong>10% NBF (fixation) → Graded alcohols (dehydration) → Xylene (clearing) → Paraffin wax (infiltration)</strong>. Tissue then moves to embedding in molten wax."},
+
+{id:6,topic:"Tissue Processing",type:"tf",
+ q:"True or False: Glutaraldehyde penetrates tissue faster than formalin.",
+ ans:false,
+ exp:"<strong>False.</strong> Glutaraldehyde is a large molecule and penetrates tissue much more slowly (~0.1mm/hr) compared to formalin (~1mm/hr). However, it provides superior ultrastructural preservation, making it ideal for electron microscopy."},
+
+{id:7,topic:"Tissue Processing",type:"mcq",
+ q:"What happens if tissue is left in formalin too long (over-fixed)?",
+ opts:["Tissue becomes overly soft","Increased autofluorescence and harder sectioning","Tissue dissolves completely","No effect on final sections"],
+ ans:1,
+ exp:"Over-fixation causes excessive cross-linking, leading to <strong>increased autofluorescence, harder tissue (formalin pigment deposition), and altered antigenicity</strong> which can affect immunohistochemistry results."},
+
+{id:8,topic:"Tissue Processing",type:"fill",
+ q:"The process of placing fixed tissue into molten paraffin wax is called ___.",
+ ans:["infiltration","processing","embedding","wax infiltration"],
+ exp:"<strong>Infiltration</strong> is when molten paraffin wax replaces the clearing agent (xylene) and permeates the tissue. This is done in a tissue processor at controlled temperature (typically 56-60°C)."},
+
+{id:9,topic:"Tissue Processing",type:"image",
+ q:"<span class='micro-icon'>🔬</span><em>Image Description:</em> A tissue block shows a sharp, clean cut surface with distinct layers visible. The tissue appears well-infiltrated with no air bubbles or hard centers. What does this indicate about tissue processing quality?",
+ opts:["Under-processed — wax hasn't fully penetrated","Well-processed — adequate infiltration achieved","Over-processed — tissue is too brittle","Fixation artifact — poor cross-linking"],
+ ans:1,
+ exp:"<strong>Well-processed tissue</strong> shows uniform wax infiltration throughout. Under-processed tissue appears soft/wet in the center, while over-processed tissue is excessively hard and brittle, making sectioning difficult."},
+
+{id:10,topic:"Tissue Processing",type:"mcq",
+ q:"What is the purpose of 'graded alcohols' in the dehydration step?",
+ opts:["To fix the tissue more thoroughly","To gradually replace water with alcohol without causing tissue shrinkage","To stain the tissue","To clear the tissue"],
+ ans:1,
+ exp:"<strong>Graded alcohols (100%, 95%, 70%)</strong> are used to gradually replace water in tissue. Starting with lower concentrations prevents osmotic shock, which would cause excessive shrinkage and distortion of tissue architecture."},
+
+// ═══════════════════════════════════════════
+// TOPIC: MICROTOMY
+// ═══════════════════════════════════════════
+{id:11,topic:"Microtomy",type:"mcq",
+ q:"What is the typical section thickness for routine histology (H&E) sections?",
+ opts:["1-2 μm","4-5 μm","10-12 μm","20-25 μm"],
+ ans:1,
+ exp:"Standard H&E sections are <strong>4-5 μm thick</strong>. This thickness provides adequate cellular detail while allowing sufficient light transmission for microscopy. Thinner sections (1-2 μm) are used for special stains; thicker sections (10-25 μm) for specific applications like enzyme histochemistry."},
+
+{id:12,topic:"Microtomy",type:"mcq",
+ q:"Which microtome type is used for cutting <em>frozen sections</em>?",
+ opts:["Rotary microtome","Sledge (sliding) microtome","Cryostat (frozen section microtome)","Base sledge microtome"],
+ ans:2,
+ exp:"A <strong>cryostat</strong> is a refrigerated cabinet containing a freezing microtome. It maintains temperature at -20°C to -30°C, allowing rapid frozen sections (typically for intraoperative consultation, ~5-10 μm thick)."},
+
+{id:13,topic:"Microtomy",type:"fill",
+ q:"The technique of mounting paraffin sections onto glass slides using warm water is called ___ mounting or ___ mounting.",
+ ans:["float","floating","water bath","warm water"],
+ exp:"Sections are floated on a <strong>warm water bath (40-45°C)</strong> to flatten out wrinkles, then picked up onto clean glass slides. This step is critical — water that is too hot causes tissue expansion; too cool leaves wrinkles."},
+
+{id:14,topic:"Microtomy",type:"mcq",
+ q:"What is a 'ribbon' in microtomy?",
+ opts:["A series of serial sections that adhere end-to-end","A type of staining pattern","A cutting technique for hard tissues","A sectioning artifact"],
+ ans:0,
+ exp:"A <strong>ribbon</strong> is a continuous strip of serial sections that adhere to each other via the heat from the microtome block face. Ribbons are essential for serial sectioning and proper slide orientation."},
+
+{id:15,topic:"Microtomy",type:"mcq",
+ q:"Which factor would cause 'chatter' marks on histological sections?",
+ opts:["Blade too sharp","Blade angle too steep or excessive cutting speed","Temperature too cold","Tissue too soft"],
+ ans:1,
+ exp:"<strong>Chatter</strong> appears as horizontal ridges/grooves on sections, caused by vibration of the block or knife. Common causes: blade angle too steep, cutting too fast, hard tissue embedded in soft tissue, or loose microtome parts."},
+
+{id:16,topic:"Microtomy",type:"tf",
+ q:"True or False: The block face should be parallel to the knife edge when setting up for sectioning.",
+ ans:true,
+ exp:"<strong>True.</strong> The block face must be parallel to the knife edge to ensure even, consistent sections across the entire block face. Misalignment causes uneven section thickness and cutting artifacts."},
+
+{id:17,topic:"Microtomy",type:"mcq",
+ q:"What causes 'venetian blind' artifacts in sections?",
+ opts:["Knife nicks","Uneven cooling of the block","Temperature fluctuations during cutting","Blade angle too shallow"],
+ ans:2,
+ exp:"<strong>Venetian blind artifacts</strong> appear as alternating light and dark bands, caused by temperature fluctuations or inconsistent block temperature. Common when moving between warm and cold environments."},
+
+{id:18,topic:"Microtomy",type:"mcq",
+ q:"What is the recommended water bath temperature for floating paraffin sections?",
+ opts:["20-25°C","40-45°C","60-70°C","80-90°C"],
+ ans:1,
+ exp:"The water bath should be at <strong>40-45°C</strong> (slightly below the melting point of paraffin wax). This allows sections to flatten without melting the wax, which would destroy tissue architecture."},
+
+{id:19,topic:"Microtomy",type:"fill",
+ q:"A section that is too thick may be caused by the knife being set at a(n) ___ angle.",
+ ans:["shallow","low","reduced","less steep"],
+ exp:"A <strong>shallow (low) clearance angle</strong> means the knife doesn't cut cleanly through the tissue, resulting in thicker-than-desired sections. The optimal clearance angle is typically 1-5°."},
+
+{id:20,topic:"Microtomy",type:"image",
+ q:"<span class='micro-icon'>🔪</span><em>Image Description:</em> Microtome sections show horizontal parallel lines across the entire section surface. What is this artifact called and what is the most likely cause?",
+ opts:["Knife nick — blade is damaged","Chatter — vibration during cutting","Compression artifact — too much pressure","Folding — sections overlapping"],
+ ans:1,
+ exp:"<strong>Chatter</strong> is characterized by regular horizontal parallel lines/ridges. It's caused by vibration of the knife or block during cutting. Solutions: check knife angle, slow cutting speed, ensure all microtome parts are tight."},
+
+// ═══════════════════════════════════════════
+// TOPIC: H&E STAINING
+// ═══════════════════════════════════════════
+{id:21,topic:"H&E Staining",type:"mcq",
+ q:"In H&E staining, <em>hematoxylin</em> stains which cellular components?",
+ opts:["Cytoplasm and extracellular matrix","Nuclei (basophilic structures)","Lipids","Connective tissue fibers"],
+ ans:1,
+ exp:"<strong>Hematoxylin</strong> is a basic dye that stains acidic (basophilic) structures blue/purple — primarily <strong>nuclei</strong> (DNA/RNA). It requires a mordant (aluminum salts) to form a lake that binds to tissue."},
+
+{id:22,topic:"H&E Staining",type:"mcq",
+ q:"What is the correct order of steps in a standard H&E stain?",
+ opts:["Eosin → Hematoxylin → Blueing → Dehydration → Clearing → Mounting","Hematoxylin → Blueing → Eosin → Dehydration → Clearing → Mounting","Blueing → Hematoxylin → Eosin → Clearing → Dehydration → Mounting","Hematoxylin → Eosin → Clearing → Dehydration → Blueing → Mounting"],
+ ans:1,
+ exp:"Standard H&E sequence: <strong>Hematoxylin (5-10 min) → Running water rinse → Blueing (Scott's tap water or ammonia water) → Eosin (1-3 min) → Dehydration (graded alcohols) → Clearing (xylene) → Mounting (DPX/permount)</strong>."},
+
+{id:23,topic:"H&E Staining",type:"mcq",
+ q:"What is the purpose of 'blueing' (also called 'bluing') in H&E staining?",
+ opts:["To remove excess hematoxylin","To convert hematoxylin to its blue oxidized form (hematein)","To stain cytoplasm blue","To fix the stain permanently"],
+ ans:1,
+ exp:"<strong>Blueing</strong> converts the reddish hematoxylin (hematoxylin-mordant complex) to its blue/purple oxidized form (hematein). Done using alkaline solutions like Scott's tap water, lithium carbonate, or ammonia water."},
+
+{id:24,topic:"H&E Staining",type:"fill",
+ q:"The counterstain used in H&E staining is ___.",
+ ans:["eosin","eosin Y","eosinophilic"],
+ exp:"<strong>Eosin Y</strong> is the standard counterstain, staining acidic (acidophilic/eosinophilic) structures pink/red — cytoplasm, muscle fibers, collagen, and red blood cells."},
+
+{id:25,topic:"H&E Staining",type:"mcq",
+ q:"Which of the following is stained <em>basophilic</em> (blue/purple) in H&E?",
+ opts:["Cytoplasm","Collagen fibers","Ribosomes and rough ER","Red blood cells"],
+ ans:2,
+ exp:"<strong>Ribosomes and rough ER</strong> are basophilic due to their high RNA content (acidic phosphate groups). Basophilic = affinity for basic dyes (hematoxylin) = stains blue/purple."},
+
+{id:26,topic:"H&E Staining",type:"tf",
+ q:"True or False: Eosin is a basic dye that stains acidic structures.",
+ ans:false,
+ exp:"<strong>False.</strong> Eosin is an <strong>acidic dye</strong> that stains basic (acidophilic/eosinophilic) structures — cytoplasm, muscle, collagen, RBCs. The dye's negative charge binds to positively charged (basic) proteins."},
+
+{id:27,topic:"H&E Staining",type:"mcq",
+ q:"What causes 'formalin pigment' artifact in H&E stained sections?",
+ opts:["Excessive eosin staining","Acid hematin deposits from prolonged formalin fixation","Incomplete blueing step","Over-dehydration"],
+ ans:1,
+ exp:"<strong>Formalin pigment</strong> (acid hematin) appears as fine brown/black granules, especially in blood-rich tissues. Caused by formalin reacting with hemoglobin. Remove with picric acid or alcoholic picric acid before staining."},
+
+{id:28,topic:"H&E Staining",type:"mcq",
+ q:"Scott's tap water is used in H&E staining to:",
+ opts:["Remove excess hematoxylin","Blue/alkalinize the hematoxylin","Destain the section","Clear xylene"],
+ ans:1,
+ exp:"<strong>Scott's tap water</strong> (magnesium sulfate + sodium bicarbonate) provides an alkaline environment to convert hematoxylin to its blue form. It's a substitute for running tap water in areas with hard/acidic water."},
+
+{id:29,topic:"H&E Staining",type:"mcq",
+ q:"Nuclei appear ___, cytoplasm appears ___ in a properly stained H&E section.",
+ opts:["Blue/purple; pink/red","Pink/red; blue/purple","Green; yellow","Black; white"],
+ ans:0,
+ exp:"In H&E: <strong>Nuclei = blue/purple</strong> (hematoxylin, basophilic), <strong>Cytoplasm = pink/red</strong> (eosin, eosinophilic). This contrast allows easy identification of cellular and tissue morphology."},
+
+{id:30,topic:"H&E Staining",type:"image",
+ q:"<span class='micro-icon'>🎨</span><em>Image Description:</em> An H&E stained section shows nuclei that appear reddish-brown instead of blue/purple. What is the most likely cause?",
+ opts:["Too much eosin","Hematoxylin was not properly blueed (under-blueing)","Excessive dehydration","Mounting medium is acidic"],
+ ans:1,
+ exp:"<strong>Under-blueing</strong> leaves hematoxylin in its reddish form. Nuclei should be distinctly blue/purple. Add more blueing time with Scott's tap water or ammonia water to achieve proper color."},
+
+// ═══════════════════════════════════════════
+// TOPIC: SPECIAL STAINS
+// ═══════════════════════════════════════════
+{id:31,topic:"Special Stains",type:"mcq",
+ q:"Which special stain is used to demonstrate <em>glycogen</em> in tissue?",
+ opts:["Masson's Trichrome","Periodic Acid-Schiff (PAS)","Alcian Blue","Giemsa"],
+ ans:1,
+ exp:"<strong>PAS</strong> stains glycogen, mucins, basement membranes, and fungal walls magenta/red. Diastase-PAS (D-PAS) differentiates glycogen (removed by diastase) from other PAS-positive substances."},
+
+{id:32,topic:"Special Stains",type:"mcq",
+ q:"Masson's Trichrome stains collagen fibers which color?",
+ opts:["Red","Blue (or green depending on variant)","Black","Yellow"],
+ ans:1,
+ exp:"<strong>Masson's Trichrome</strong>: Muscle/cytoplasm = red, <strong>Collagen = blue</strong> (or green with aniline blue variant), Nuclei = black/brown. Used to assess fibrosis and connective tissue distribution."},
+
+{id:33,topic:"Special Stains",type:"mcq",
+ q:"Which stain demonstrates <em>reticulin fibers</em> (Type III collagen)?",
+ opts:["Masson's Trichrome","Gomori's Reticulin stain","Orcein","Van Gieson"],
+ ans:1,
+ exp:"<strong>Gomori's reticulin stain</strong> (or Gordon & Sweets) uses silver impregnation to demonstrate reticulin fibers as black threads. Reticulin forms the supporting framework of organs like liver, spleen, and bone marrow."},
+
+{id:34,topic:"Special Stains",type:"mcq",
+ q:"Which stain is used to identify <em>acid-fast bacilli</em> (AFB) such as Mycobacterium tuberculosis?",
+ opts:["Gram stain","Ziehl-Neelsen (ZN) stain","Periodic Acid-Schiff","Giemsa stain"],
+ ans:1,
+ exp:"<strong>Ziehl-Neelsen (ZN)</strong> stains acid-fast organisms (mycobacteria) bright red against a blue background. The waxy mycolic acid in the cell wall retains the carbol fuchsin dye even after acid-alcohol decolorization."},
+
+{id:35,topic:"Special Stains",type:"fill",
+ q:"The stain used to identify iron deposits (hemosiderin) in tissue is called ___ stain.",
+ ans:["Prussian blue","Perls' Prussian blue","iron stain","hemosiderin"],
+ exp:"<strong>Prussian blue (Perls' reaction)</strong> demonstrates iron (hemosiderin) as bright blue deposits. Used to identify hemorrhage, hemosiderin-laden macrophages, and iron overload conditions."},
+
+{id:36,topic:"Special Stains",type:"mcq",
+ q:"Alcian Blue at pH 2.5 stains which substance(s)?",
+ opts:["Elastic fibers","Acidic mucins (sialomucins, sulfomucins)","Collagen","Nuclei"],
+ ans:1,
+ exp:"<strong>Alcian Blue (pH 2.5)</strong> stains acidic mucins blue. At pH 1.0 it specifically stains sulfated mucins. Combined with PAS, it helps differentiate epithelial mucins in gastrointestinal and respiratory tract specimens."},
+
+{id:37,topic:"Special Stains",type:"mcq",
+ q:"Which stain is used to identify <em>fungal organisms</em> in tissue sections?",
+ opts:["H&E only","Grocott's Methenamine Silver (GMS) or PAS","Masson's Trichrome","Van Gieson"],
+ ans:1,
+ exp:"<strong>GMS</strong> stains fungal cell walls black against a green background. <strong>PAS</strong> stains fungi magenta. Both are more sensitive than H&E for detecting fungi, especially in tissue with necrosis or inflammation."},
+
+{id:38,topic:"Special Stains",type:"mcq",
+ q:"The Van Gieson stain differentiates between:",
+ opts:["Nuclei and cytoplasm","Collagen (red) and muscle/cytoplasm (yellow)","Elastic fibers and reticulin","Glycogen and mucin"],
+ ans:1,
+ exp:"<strong>Van Gieson</strong>: Collagen = red, Muscle/cytoplasm = yellow. Often combined with Verhoeff's elastic stain (black elastic fibers) to demonstrate all three tissue components simultaneously."},
+
+{id:39,topic:"Special Stains",type:"mcq",
+ q:"What is the purpose of the <em>Oil Red O</em> stain?",
+ opts:["To stain nuclei","To demonstrate lipids/fat in frozen sections","To identify calcium deposits","To stain bacteria"],
+ ans:1,
+ exp:"<strong>Oil Red O</strong> is a fat-soluble dye that stains neutral lipids (triglycerides, cholesterol esters) red. It requires frozen sections because paraffin processing removes lipids with organic solvents."},
+
+{id:40,topic:"Special Stains",type:"mcq",
+ q:"Von Kossa stain is used to identify:",
+ opts:["Iron deposits","Calcium deposits (mineralized tissue)","Fungal organisms","Elastic fibers"],
+ ans:1,
+ exp:"<strong>Von Kossa stain</strong> demonstrates calcium deposits as black (silver nitrate replaces calcium, then reduced to metallic silver). Used to identify calcification, bone, and mineral deposits in tissues."},
+
+// ═══════════════════════════════════════════
+// TOPIC: IMMUNOHISTOCHEMISTRY
+// ═══════════════════════════════════════════
+{id:41,topic:"Immunohistochemistry",type:"mcq",
+ q:"What is the primary purpose of immunohistochemistry (IHC) in diagnostic pathology?",
+ opts:["To replace H&E staining","To identify specific antigens/proteins in tissue sections","To measure enzyme activity","To determine tissue pH"],
+ ans:1,
+ exp:"<strong>IHC</strong> uses antibody-antigen reactions to identify specific proteins in tissue. It's essential for tumor classification, determining tumor origin, and guiding treatment decisions (e.g., hormone receptor status in breast cancer)."},
+
+{id:42,topic:"Immunohistochemistry",type:"mcq",
+ q:"In IHC, what is the role of the <em>secondary antibody</em>?",
+ opts:["Binds directly to the target antigen","Binds to the primary antibody and carries the detection system","Amplifies the signal","Removes background staining"],
+ ans:1,
+ exp:"The <strong>secondary antibody</strong> binds to the primary antibody (which is bound to the target antigen). It is conjugated to an enzyme (HRP/AP) or fluorophore that generates a visible signal. This provides signal amplification."},
+
+{id:43,topic:"Immunohistochemistry",type:"mcq",
+ q:"What is <em>antigen retrieval</em> and why is it necessary?",
+ opts:["Removing all antigens from tissue","Breaking cross-links from formalin fixation to expose epitopes","Staining all antigens equally","Blocking non-specific antibody binding"],
+ ans:1,
+ exp:"<strong>Antigen retrieval</strong> (heat-induced epitope retrieval, HIER) breaks protein cross-links formed by formalin fixation, exposing antigenic epitopes for antibody binding. Without it, many IHC markers give false negatives."},
+
+{id:44,topic:"Immunohistochemistry",type:"fill",
+ q:"The enzyme used in the most common IHC detection system (DAB chromogen) is ___ peroxidase (HRP).",
+ ans:["horseradish","HRP","horseradish peroxidase"],
+ exp:"<strong>Horseradish peroxidase (HRP)</strong> catalyzes oxidation of DAB (3,3'-diaminobenzidine) producing a brown precipitate at the antigen site. This is the most widely used chromogen in diagnostic IHC."},
+
+{id:45,topic:"Immunohistochemistry",type:"mcq",
+ q:"What is the purpose of <em>blocking endogenous peroxidase</em> before IHC staining?",
+ opts:["To enhance staining intensity","To prevent non-specific staining from tissue's own peroxidase","To fix the tissue","To remove paraffin wax"],
+ ans:1,
+ exp:"<strong>Endogenous peroxidase</strong> (in RBCs, liver, kidney) can react with the DAB substrate causing false-positive staining. Blocking with hydrogen peroxide quenches this activity before applying the primary antibody."},
+
+{id:46,topic:"Immunohistochemistry",type:"mcq",
+ q:"Which IHC marker is commonly used to identify <em>epithelial cells</em>?",
+ opts:["Vimentin","CD45","Cytokeratin (CK)","S100"],
+ ans:2,
+ exp:"<strong>Cytokeratins</strong> are intermediate filaments specific to epithelial cells. CK7, CK20, and pan-cytokeratin cocktails are used to classify carcinomas and distinguish them from mesenchymal (vimentin+) or hematolymphoid (CD45+) tumors."},
+
+{id:47,topic:"Immunohistochemistry",type:"mcq",
+ q:"What is the difference between <em>direct</em> and <em>indirect</em> IHC methods?",
+ opts:["Direct uses one antibody; indirect uses two","Direct uses fluorescence; indirect uses enzymes","Direct is for frozen sections; indirect for paraffin","There is no difference"],
+ ans:0,
+ exp:"<strong>Direct method</strong>: labeled primary antibody binds antigen directly (lower sensitivity). <strong>Indirect method</strong>: unlabeled primary binds antigen, then labeled secondary binds primary (higher sensitivity due to signal amplification)."},
+
+{id:48,topic:"Immunohistochemistry",type:"tf",
+ q:"True or False: The ABC (Avidin-Biotin Complex) method provides greater signal amplification than the simple indirect method.",
+ ans:true,
+ exp:"<strong>True.</strong> The ABC method uses avidin's ability to bind multiple biotin molecules, creating a large complex with many enzyme molecules per antibody. This provides significantly greater signal amplification than the simple indirect method."},
+
+{id:49,topic:"Immunohistochemistry",type:"mcq",
+ q:"Which chromogen produces a <em>brown</em> reaction product in IHC?",
+ opts:["AEC (3-amino-9-ethylcarbazole)","Fast Red","DAB (3,3'-diaminobenzidine)","Methyl Green"],
+ ans:2,
+ exp:"<strong>DAB</strong> produces a permanent brown reaction product. It's the most common chromogen because it's insoluble, permanent, and provides good contrast with hematoxylin counterstain. AEC produces red but is alcohol-soluble."},
+
+{id:50,topic:"Immunohistochemistry",type:"mcq",
+ q:"What is the purpose of a <em>negative control</em> in IHC?",
+ opts:["To stain the antigen of interest","To ensure the secondary antibody is working","To confirm absence of non-specific staining","To test the counterstain"],
+ ans:2,
+ exp:"<strong>Negative controls</strong> (omit primary antibody or use isotype control) verify that staining is specific to the primary antibody and not due to non-specific binding of the secondary antibody or detection system."},
+
+// ═══════════════════════════════════════════
+// TOPIC: CELL BIOLOGY / MORPHOLOGY
+// ═══════════════════════════════════════════
+{id:51,topic:"Cell Biology",type:"mcq",
+ q:"Which organelle is primarily responsible for <em>protein synthesis</em>?",
+ opts:["Golgi apparatus","Mitochondria","Ribosomes (rough ER)","Lysosomes"],
+ ans:2,
+ exp:"<strong>Ribosomes</strong> (attached to rough ER or free in cytoplasm) are the site of protein synthesis. Rough ER appears 'rough' because of attached ribosomes. Free ribosomes synthesize cytoplasmic proteins; ER-bound ribosomes synthesize membrane/secretory proteins."},
+
+{id:52,topic:"Cell Biology",type:"mcq",
+ q:"The <em>nucleolus</em> is the site of:",
+ opts:["DNA replication","Ribosomal RNA (rRNA) synthesis and ribosome assembly","Protein folding","Lipid synthesis"],
+ ans:1,
+ exp:"The <strong>nucleolus</strong> is a dense region within the nucleus where rRNA is transcribed and ribosomal subunits are assembled. It's highly prominent in cells with high protein synthesis activity (e.g., plasma cells, hepatocytes)."},
+
+{id:53,topic:"Cell Biology",type:"mcq",
+ q:"Which type of <em>junction</em> forms a 'leak-proof' seal between epithelial cells?",
+ opts:["Desmosomes","Gap junctions","Tight junctions (zonula occludens)","Adherens junctions"],
+ ans:2,
+ exp:"<strong>Tight junctions</strong> seal adjacent epithelial cells together, preventing paracellular transport. Found at the apical-lateral border. Desmosomes provide mechanical adhesion; gap junctions allow cell-cell communication."},
+
+{id:54,topic:"Cell Biology",type:"fill",
+ q:"The powerhouse of the cell, responsible for ATP production via oxidative phosphorylation, is the ___.",
+ ans:["mitochondria","mitochondrion"],
+ exp:"<strong>Mitochondria</strong> generate ~90% of cellular ATP through oxidative phosphorylation. They have a double membrane (inner membrane folded into cristae), their own DNA, and are involved in apoptosis."},
+
+{id:55,topic:"Cell Biology",type:"mcq",
+ q:"Which <em>cytoskeletal element</em> is primarily responsible for cell motility and forming microvilli?",
+ opts:["Intermediate filaments","Microfilaments (actin)","Microtubules","Collagen fibers"],
+ ans:1,
+ exp:"<strong>Microfilaments (actin)</strong> form the core of microvilli and are essential for cell motility (lamellipodia, filopodia), cytokinesis, and muscle contraction. They are 7nm diameter, the smallest cytoskeletal element."},
+
+{id:56,topic:"Cell Biology",type:"mcq",
+ q:"The <em>Golgi apparatus</em> is primarily involved in:",
+ opts:["Protein synthesis","Lipid synthesis","Modification, sorting, and packaging of proteins","DNA replication"],
+ ans:2,
+ exp:"The <strong>Golgi apparatus</strong> modifies (glycosylation), sorts, and packages proteins and lipids for secretion or delivery to other organelles. It has a cis face (receiving) and trans face (shipping)."},
+
+{id:57,topic:"Cell Biology",type:"tf",
+ q:"True or False: Lysosomes contain hydrolytic enzymes that function at acidic pH.",
+ ans:true,
+ exp:"<strong>True.</strong> Lysosomes contain ~60 hydrolytic enzymes (proteases, lipases, nucleases) that function optimally at pH 4.5-5.0. The acidic environment is maintained by proton pumps (V-ATPase) in the lysosomal membrane."},
+
+{id:58,topic:"Cell Biology",type:"mcq",
+ q:"Which of the following is a characteristic of <em>malignant</em> cells vs benign?",
+ opts:["Uniform nuclear size","Well-defined cell borders","Pleomorphism (variable size/shape) and hyperchromatic nuclei","Low mitotic rate"],
+ ans:2,
+ exp:"<strong>Malignant cells</strong> show: nuclear pleomorphism, hyperchromasia (dark nuclei), increased N:C ratio, irregular nuclear contours, prominent nucleoli, and increased/mitotic figures. Benign cells are more uniform."},
+
+{id:59,topic:"Cell Biology",type:"mcq",
+ q:"What is <em>apoptosis</em>?",
+ opts:["Accidental cell death with inflammation","Programmed cell death without inflammation","Cell death from infection","Necrosis of all cells in a tissue"],
+ ans:1,
+ exp:"<strong>Apoptosis</strong> is programmed, controlled cell death: cell shrinks, chromatin condenses (pyknosis), nucleus fragments (karyorrhexis), cell blebs, and apoptotic bodies form. No inflammation. Essential for development and homeostasis."},
+
+{id:60,topic:"Cell Biology",type:"mcq",
+ q:"<em>Necrosis</em> is distinguished from apoptosis by:",
+ opts:["Cell shrinkage","Absence of inflammation","Presence of inflammation and cell swelling","Orderly phagocytosis"],
+ ans:2,
+ exp:"<strong>Necrosis</strong> involves cell swelling, membrane rupture, enzyme leakage, and <strong>inflammation</strong>. It's uncontrolled, pathological cell death caused by ischemia, toxins, or infection. Apoptosis is controlled and non-inflammatory."},
+
+// ═══════════════════════════════════════════
+// TOPIC: TISSUE TYPES
+// ═══════════════════════════════════════════
+{id:61,topic:"Tissue Types",type:"mcq",
+ q:"Which tissue type is characterized by cells arranged in layers with apical-basal polarity?",
+ opts:["Connective tissue","Muscle tissue","Epithelial tissue","Nervous tissue"],
+ ans:2,
+ exp:"<strong>Epithelial tissue</strong> is characterized by: closely packed cells with apical-basal polarity, attached to a basement membrane, avascular (nourished by diffusion), and capable of renewal from stem cells."},
+
+{id:62,topic:"Tissue Types",type:"mcq",
+ q:"Simple squamous epithelium is found in which location?",
+ opts:["Skin epidermis","Kidney glomeruli and alveoli","Trachea","Esophagus"],
+ ans:1,
+ exp:"<strong>Simple squamous epithelium</strong> lines surfaces requiring rapid diffusion/filtration: alveoli (gas exchange), glomeruli (filtration), blood vessels (endothelium), and serous membranes (mesothelium)."},
+
+{id:63,topic:"Tissue Types",type:"mcq",
+ q:"Which connective tissue fiber type provides <em>tensile strength</em>?",
+ opts:["Elastic fibers","Reticulin fibers","Collagen fibers","Ground substance"],
+ ans:2,
+ exp:"<strong>Collagen fibers</strong> (Type I) provide tensile strength and resist stretching. Found abundantly in bone, tendon, and dermis. Elastic fibers (elastin) provide recoil; reticulin (Type III) forms delicate supporting networks."},
+
+{id:64,topic:"Tissue Types",type:"mcq",
+ q:"Hyaline cartilage is characterized by:",
+ opts:["Visible collagen fibers in matrix","Type II collagen with glassy, amorphous matrix","Abundant elastic fibers","Calcified matrix throughout"],
+ ans:1,
+ exp:"<strong>Hyaline cartilage</strong> has a glassy (hyaline = glassy) matrix containing Type II collagen (not visible by light microscopy) and proteoglycans. Found in trachea, ribs, nose, and articular surfaces."},
+
+{id:65,topic:"Tissue Types",type:"fill",
+ q:"The specialized junctional complex that forms the 'spot welds' between cells, providing strong mechanical adhesion, is called a(n) ___.",
+ ans:["desmosome","macula adherens","desmosomes"],
+ exp:"<strong>Desmosomes (macula adherens)</strong> provide strong cell-cell adhesion through cadherin proteins (desmoglein, desmocollin). Found in tissues under mechanical stress: epidermis, heart muscle, esophagus."},
+
+{id:66,topic:"Tissue Types",type:"mcq",
+ q:"Which of the following is a characteristic of <em>dense regular connective tissue</em>?",
+ opts:["Randomly arranged fibers","Parallel collagen fibers with fibroblasts between","Abundant ground substance","Many elastic fibers"],
+ ans:1,
+ exp:"<strong>Dense regular CT</strong> has parallel collagen fibers with flattened fibroblasts (tenocytes) between them. Found in tendons and ligaments, providing maximum tensile strength in one direction."},
+
+{id:67,topic:"Tissue Types",type:"mcq",
+ q:"The basement membrane is composed primarily of:",
+ opts:["Type I collagen","Type IV collagen and laminin","Elastin","Reticulin"],
+ ans:1,
+ exp:"The <strong>basement membrane</strong> consists of: basal lamina (Type IV collagen, laminin, entactin, perlecan) + reticular lamina (reticulin). It separates epithelium from connective tissue and is visible with PAS stain."},
+
+{id:68,topic:"Tissue Types",type:"mcq",
+ q:"Which muscle tissue is <em>involuntary</em> and has <em>striations</em>?",
+ opts:["Skeletal muscle","Cardiac muscle","Smooth muscle","Myoepithelial cells"],
+ ans:1,
+ exp:"<strong>Cardiac muscle</strong> is striated (like skeletal) but involuntary (like smooth). Unique features: intercalated discs (with gap junctions), branching fibers, and single central nucleus. Found only in the heart."},
+
+{id:69,topic:"Tissue Types",type:"mcq",
+ q:"Adipose tissue is classified as which type of connective tissue?",
+ opts:["Dense regular","Loose areolar","Specialized/Adipose","Reticular"],
+ ans:2,
+ exp:"<strong>Adipose tissue</strong> is classified as specialized connective tissue. White adipose (energy storage, insulation) and brown adipose (thermogenesis in infants) have different functions and appearances."},
+
+{id:70,topic:"Tissue Types",type:"image",
+ q:"<span class='micro-icon'>🧫</span><em>Image Description:</em> Under the microscope, you see a tissue with closely packed cells arranged in a stratified (layered) pattern. The basal layer is cuboidal/columnar, while superficial layers are flattened. The surface shows keratin (no nuclei). What tissue is this?",
+ opts:["Stratified cuboidal epithelium","Non-keratinized stratified squamous epithelium","Keratinized stratified squamous epithelium (epidermis)","Transitional epithelium"],
+ ans:2,
+ exp:"<strong>Keratinized stratified squamous epithelium</strong> (epidermis) shows: basal layer (cuboidal/columnar with mitosis), spinous layer, granular layer, and superficial keratin layer (anucleate squames). Unique to skin."},
+
+// ═══════════════════════════════════════════
+// TOPIC: ORGAN SYSTEM HISTOLOGY
+// ═══════════════════════════════════════════
+{id:71,topic:"Organ Systems",type:"mcq",
+ q:"Which layer of the <em>GI tract</em> wall contains the muscularis mucosae?",
+ opts:["Mucosa","Submucosa","Muscularis externa","Serosa/Adventitia"],
+ ans:0,
+ exp:"The <strong>mucosa</strong> consists of: epithelium + lamina propria + muscularis mucosae (thin smooth muscle layer). The muscularis mucosae helps create folds and aids in local movement of mucosa."},
+
+{id:72,topic:"Organ Systems",type:"mcq",
+ q:"In the <em>liver</em>, the classic lobule is centered around:",
+ opts:["Portal triad","Central vein","Hepatic artery","Bile duct"],
+ ans:1,
+ exp:"The <strong>classic hepatic lobule</strong> is hexagonal, centered on a central vein, with portal triads at the periphery. Hepatocytes are arranged in plates/cords radiating outward. Blood flows from portal triad → central vein."},
+
+{id:73,topic:"Organ Systems",type:"mcq",
+ q:"The <em>glomerulus</em> in the kidney is located in which region of the nephron?",
+ opts:["Proximal convoluted tubule","Distal convoluted tubule","Renal corpuscle (Bowman's capsule)","Loop of Henle"],
+ ans:2,
+ exp:"The <strong>glomerulus</strong> is a tuft of fenestrated capillaries within Bowman's capsule, forming the renal corpuscle. Blood is filtered here; filtrate enters the proximal convoluted tubule."},
+
+{id:74,topic:"Organ Systems",type:"mcq",
+ q:"In the <em>lung</em>, type I pneumocytes are responsible for:",
+ opts:["Surfactant production","Gas exchange (covering ~95% of alveolar surface)","Immune defense","Mucus secretion"],
+ ans:1,
+ exp:"<strong>Type I pneumocytes</strong> are thin, flat squamous cells covering ~95% of alveolar surface, optimized for gas exchange. Type II pneumocytes produce surfactant and can regenerate Type I cells after injury."},
+
+{id:75,topic:"Organ Systems",type:"mcq",
+ q:"The <em>Peyer's patches</em> are found in which organ?",
+ opts:["Stomach","Duodenum","Ileum","Colon"],
+ ans:2,
+ exp:"<strong>Peyer's patches</em> are aggregated lymphoid follicles in the ileum submucosa. They are part of gut-associated lymphoid tissue (GALT) and sample intestinal antigens via M cells in the overlying epithelium."},
+
+{id:76,topic:"Organ Systems",type:"fill",
+ q:"The functional unit of the <em>kidney</em> responsible for filtration, reabsorption, and secretion is the ___.",
+ ans:["nephron","renal nephron"],
+ exp:"The <strong>nephron</strong> (~1 million per kidney) consists of: renal corpuscle (glomerulus + Bowman's capsule) + renal tubule (PCT, Loop of Henle, DCT, collecting duct). Each component has specialized transport functions."},
+
+{id:77,topic:"Organ Systems",type:"mcq",
+ q:"The <em>islets of Langerhans</em> in the pancreas secrete:",
+ opts:["Digestive enzymes","Insulin and glucagon (hormones)","Bile","Mucus"],
+ ans:1,
+ exp:"<strong>Islets of Langerhans</strong> are endocrine cells (~1-2% of pancreas): Beta cells = insulin, Alpha cells = glucagon, Delta cells = somatostatin. The exocrine pancreas (acinar cells) secretes digestive enzymes."},
+
+{id:78,topic:"Organ Systems",type:"mcq",
+ q:"In the <em>spleen</em>, the red pulp is primarily involved in:",
+ opts:["Immune response (T and B cells)","Filtering and removing old/damaged RBCs","Producing platelets","Hematopoiesis in adults"],
+ ans:1,
+ exp:"The <strong>red pulp</strong> (sinusoids + cords of Billroth) filters blood, removing old/damaged RBCs and recycling iron. The white pulp (periarteriolar lymphoid sheaths + follicles) mounts immune responses."},
+
+{id:79,topic:"Organ Systems",type:"mcq",
+ q:"The <em>Hassall's corpuscles</em> are a distinctive feature of which organ?",
+ opts:["Lymph node","Thymus","Spleen","Tonsil"],
+ ans:1,
+ exp:"<strong>Hassall's corpuscles</em> (thymic corpuscles) are whorled structures of keratinized epithelial reticular cells in the thymic medulla. They are unique to the <strong>thymus</strong> and are involved in T cell maturation."},
+
+{id:80,topic:"Organ Systems",type:"mcq",
+ q:"In the <em>testis</em>, which cells produce testosterone?",
+ opts:["Spermatogonia","Sertoli cells","Leydig cells (interstitial cells)","Spermatocytes"],
+ ans:2,
+ exp:"<strong>Leydig cells</strong> (interstitial cells) in the testicular interstitium produce testosterone under LH stimulation. Sertoli cells support spermatogenesis and are stimulated by FSH."},
+
+// ═══════════════════════════════════════════
+// TOPIC: GYNECOLOGICAL CYTOLOGY (PAP SMEAR)
+// ═══════════════════════════════════════════
+{id:81,topic:"Gynecological Cytology",type:"mcq",
+ q:"What is the primary specimen type collected for a Pap test (cervical cytology)?",
+ opts:["Sputum","Cervical/vaginal cells (exfoliated)","Tissue biopsy","Blood smear"],
+ ans:1,
+ exp:"A <strong>Pap test</strong> collects exfoliated cells from the transformation zone of the cervix (squamocolumnar junction). This is where most cervical neoplasias originate."},
+
+{id:82,topic:"Gynecological Cytology",type:"mcq",
+ q:"In the <em>Bethesda System</em>, what does 'ASC-US' stand for?",
+ opts:["Atypical Squamous Cells of Undetermined Significance","Adenocarcinoma Squamous Cells of Unknown Significance","Abnormal Squamous Cells of Uncertain Status","Atypical Stromal Cells of Undetermined Source"],
+ ans:0,
+ exp:"<strong>ASC-US</strong> (Atypical Squamous Cells of Undetermined Significance) is the most common abnormal Bethesda category. It means squamous cells show changes that exceed reactive but don't meet criteria for LSIL or HSIL."},
+
+{id:83,topic:"Gynecological Cytology",type:"mcq",
+ q:"Which Bethesda category represents <em>high-grade squamous intraepithelial lesion</em>?",
+ opts:["ASC-US","LSIL","HSIL","SCC"],
+ ans:2,
+ exp:"<strong>HSIL</strong> (High-grade Squamous Intraepithelial Lesion) corresponds to CIN 2/3 and carcinoma in situ. Cells show significant nuclear enlargement, irregular nuclear membranes, and increased N:C ratio compared to LSIL."},
+
+{id:84,topic:"Gynecological Cytology",type:"mcq",
+ q:"The transformation zone of the cervix is where:",
+ opts:["Only columnar cells are found","Most cervical neoplasias originate","Squamous metaplasia cannot occur","Only endocervical cells are present"],
+ ans:1,
+ exp:"The <strong>transformation zone</em> (squamocolumnar junction) is the area where columnar epithelium undergoes squamous metaplasia. Immature metaplastic cells are most susceptible to HPV infection and neoplastic transformation."},
+
+{id:85,topic:"Gynecological Cytology",type:"mcq",
+ q:"Which HPV types are most commonly associated with <em>high-grade cervical lesions</em>?",
+ opts:["HPV 6 and 11","HPV 16 and 18","HPV 1 and 2","HPV 31 and 33"],
+ ans:1,
+ exp:"<strong>HPV 16 and 18</strong> cause ~70% of cervical cancers. HPV 16 is associated with squamous cell carcinoma; HPV 18 with adenocarcinoma. Low-risk types (6, 11) cause genital warts but not cancer."},
+
+{id:86,topic:"Gynecological Cytology",type:"fill",
+ q:"The liquid-based cytology method used for Pap smears is commonly referred to as ___ or ___.",
+ ans:["ThinPrep","SurePath","liquid-based","LBC"],
+ exp:"<strong>ThinPrep</strong> (Hologic) and <strong>SurePath</strong> (BD) are the two main LBC systems. They reduce obscuring elements (blood, mucus, inflammation) and produce a more uniform cell distribution on the slide."},
+
+{id:87,topic:"Gynecological Cytology",type:"mcq",
+ q:"What is the Bethesda System's reporting category for <em>glandular cells</em> of undetermined significance?",
+ opts:["AGC-NOS","ASC-H","LSIL","HSIL"],
+ ans:0,
+ exp:"<strong>AGC-NOS</strong> (Atypical Glandular Cells - Not Otherwise Specified) is used when glandular cells show atypia that doesn't meet criteria for adenocarcinoma. Requires further workup (colposcopy, endocervical curettage)."},
+
+{id:88,topic:"Gynecological Cytology",type:"mcq",
+ q:"The recommended initial screening interval for cervical cytology (Pap test) for women aged 21-29 is:",
+ opts:["Annually","Every 2 years","Every 3 years","Every 5 years"],
+ ans:2,
+ exp:"For ages 21-29: <strong>cervical cytology alone every 3 years</strong>. For ages 30-65: cytology + HPV co-testing every 5 years, or cytology alone every 3 years. HPV testing is not recommended under age 30."},
+
+{id:89,topic:"Gynecological Cytology",type:"tf",
+ q:"True or False: In the Bethesda System, 'Negative for Intraepithelial Lesion or Malignancy' (NILM) means the smear is completely normal with no inflammatory cells.",
+ ans:false,
+ exp:"<strong>False.</strong> <strong>NILM</strong> means no intraepithelial lesion or malignancy is identified. The smear may still show inflammatory changes, reactive changes, or organisms — these are reported separately."},
+
+{id:90,topic:"Gynecological Cytology",type:"image",
+ q:"<span class='micro-icon'>🔎</span><em>Image Description:</em> Cervical cytology smear shows squamous cells with nuclear enlargement (3x intermediate cell nucleus), perinuclear halos, and slightly irregular nuclear membranes. No definite koilocytes seen. What is the most appropriate Bethesda classification?",
+ opts:["NILM","ASC-US","LSIL","HSIL"],
+ ans:2,
+ exp:"<strong>LSIL</strong> (Low-grade Squamous Intraepithelial Lesion) shows: nuclear enlargement (at least 3x intermediate cell), perinuclear clearing (koilocytosis), and nuclear irregularity. Corresponds to CIN 1 and HPV effect."},
+
+// ═══════════════════════════════════════════
+// TOPIC: NON-GYNECOLOGICAL CYTOLOGY
+// ═══════════════════════════════════════════
+{id:91,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"Which stain is commonly used for <em>respiratory cytology</em> specimens (sputum, bronchial washings)?",
+ opts:["Papanicolaou stain only","Giemsa (Diff-Quik) stain only","Both Papanicolaou and Giemsa stains","H&E stain"],
+ ans:2,
+ exp:"Both <strong>Papanicolaou</strong> (nuclear detail, transparency) and <strong>Giemsa/Diff-Quik</strong> (background, inflammation, rapid assessment) stains are used. Pap stain is preferred for screening; Giemsa for rapid on-site evaluation (ROSE)."},
+
+{id:92,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"The most common specimen type in non-gynecological cytology is:",
+ opts:["Urine cytology","Cerebrospinal fluid (CSF)","Fine needle aspiration (FNA)","Sputum cytology"],
+ ans:2,
+ exp:"<strong>FNA (Fine Needle Aspiration)</strong> is the most common non-gyn cytology specimen. It's a minimally invasive technique used to sample superficial and deep-seated masses under palpation or imaging guidance."},
+
+{id:93,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"In CSF cytology, which cells are <em>normally</em> present in low numbers?",
+ opts:["Malignant cells","Lymphocytes and monocytes","Neutrophils","Eosinophils"],
+ ans:1,
+ exp:"<strong>CSF normally contains少量 lymphocytes and monocytes</strong> (0-5 cells/μL). Increased lymphocytes suggest viral meningitis; increased neutrophils suggest bacterial meningitis; malignant cells suggest leptomeningeal metastasis."},
+
+{id:94,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"Urine cytology is most useful for detecting:",
+ opts:["Kidney stones","Transitional cell carcinoma (urothelial carcinoma)","Urinary tract infection","Glomerular disease"],
+ ans:1,
+ exp:"<strong>Urine cytology</strong> is most effective for detecting high-grade urothelial carcinoma (flat CIS and high-grade papillary tumors). Sensitivity is lower for low-grade tumors. First morning void is preferred specimen."},
+
+{id:95,topic:"Non-Gynecological Cytology",type:"fill",
+ q:"The rapid on-site evaluation (ROSE) technique used during FNA is typically performed with a ___ stain.",
+ ans:["Diff-Quik","Giemsa","Romanowsky","toluidine blue"],
+ exp:"<strong>Diff-Quik</strong> (modified Giemsa/Romanowsky) is used for ROSE because it stains in <1 minute, provides excellent cytoplasmic detail, and allows immediate assessment of specimen adequacy."},
+
+{id:96,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"What is the most common artifact seen in <em>sputum cytology</em> specimens?",
+ opts:["Drying artifact","Squamous metaplasia","Benign bronchial cells with atypia","Crushing artifact"],
+ ans:0,
+ exp:"<strong>Drying artifact</strong> is very common in sputum specimens due to delays in fixation. It causes nuclear enlargement and smudging that can mimic atypia. Proper fixation within seconds of collection is critical."},
+
+{id:97,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"In thyroid FNA, which Bethesda category indicates a <em>benign</em> result?",
+ opts:["Bethesda I","Bethesda II","Bethesda III","Bethesda IV"],
+ ans:1,
+ exp:"<strong>Bethesda II (Benign)</strong> is the most common result (~60-70%). Shows colloid, benign follicular cells, lymphocytes, orHurthle cells. Recommended clinical follow-up without surgery."},
+
+{id:98,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"The <em>Bethesda System for Reporting Thyroid Cytoplasmic</em> diagnostic categories range from:",
+ opts:["I to V","I to VI","I to VII","I to VIII"],
+ ans:1,
+ exp:"The thyroid Bethesda system has <strong>6 categories</strong> (I-VI): I=Nondiagnostic, II=Benign, III=AUS/FLUS, IV=Follicular Neoplasm, V=Suspicious for Malignancy, VI=Malignant."},
+
+{id:99,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"Which of the following is a feature of <em>malignant</em> cells in effusion cytology?",
+ opts:["Smooth nuclear membranes","Low N:C ratio","Three-dimensional clusters with nuclear molding","Regular chromatin pattern"],
+ ans:2,
+ exp:"<strong>Malignant cells in effusions</strong> show: 3D clusters, nuclear molding (cells conforming to each other's shape), irregular nuclear membranes, coarse chromatin, and high N:C ratio. Reactive mesothelial cells can mimic malignancy."},
+
+{id:100,topic:"Non-Gynecological Cytology",type:"mcq",
+ q:"Which body fluid specimen requires the <em>anticoagulant</em> heparin or EDTA to prevent clotting?",
+ opts:["Sputum","Urine","Pleural effusion (serous fluid)","CSF"],
+ ans:2,
+ exp:"<strong>Effusions (pleural, peritoneal, pericardial)</strong> must be collected into anticoagulant (heparin or EDTA) to prevent clotting, which would trap cells in fibrin and reduce diagnostic yield."},
+
+// ═══════════════════════════════════════════
+// TOPIC: FINE NEEDLE ASPIRATION (FNA)
+// ═══════════════════════════════════════════
+{id:101,topic:"FNA Technique",type:"mcq",
+ q:"The recommended needle gauge for FNA of <em>superficial masses</em> (thyroid, breast, lymph node) is:",
+ opts:["18-20 gauge","22-25 gauge","27-30 gauge","14-16 gauge"],
+ ans:1,
+ exp:"<strong>22-25 gauge needles</strong> are standard for superficial FNA. They provide adequate cell yield while minimizing trauma and bleeding. 25G is most common; larger gauges may cause excessive blood dilution."},
+
+{id:102,topic:"FNA Technique",type:"mcq",
+ q:"What is the <em>capillary (non-aspiration)</em> technique in FNA?",
+ opts:["Using a syringe to create suction","Using only the capillary action of the needle without suction","Using a large-bore needle","Injecting saline into the lesion"],
+ ans:1,
+ exp:"The <strong>capillary technique</strong> uses only the needle (no syringe) — the stylet is withdrawn and capillary action draws cells into the needle. This produces cleaner smears with less blood, especially for highly vascular lesions."},
+
+{id:103,topic:"FNA Technique",type:"mcq",
+ q:"What is the purpose of the <em>stylet</em> in FNA?",
+ opts:["To create suction","To prevent contamination of the needle lumen during insertion","To dilate the tissue","To inject fixative"],
+ ans:1,
+ exp:"The <strong>stylet</strong> prevents skin cells from contaminating the needle lumen during insertion. It's removed after the needle enters the lesion to allow cells to enter the lumen during aspiration."},
+
+{id:104,topic:"FNA Technique",type:"fill",
+ q:"The smearing technique where one slide is used to spread cells across another is called the ___ technique.",
+ ans:["pull","pull-apart","smear","spread"],
+ exp:"The <strong>pull (smear) technique</strong>: a drop of material is placed on one slide, a second slide is placed on top, and they're pulled apart horizontally. This creates a monolayer of cells ideal for evaluation."},
+
+{id:105,topic:"FNA Technique",type:"mcq",
+ q:"Why should FNA smears be <em>air-dried</em> (for Giemsa/Diff-Quik) rather than spray-fixed?",
+ opts:["Air-drying preserves better nuclear detail","Air-drying is required for Giemsa stain to work properly","Spray-fixation causes细胞shrinkage","Air-drying prevents artifacts"],
+ ans:1,
+ exp:"<strong>Giemsa/Diff-Quik stains require air-dried smears</strong>. Air-drying preserves the cells' natural state and allows the Romanowsky dyes to stain properly. Papanicolaou stain requires alcohol fixation (spray or immersion)."},
+
+{id:106,topic:"FNA Technique",type:"mcq",
+ q:"On-site adequacy assessment (ROSE) during FNA helps to:",
+ opts:["Diagnose the lesion definitively","Ensure sufficient diagnostic material is collected and guide further passes","Stain the slides permanently","Fix the specimen immediately"],
+ ans:1,
+ exp:"<strong>ROSE</strong> provides immediate feedback on specimen adequacy, reduces non-diagnostic rates, and can guide triage of material for ancillary studies (flow cytometry, cultures, molecular testing)."},
+
+{id:107,topic:"FNA Technique",type:"tf",
+ q:"True or False: FNA of the thyroid should be avoided in patients with suspected papillary thyroid carcinoma.",
+ ans:false,
+ exp:"<strong>False.</strong> FNA is the primary diagnostic tool for thyroid nodules. It's the standard of care for evaluating thyroid nodules >1cm, and smaller nodules if suspicious features are present."},
+
+{id:108,topic:"FNA Technique",type:"mcq",
+ q:"What is the most common complication of FNA of superficial masses?",
+ opts:["Infection","Hematoma (bleeding/bruising)","Nerve damage","Tumor seeding along needle track"],
+ ans:1,
+ exp:"<strong>Hematoma (bleeding/bruising)</strong> is the most common complication of superficial FNA. Serious complications are rare. Apply pressure for 5-10 minutes post-procedure. Infection is uncommon with proper aseptic technique."},
+
+{id:109,topic:"FNA Technique",type:"mcq",
+ q:"For <em>cell block</em> preparation from FNA material, the specimen is typically processed using:",
+ opts:["Smearing and air-drying only","Concentration (cytospin or sediment) and formalin fixation, then paraffin embedding","Direct alcohol fixation only","Freezing in liquid nitrogen"],
+ ans:1,
+ exp:"<strong>Cell blocks</strong> are made by concentrating cells (centrifuge, filters, or plasma thrombin clot), then processing like tissue (formalin fixation → paraffin embedding → sectioning). Allows special stains and IHC."},
+
+{id:110,topic:"FNA Technique",type:"mcq",
+ q:"When performing FNA of a <em>lymph node</em>, which area should be avoided if possible?",
+ opts:["The center of the node","Peripheral cortex (subcapsular sinus)","Areas of obvious necrosis","Both C and D"],
+ ans:3,
+ exp:"Avoid <strong>necrotic areas</strong> (non-diagnostic debris) and sample the <strong>peripheral/solid areas</strong> for best diagnostic yield. The subcapsular sinus is actually a good target for metastatic carcinoma."},
+
+// ═══════════════════════════════════════════
+// TOPIC: FIXATION IN CYTOLOGY
+// ═══════════════════════════════════════════
+{id:111,topic:"Cytology Fixation",type:"mcq",
+ q:"For <em>Papanicolaou staining</em>, cytology smears must be fixed in:",
+ opts:["10% NBF (formalin)","95% ethanol (alcohol)","Methanol","Acetone"],
+ ans:1,
+ exp:"<strong>95% ethanol</strong> is the standard fixative for Pap-stained cytology smears. It must be applied immediately (<seconds) to prevent air-drying artifact. Spray fixatives also contain alcohol."},
+
+{id:112,topic:"Cytology Fixation",type:"mcq",
+ q:"Why is <em>immediate fixation</em> critical for cytology smears?",
+ opts:["To prevent bacterial growth","To prevent air-drying artifact which distorts nuclear detail","To dissolve mucus","To remove blood"],
+ ans:1,
+ exp:"<strong>Air-drying artifact</strong> causes cells to flatten, nuclei to swell, and chromatin to smudge — destroying diagnostic features. For alcohol-fixed (Pap) smears, fixation within seconds of smearing is essential."},
+
+{id:113,topic:"Cytology Fixation",type:"mcq",
+ q:"Which fixative is used for <em>Giemsa/Diff-Quik</em> stained smears?",
+ opts:["95% ethanol spray","10% NBF","Air-drying (no fixative)","Methanol"],
+ ans:2,
+ exp:"<strong>Giemsa/Diff-Quik stains use air-dried smears</strong> — no fixative is used. The cells are simply allowed to air-dry before staining. This is different from Pap stain which requires alcohol fixation."},
+
+{id:114,topic:"Cytology Fixation",type:"fill",
+ q:"The term for the distortion caused by inadequate or delayed fixation of cytology specimens is called ___ artifact.",
+ ans:["air-drying","drying","fixation","air-dry"],
+ exp:"<strong>Air-drying artifact</strong> causes: nuclear enlargement, chromatin smudging, loss of nuclear detail, and cytoplasmic distortion. It's the most common pre-analytical error in cytology."},
+
+{id:115,topic:"Cytology Fixation",type:"tf",
+ q:"True or False: Spray fixatives contain 95% ethanol and should be applied from a distance of 6-12 inches to ensure even coverage.",
+ ans:true,
+ exp:"<strong>True.</strong> Spray fixatives (containing 95% ethanol) should be applied from 6-12 inches (15-30cm) to ensure even, fine droplet coverage without pooling or washing cells off the slide."},
+
+// ═══════════════════════════════════════════
+// TOPIC: QUALITY ASSURANCE
+// ═══════════════════════════════════════════
+{id:116,topic:"Quality Assurance",type:"mcq",
+ q:"What is the <em>primary goal</em> of quality assurance (QA) in the histology/cytology laboratory?",
+ opts:["To reduce costs","To ensure accurate and reliable diagnostic results","To increase throughput","To minimize staff workload"],
+ ans:1,
+ exp:"<strong>QA ensures accuracy and reliability</strong> of all laboratory results through systematic monitoring of pre-analytical, analytical, and post-analytical processes. Patient diagnosis and treatment depend on quality results."},
+
+{id:117,topic:"Quality Assurance",type:"mcq",
+ q:"The majority of laboratory errors occur in which phase?",
+ opts:["Analytical phase","Post-analytical phase","Pre-analytical phase","All phases equally"],
+ ans:2,
+ exp:"<strong>Pre-analytical errors</strong> account for ~60-70% of all laboratory errors: specimen collection, labeling, transport, fixation, processing. This is where the most improvement can be made."},
+
+{id:118,topic:"Quality Assurance",type:"mcq",
+ q:"What is a <em>critical (STAT) result</em> that requires immediate notification?",
+ opts:["Normal CBC results","A malignant FNA result","A result that could alter patient management if acted upon immediately","Any abnormal result"],
+ ans:2,
+ exp:"<strong>Critical/STAT results</strong> are those requiring immediate clinical action: unexpected malignant diagnoses, incompatible blood bank results, etc. Must be communicated to the clinician immediately per lab policy."},
+
+{id:119,topic:"Quality Assurance",type:"fill",
+ q:"The process of ensuring correct patient identification on specimens is called specimen ___.",
+ ans:["identification","labeling","verification","verification and labeling"],
+ exp:"<strong>Proper specimen identification/labeling</strong> is critical — mislabeled specimens are a leading cause of diagnostic errors. Use at least 2 patient identifiers and label at the bedside."},
+
+{id:120,topic:"Quality Assurance",type:"mcq",
+ q:"What is the purpose of running <em>positive and negative controls</em> with each IHC stain run?",
+ opts:["To save reagents","To verify the staining system is working correctly and specifically","To increase throughput","To reduce staining time"],
+ ans:1,
+ exp:"<strong>Controls verify</strong>: Positive control = system detects known positive tissue (sensitivity). Negative control = system doesn't stain non-reactive tissue (specificity). Both must perform correctly for results to be valid."},
+
+// ═══════════════════════════════════════════
+// TOPIC: CASE STUDIES
+// ═══════════════════════════════════════════
+{id:121,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> A 45-year-old woman presents with a thyroid nodule. FNA shows:<br>— Scant colloid<br>— Follicular cells arranged in syncytial fragments<br>— Nuclear grooves and intranuclear inclusions<br>— Orphan Annie eye nuclei (clearing)<br><br>What is the most likely diagnosis and Bethesda category?",
+ opts:["Benign colloid nodule — Bethesda II","Follicular neoplasm — Bethesda IV","Papillary thyroid carcinoma — Bethesda VI","Suspicious for malignancy — Bethesda V"],
+ ans:2,
+ exp:"<strong>Papillary thyroid carcinoma (Bethesda VI)</strong>: Classic features include nuclear grooves, intranuclear inclusions, orphan Annie eye nuclei (optically clear), and psammoma bodies. These nuclear features are pathognomonic."},
+
+{id:122,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> A 60-year-old smoker presents with a lung mass. Sputum cytology shows:<br>— Hypercellular specimen<br>— Malignant cells in 3D clusters with nuclear molding<br>— Scant cytoplasm, 'oat cell' morphology<br>— Nuclear molding and crush artifact<br><br>What is the most likely diagnosis?",
+ opts:["Adenocarcinoma of the lung","Squamous cell carcinoma","Small cell carcinoma (oat cell)","Large cell carcinoma"],
+ ans:2,
+ exp:"<strong>Small cell carcinoma</strong>: Classic cytology features include: 'oat cell' morphology, nuclear molding (nuclei conforming to each other), scant cytoplasm, crush artifact, and salt-and-pepper chromatin. Strong association with smoking."},
+
+{id:123,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> A 30-year-old woman has a breast lump. FNA shows:<br>— Highly cellular specimen<br>— Large, uniform cells with vacuolated cytoplasm<br>— Targetoid (bullseye) chromatin pattern<br>— Single cells and loose clusters<br><br>What is the most likely diagnosis?",
+ opts:["Fibroadenoma","Invasive ductal carcinoma","Invasive lobular carcinoma","Ductal carcinoma in situ (DCIS)"],
+ ans:2,
+ exp:"<strong>Invasive lobular carcinoma</strong>: Classic features include: single-file ('Indian file') arrangement, targetoid chromatin, vacuolated cytoplasm (signet ring-like), and loss of E-cadherin expression (IHC confirm)."},
+
+{id:124,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> Cervical cytology from a 25-year-old shows:<br>— Hyperchromatic nuclei (2x intermediate cell nucleus)<br>— Binucleation<br>— Perinuclear clearing (koilocytosis)<br>— Irregular nuclear membranes<br><br>What is the Bethesda classification?",
+ opts:["NILM","ASC-US","LSIL","HSIL"],
+ ans:2,
+ exp:"<strong>LSIL (Low-grade Squamous Intraepithelial Lesion)</strong>: Classic features: nuclear enlargement, perinuclear clearing (koilocytes), binucleation, and slight nuclear irregularity. Associated with HPV infection, often transient in young women."},
+
+{id:125,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> Pleural effusion cytology shows:<br>— Numerous lymphocytes<br>— Small clusters of cells with 'windows' between cells<br>— Mild nuclear atypia<br>— No definitive malignant features<br><br>What is the most likely diagnosis?",
+ opts:["Metastatic adenocarcinoma","Reactive mesothelial cells","Malignant mesothelioma","Lymphoma"],
+ ans:1,
+ exp:"<strong>Reactive mesothelial cells</strong>: Show 'windows' (intercellular spaces between mesothelial cells), mild atypia, and a background of lymphocytes. Must be distinguished from adenocarcinoma (which shows true 3D clusters and nuclear molding)."},
+
+{id:126,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> A patient on warfarin has a liver FNA that shows:<br>— Blood mixed with hepatocytes<br>— Many hemosiderin-laden macrophages<br>— No malignant cells<br>— Background of proteinaceous fluid<br><br>What special stain would confirm the brown pigment is hemosiderin?",
+ opts:["Fontana-Masson","Prussian Blue (Perls)","Von Kossa","Masson's Trichrome"],
+ ans:1,
+ exp:"<strong>Prussian Blue (Perls)</strong> stains hemosiderin (iron) bright blue. This confirms the brown pigment seen on H&E is iron (hemosiderin) rather than melanin (Fontana-Masson) or calcium (Von Kossa)."},
+
+{id:127,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> Thyroid FNA from a 55-year-old woman shows:<br>— Very cellular specimen<br>— Hurthle cells (large cells with abundant granular eosinophilic cytoplasm)<br>— Microfollicular arrangement<br>— Scant colloid<br><br>What is the most appropriate Bethesda category?",
+ opts:["Bethesda II (Benign)","Bethesda III (AUS/FLUS)","Bethesda IV (Follicular Neoplasm / Suspicious for Follicular Neoplasm)","Bethesda V (Suspicious for Malignancy)"],
+ ans:2,
+ exp:"<strong>Bethesda IV (Follicular Neoplasm)</strong>: Microfollicular pattern with Hurthle cells and scant colloid suggests a follicular neoplasm. Cytology cannot distinguish benign from malignant (invasion requires histology). Surgery recommended."},
+
+{id:128,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> A patient has a neck mass. FNA shows:<br>— Many lymphocytes and plasma cells<br>— Germinal center fragments<br>— No epithelial cells<br><br>What is the most likely diagnosis?",
+ opts:["Metastatic squamous cell carcinoma","Lymph node with reactive hyperplasia","Lymphoma","Thyroiditis"],
+ ans:1,
+ exp:"<strong>Reactive hyperplasia</strong>: Benign lymph node FNA shows mixed lymphoid cells (small and large lymphocytes), germinal center fragments, and no atypical/malignant features. Plasma cells and tingible body macrophages support reactive process."},
+
+{id:129,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> A 70-year-old has a prostate FNA showing:<br>— Small, uniform glands arranged in loose clusters<br>— Cells with clear to pale cytoplasm<br>— Prominent nucleoli<br>— Moderate nuclear enlargement<br><br>What is the most likely diagnosis?",
+ opts:["Benign prostatic hyperplasia (BPH)","Prostatic adenocarcinoma","Prostatitis","Normal prostate"],
+ ans:1,
+ exp:"<strong>Prostatic adenocarcinoma</strong>: Key features: prominent nucleoli (the most important diagnostic feature), nuclear enlargement, loss of basal cell layer, and arrangement in small glands/acini. BPH shows larger, more irregular glands with basal cells."},
+
+{id:130,topic:"Case Studies",type:"case",
+ q:"<strong>Clinical Scenario:</strong> CSF cytology from a patient with known breast cancer shows:<br>— Malignant cells in small clusters<br>— Nuclear molding<br>— High N:C ratio<br>— Coarse chromatin<br><br>What is the interpretation?",
+ opts:["Reactive lymphocytes","Benign choroid plexus cells","Leptomeningeal metastasis (carcinomatous meningitis)","Normal finding"],
+ ans:2,
+ exp:"<strong>Leptomeningeal metastasis</strong>: Malignant epithelial cells in CSF from a patient with known cancer = metastatic involvement of meninges. Requires urgent treatment. Choroid plexus cells have nuclear grooves but lack true malignancy features."},
+
+// ═══════════════════════════════════════════
+// TOPIC: LABORATORY PROCEDURES
+// ═══════════════════════════════════════════
+{id:131,topic:"Lab Procedures",type:"mcq",
+ q:"What is the correct order for <em>immersion oil</em> use with a microscope?",
+ opts:["Apply oil before switching to 40x objective","Apply oil only to the 100x (oil immersion) objective","Apply oil to any objective","Never use oil"],
+ ans:1,
+ exp:"<strong>Oil immersion (100x)</strong>: Place oil drop on slide, then rotate to 100x objective. Oil eliminates air gap (refractive index ~1.515, same as glass), increasing resolution. Always clean with xylene after use."},
+
+{id:132,topic:"Lab Procedures",type:"mcq",
+ q:"The total magnification of a microscope with 10x eyepiece and 40x objective is:",
+ opts:["40x","400x","4000x","4x"],
+ ans:1,
+ exp:"<strong>Total magnification = eyepiece × objective = 10 × 40 = 400×</strong>. Common combinations: 4x (scanning), 10x (low power), 40x (high dry), 100x (oil immersion)."},
+
+{id:133,topic:"Lab Procedures",type:"mcq",
+ q:"What is the purpose of the <em>condenser</em> on a microscope?",
+ opts:["To magnify the image further","To focus and concentrate light onto the specimen","To hold the slide in place","To project the image to the eyepiece"],
+ ans:1,
+ exp:"The <strong>condenser</strong> focuses and concentrates light from the illuminator onto the specimen. The iris diaphragm (part of condenser) controls the amount of light and affects resolution and contrast."},
+
+{id:134,topic:"Lab Procedures",type:"fill",
+ q:"The process of converting a fresh tissue specimen into a paraffin block ready for sectioning involves fixation, dehydration, ___, infiltration, and embedding.",
+ ans:["clearing"],
+ exp:"The complete processing sequence: <strong>Fixation → Dehydration (graded alcohols) → Clearing (xylene) → Infiltration (paraffin) → Embedding (molten wax)</strong>. Each step is essential for proper tissue preparation."},
+
+{id:135,topic:"Lab Procedures",type:"mcq",
+ q:"What is the recommended way to clean microscope lenses?",
+ opts:["Water and soap","Xylene followed by lens paper, then ethanol","Paper towels and window cleaner","Breathing on them and wiping with sleeve"],
+ ans:1,
+ exp:"<strong>Microscope lenses</strong>: For oil immersion — first clean with xylene on lens paper, then ethanol. For regular cleaning — lens cleaning solution and lens paper only. Never use tissues, paper towels, or clothing."},
+
+{id:136,topic:"Lab Procedures",type:"tf",
+ q:"True or False: The field diaphragm should be closed to approximately the field of view when setting up Köhler illumination.",
+ ans:true,
+ exp:"<strong>True.</strong> When setting up Köhler illumination: close field diaphragm → focus condenser → center field diaphragm → open until just outside field of view. This provides optimal, even illumination."},
+
+{id:137,topic:"Lab Procedures",type:"mcq",
+ q:"Which reagent is used to <em>decalcify</em> bone tissue before processing?",
+ opts:["Xylene","10% NBF","10% EDTA or nitric acid","95% ethanol"],
+ ans:2,
+ exp:"<strong>Decalcification</strong> removes calcium salts from bone using: EDTA (chelation, preserves antigens, slow) or acids (nitric acid, formic acid — faster but may affect staining). Verify completion with acid/alizarin red test."},
+
+{id:138,topic:"Lab Procedures",type:"mcq",
+ q:"What is the purpose of putting slides in a <em>60°C oven</em> before staining?",
+ opts:["To melt the paraffin wax completely","To improve stain penetration and adhesion of sections to slides","To sterilize the slides","To remove excess mounting medium"],
+ ans:1,
+ exp:"<strong>Baking slides at 60°C for 30-60 minutes</strong> before IHC or special stains improves section adhesion (prevents lifting) and can help with antigen retrieval. It's standard for IHC protocols."},
+
+{id:139,topic:"Lab Procedures",type:"mcq",
+ q:"When performing <em>Köhler illumination</em>, the first step is to:",
+ opts:["Close the field diaphragm","Focus on the specimen using the coarse focus","Center the condenser","Open the iris diaphragm fully"],
+ ans:0,
+ exp:"<strong>Köhler illumination</strong>: 1) Close field diaphragm → 2) Focus condenser until field diaphragm edges are sharp → 3) Center field diaphragm using condenser centering screws → 4) Open field diaphragm until just outside field of view."},
+
+{id:140,topic:"Lab Procedures",type:"mcq",
+ q:"What is the shelf life of a properly prepared H&E stained slide stored at room temperature?",
+ opts:["1-2 weeks","1-2 months","Indefinite (many years)","1 year"],
+ ans:2,
+ exp:"<strong>Properly H&E stained and mounted slides</strong> can last indefinitely (years to decades) when stored properly — away from light, at room temperature, in slide boxes. The permanent mounting medium (DPX) preserves the stain."},
+
+// ═══════════════════════════════════════════
+// TOPIC: REPORTING & DOCUMENTATION
+// ═══════════════════════════════════════════
+{id:141,topic:"Reporting",type:"mcq",
+ q:"What is the minimum information required on a histology/cytology report?",
+ opts:["Only the diagnosis","Patient ID, specimen type, diagnosis, and pathologist signature","Just the stain used","The slide number only"],
+ ans:1,
+ exp:"A complete report requires: <strong>patient identification, specimen type/site, clinical history, gross description (histology), microscopic description, diagnosis/interpretation, and pathologist signature</strong>."},
+
+{id:142,topic:"Reporting",type:"mcq",
+ q:"In the Bethesda System for cervical cytology, which component is <em>optional</em>?",
+ opts:["Specimen adequacy","Interpretation/result","General categorization","Clinical history"],
+ ans:2,
+ exp:"<strong>General categorization</strong> is optional in the Bethesda System. Required components: specimen type, adequacy, interpretation (NILM, ASC-US, etc.). Descriptive diagnosis is the core of the report."},
+
+{id:143,topic:"Reporting",type:"mcq",
+ q:"What does 'SCC' stand for in pathology reporting?",
+ opts:["Small Cell Carcinoma","Squamous Cell Carcinoma","Secondary Carcinoma","Simple Columnar Cells"],
+ ans:1,
+ exp:"<strong>SCC = Squamous Cell Carcinoma</strong>. The most common malignancy in many organs (skin, lung, cervix, esophagus). Characterized by keratinization (keratin pearls) and/or intercellular bridges."},
+
+{id:144,topic:"Reporting",type:"fill",
+ q:"The microscopic description of a cell's nucleus being disproportionately large relative to the cytoplasm is described as an increased ___:___ ratio.",
+ ans:["nuclear to cytoplasmic","N:C","N:C ratio","nuclear-cytoplasmic"],
+ exp:"The <strong>N:C (nuclear-to-cytoplasmic) ratio</strong> is a key diagnostic parameter. Increased N:C ratio is a hallmark of malignancy (small cells with large nuclei). Normal cells have N:C ratio of 1:4 to 1:6."},
+
+{id:145,topic:"Reporting",type:"mcq",
+ q:"What is the significance of <em>margins</em> in a surgical pathology report?",
+ opts:["They indicate the stain used","They indicate whether tumor extends to the edge of the excised tissue","They describe the size of the specimen","They indicate the number of slides examined"],
+ ans:1,
+ exp:"<strong>Surgical margins</strong> indicate if tumor reaches the cut edge of excision. Positive margins (tumor at edge) may require re-excision. Negative/clear margins (>1-2mm depending on tumor type) indicate complete excision."},
+
+// ═══════════════════════════════════════════
+// EXTRA HIGH-YIELD QUESTIONS
+// ═══════════════════════════════════════════
+{id:146,topic:"High Yield",type:"mcq",
+ q:"Which stain is used to demonstrate <em>mycobacteria</em> (acid-fast organisms) in tissue sections?",
+ opts:["Gram stain","Giemsa stain","Ziehl-Neelsen or Fite-Faraco stain","PAS stain"],
+ ans:2,
+ exp:"<strong>Ziehl-Neelsen</strong> (ZN) is used for mycobacteria in tissue sections and sputum. <strong>Fite-Faraco</strong> is a modified ZN that is gentler and preferred for tissue sections (preserves morphology better). Both stain AFB red."},
+
+{id:147,topic:"High Yield",type:"mcq",
+ q:"What is <em>metaplasia</em> give an example?",
+ opts:["Normal cell transformation to malignant","One mature cell type replacing another (e.g., Barrett's esophagus)","Cell death by apoptosis","Inflammation of tissue"],
+ ans:1,
+ exp:"<strong>Metaplasia</strong> = reversible change where one adult cell type replaces another. Example: <strong>Barrett's esophagus</strong> — squamous epithelium replaced by intestinal-type columnar epithelium due to chronic acid reflux."},
+
+{id:148,topic:"High Yield",type:"mcq",
+ q:"The <em>Papanicolaou stain</em> uses which hematoxylin variant?",
+ opts:["Mayer's hematoxylin","Harris hematoxylin","Gill's hematoxylin","All of the above are equivalent"],
+ ans:0,
+ exp:"The <strong>Pap stain uses Harris hematoxylin</strong> specifically formulated for cytology. It provides excellent nuclear detail. Mayer's is more commonly used for histology H&E. All are alum hematoxysins but formulations differ."},
+
+{id:149,topic:"High Yield",type:"mcq",
+ q:"In thyroid FNA, <em>psammoma bodies</em> are most commonly associated with:",
+ opts:["Hashimoto's thyroiditis","Papillary thyroid carcinoma","Follicular adenoma","Colloid goitre"],
+ ans:1,
+ exp:"<strong>Psammoma bodies</strong> (laminated calcifications) are strongly associated with papillary thyroid carcinoma (~40% of cases). Also seen in meningiomas, serous ovarian tumors, and meningiomas."},
+
+{id:150,topic:"High Yield",type:"mcq",
+ q:"Which IHC marker is used to identify <em>melanoma</em>?",
+ opts:["CK7","S100, SOX10, Melan-A, HMB-45","CD34","Desmin"],
+ ans:1,
+ exp:"<strong>Melanoma markers</strong>: <strong>S100</strong> (sensitive but not specific), <strong>SOX10</strong> (highly sensitive), <strong>Melan-A/MART-1</strong> and <strong>HMB-45</strong> (more specific). CK7 rules out carcinoma; CD34 rules out vascular tumors; Desmin rules out muscle tumors."}
+];
+
+const TOPICS = [...new Set(QUESTIONS.map(q=>q.topic))];
+const TOPIC_ICONS = {
+  "Tissue Processing":"🧫","Microtomy":"🔪","H&E Staining":"🎨","Special Stains":"🔬",
+  "Immunohistochemistry":"🧬","Cell Biology":"🦠","Tissue Types":"🫁","Organ Systems":"🫀",
+  "Gynecological Cytology":"🔬","Non-Gynecological Cytology":"🧫","FNA Technique":"💉",
+  "Cytology Fixation":"🧪","Quality Assurance":"✅","Case Studies":"📋","Lab Procedures":"⚙️",
+  "Reporting":"📝","High Yield":"⭐"
+};
+renderDashboard();
+</script>
+
+</body>
+</html>
