@@ -405,6 +405,7 @@ nav button.active{background:var(--accent);border-color:var(--accent);color:#fff
       <button class="sub-tab active" data-stab="res-files" onclick="showResTab('res-files')">📁 Files</button>
       <button class="sub-tab" data-stab="res-notes" onclick="showResTab('res-notes')">📝 Notes</button>
       <button class="sub-tab" data-stab="res-links" onclick="showResTab('res-links')">🔗 Links</button>
+      <button class="sub-tab" data-stab="res-study" onclick="showResTab('res-study')">📚 Study Resources</button>
     </div>
     <div id="res-files">
       <div class="resource-upload-area" id="resUploadArea">
@@ -428,6 +429,49 @@ nav button.active{background:var(--accent);border-color:var(--accent);color:#fff
         <button class="btn btn-sm" onclick="addResourceLink()">Add Link</button>
       </div>
       <div id="resLinkList"></div>
+    </div>
+    <div id="res-study" class="hidden">
+      <h4 style="margin-bottom:10px">📚 Michener & Exam Prep Resources</h4>
+      <div style="display:grid;gap:8px">
+        <div class="card" style="padding:12px">
+          <h4 style="margin-bottom:6px">🏥 Michener Institute</h4>
+          <a href="https://guides.hsict.library.utoronto.ca/cytology" target="_blank" style="color:var(--accent);font-size:.85rem">Michener Diagnostic Cytology LibGuide</a><br>
+          <a href="https://guides.hsict.library.utoronto.ca/michener-lrc/textbook-list" target="_blank" style="color:var(--accent);font-size:.85rem">Required Textbooks List</a><br>
+          <a href="https://michener.ca/programs-courses/diagnostic-cytology-program/" target="_blank" style="color:var(--accent);font-size:.85rem">Diagnostic Cytology Program Page</a>
+        </div>
+        <div class="card" style="padding:12px">
+          <h4 style="margin-bottom:6px">🔬 Cytology Atlases (Free)</h4>
+          <a href="https://cytologystuff.com/study/gyn-atlas-table-of-contents/introduction/" target="_blank" style="color:var(--accent);font-size:.85rem">CytologyStuff — GYN Atlas</a><br>
+          <a href="https://cytologystuff.com/study/non-gyn-atlas/" target="_blank" style="color:var(--accent);font-size:.85rem">CytologyStuff — Non-GYN Atlas</a><br>
+          <a href="https://cytologystuff.com/study/colloid-gallery-a-gallery-of-colloid/" target="_blank" style="color:var(--accent);font-size:.85rem">CytologyStuff — Colloid Gallery</a><br>
+          <a href="https://bethesda.soc.wisc.edu/" target="_blank" style="color:var(--accent);font-size:.85rem">NCI Bethesda System Web Atlas (300+ images)</a><br>
+          <a href="https://learn.mghpathology.org/index.php/WSI:cytology" target="_blank" style="color:var(--accent);font-size:.85rem">MGH Digital Study Set (1,329 slides)</a><br>
+          <a href="https://www.cytoatlas.com/" target="_blank" style="color:var(--accent);font-size:.85rem">CytoAtlas</a><br>
+          <a href="https://blog.nus.edu.sg/cytoweb/" target="_blank" style="color:var(--accent);font-size:.85rem">Cytoweb — NUS Practical Cytopathology</a>
+        </div>
+        <div class="card" style="padding:12px">
+          <h4 style="margin-bottom:6px">📝 Practice Exams</h4>
+          <a href="https://csmls.org/certification/preparing-for-and-taking-the-exam/practice-test-for-csmls-certification-exam/" target="_blank" style="color:var(--accent);font-size:.85rem">CSMLS Official Practice Test (210 MCQs)</a><br>
+          <a href="https://open-exam-prep.com/practice/ascp-ct" target="_blank" style="color:var(--accent);font-size:.85rem">OpenExamPrep — 100+ Free ASCP CT Questions</a><br>
+          <a href="https://pathologymcq.com/cytopathology-mcqs/" target="_blank" style="color:var(--accent);font-size:.85rem">PathologyMCQs — Cytopathology MCQs</a><br>
+          <a href="https://prep-mastery.com/exams/ascp_ct.html" target="_blank" style="color:var(--accent);font-size:.85rem">PrepMastery — 1,400 CT Questions</a>
+        </div>
+        <div class="card" style="padding:12px">
+          <h4 style="margin-bottom:6px">📖 Key Textbooks</h4>
+          <p style="font-size:.82rem;color:var(--muted);margin:0">• <strong>Bethesda System</strong> — Nayar & Wilbur (eBook via LRC)</p>
+          <p style="font-size:.82rem;color:var(--muted);margin:0">• <strong>Cytopathology Review</strong> — Fan & Damjanov</p>
+          <p style="font-size:.82rem;color:var(--muted);margin:0">• <strong>Cytopathology Review Guide</strong> — Holladay (gold standard)</p>
+          <p style="font-size:.82rem;color:var(--muted);margin:0">• <strong>Cytopreparation</strong> — Gary W. Gill</p>
+          <p style="font-size:.82rem;color:var(--muted);margin:0">• <strong>Atlas of Thyroid Cytopathology</strong> — Westra et al.</p>
+        </div>
+        <div class="card" style="padding:12px">
+          <h4 style="margin-bottom:6px">🔗 Professional Bodies</h4>
+          <a href="https://cytopathology.ca/" target="_blank" style="color:var(--accent);font-size:.85rem">Canadian Society of Cytopathology</a><br>
+          <a href="https://csmls.org/" target="_blank" style="color:var(--accent);font-size:.85rem">CSMLS</a><br>
+          <a href="https://www.ascp.org/" target="_blank" style="color:var(--accent);font-size:.85rem">ASCP (US)</a><br>
+          <a href="https://www.mlpao.org/education-resources" target="_blank" style="color:var(--accent);font-size:.85rem">MLPAO — Study Package & MCQs</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -473,16 +517,29 @@ nav button.active{background:var(--accent);border-color:var(--accent);color:#fff
     </div>
     <div class="io-area">
       <h4>📥 Import</h4>
+      <div class="resource-upload-area" id="bulkUploadArea" style="margin-bottom:12px">
+        <span class="upload-icon">📂</span>
+        <span style="color:var(--muted);font-size:.85rem">Drop files or folders here (JSON, CSV, TXT, MD, TSV, RemNote, Anki)</span>
+        <input type="file" id="bulkFileInput" multiple accept=".json,.csv,.txt,.md,.tsv" style="display:none">
+      </div>
+      <div id="bulkUploadStatus" style="font-size:.78rem;color:var(--muted);margin-bottom:8px"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
-        <input type="file" id="importFile" accept=".json,.csv,.txt,.md,.tsv" style="display:none" onchange="handleImportFile(event)">
-        <button class="btn btn-sm" onclick="document.getElementById('importFile').click()">📂 Choose File (JSON/CSV/TXT)</button>
+        <button class="btn btn-sm" onclick="document.getElementById('bulkFileInput').click()">📂 Choose Files</button>
+        <button class="btn btn-sm btn-outline" onclick="document.getElementById('bulkFileInput').click();document.getElementById('bulkFileInput').setAttribute('webkitdirectory','')">📁 Upload Folder</button>
         <button class="btn btn-sm btn-outline" onclick="importDefaultBank()">♻️ Restore Default Bank</button>
       </div>
-      <p style="font-size:.72rem;color:var(--muted);margin-bottom:6px">
-        Supported: JSON (full backup or questions array), CSV (with headers: id,topic,type,question,optionA-D,answer,explanation), Anki TXT/TSV (question;answer;topic)
-      </p>
-      <textarea id="importText" placeholder="Paste JSON, CSV, or Anki data here..."></textarea>
-      <button class="btn btn-sm" style="margin-top:6px" onclick="importFromText()">Import from Text</button>
+      <details style="margin-top:8px">
+        <summary style="cursor:pointer;color:var(--muted);font-size:.78rem">Supported formats & paste import</summary>
+        <p style="font-size:.72rem;color:var(--muted);margin:6px 0">
+          <strong>RemNote:</strong> Export as JSON → drop above<br>
+          <strong>Anki:</strong> Export as .txt (tab-separated) → drop above<br>
+          <strong>CSV:</strong> Headers: id,topic,type,question,optionA,optionB,optionC,optionD,answer,explanation<br>
+          <strong>JSON:</strong> Array of objects with q, opts, ans, exp fields<br>
+          <strong>Markdown:</strong> Questions separated by --- with ## Q: and ## A: headers
+        </p>
+        <textarea id="importText" placeholder="Or paste JSON, CSV, Anki, or RemNote data here..." style="margin-top:6px"></textarea>
+        <button class="btn btn-sm" style="margin-top:6px" onclick="importFromText()">Import from Text</button>
+      </details>
     </div>
     <div class="io-area">
       <h4>☁️ WebDAV Sync (Nextcloud)</h4>
@@ -1276,26 +1333,26 @@ const QUESTIONS = [
  opts:["Connective tissue","Muscle tissue","Epithelial tissue","Nervous tissue"],
  ans:2,
  exp:"<strong>Epithelial tissue</strong> is characterized by: closely packed cells with apical-basal polarity, attached to a basement membrane, avascular."},
-{id:62,topic:"Tissue Types",type:"mcq",
+{id:62,img:"https://cytologystuff.com/gallery/images/slide0351.jpg",topic:"Tissue Types",type:"mcq",
  q:"Simple squamous epithelium is found in which location?",
  opts:["Skin epidermis","Kidney glomeruli and alveoli","Trachea","Esophagus"],
  ans:1,
  exp:"<strong>Simple squamous epithelium</strong> lines surfaces requiring rapid diffusion/filtration: alveoli, glomeruli, blood vessels (endothelium), and serous membranes."},
-{id:63,topic:"Tissue Types",type:"mcq",
+{id:63,img:"https://cytologystuff.com/gallery/images/slide0354.jpg",topic:"Tissue Types",type:"mcq",
  q:"Which connective tissue fiber type provides <em>tensile strength</em>?",
  opts:["Elastic fibers","Reticulin fibers","Collagen fibers","Ground substance"],
  ans:2,
  exp:"<strong>Collagen fibers</strong> (Type I) provide tensile strength and resist stretching. Found in bone, tendon, and dermis."},
-{id:64,topic:"Tissue Types",type:"mcq",
+{id:64,img:"https://cytologystuff.com/gallery/images/slide0355.jpg",topic:"Tissue Types",type:"mcq",
  q:"Hyaline cartilage is characterized by:",
  opts:["Visible collagen fibers in matrix","Type II collagen with glassy, amorphous matrix","Abundant elastic fibers","Calcified matrix throughout"],
  ans:1,
  exp:"<strong>Hyaline cartilage</strong> has a glassy matrix containing Type II collagen and proteoglycans."},
-{id:65,topic:"Tissue Types",type:"fill",
+{id:65,img:"https://cytologystuff.com/gallery/images/slide0357.jpg",topic:"Tissue Types",type:"fill",
  q:"The specialized junctional complex that forms the 'spot welds' between cells, providing strong mechanical adhesion, is called a(n) ___.",
  ans:["desmosome","macula adherens","desmosomes"],
  exp:"<strong>Desmosomes (macula adherens)</strong> provide strong cell-cell adhesion through cadherin proteins."},
-{id:66,topic:"Tissue Types",type:"mcq",
+{id:66,img:"https://cytologystuff.com/gallery/images/slide0358.jpg",topic:"Tissue Types",type:"mcq",
  q:"Which of the following is a characteristic of <em>dense regular connective tissue</em>?",
  opts:["Randomly arranged fibers","Parallel collagen fibers with fibroblasts between","Abundant ground substance","Many elastic fibers"],
  ans:1,
@@ -1349,37 +1406,37 @@ const QUESTIONS = [
  q:"The functional unit of the <em>kidney</em> responsible for filtration, reabsorption, and secretion is the ___.",
  ans:["nephron","renal nephron"],
  exp:"The <strong>nephron</strong> (~1 million per kidney) consists of renal corpuscle + renal tubule (PCT, Loop of Henle, DCT, collecting duct)."},
-{id:77,topic:"Organ Systems",type:"mcq",
+{id:77,img:"https://cytologystuff.com/gallery/images/slide1001.jpg",topic:"Organ Systems",type:"mcq",
  q:"The <em>islets of Langerhans</em> in the pancreas secrete:",
  opts:["Digestive enzymes","Insulin and glucagon (hormones)","Bile","Mucus"],
  ans:1,
  exp:"<strong>Islets of Langerhans</strong>: Beta cells = insulin, Alpha cells = glucagon, Delta cells = somatostatin."},
-{id:78,topic:"Organ Systems",type:"mcq",
+{id:78,img:"https://cytologystuff.com/gallery/images/slide1004.jpg",topic:"Organ Systems",type:"mcq",
  q:"In the <em>spleen</em>, the red pulp is primarily involved in:",
  opts:["Immune response","Filtering and removing old/damaged RBCs","Producing platelets","Hematopoiesis in adults"],
  ans:1,
  exp:"The <strong>red pulp</strong> (sinusoids + cords of Billroth) filters blood, removing old/damaged RBCs and recycling iron."},
-{id:79,topic:"Organ Systems",type:"mcq",
+{id:79,img:"https://cytologystuff.com/gallery/images/slide1005.jpg",topic:"Organ Systems",type:"mcq",
  q:"The <em>Hassall's corpuscles</em> are a distinctive feature of which organ?",
  opts:["Lymph node","Thymus","Spleen","Tonsil"],
  ans:1,
  exp:"<strong>Hassall's corpuscles</strong> are whorled structures of keratinized epithelial reticular cells in the thymic medulla."},
-{id:80,topic:"Organ Systems",type:"mcq",
+{id:80,img:"https://cytologystuff.com/gallery/images/slide1014.jpg",topic:"Organ Systems",type:"mcq",
  q:"In the <em>testis</em>, which cells produce testosterone?",
  opts:["Spermatogonia","Sertoli cells","Leydig cells (interstitial cells)","Spermatocytes"],
  ans:2,
  exp:"<strong>Leydig cells</strong> in the testicular interstitium produce testosterone under LH stimulation."},
-{id:81,topic:"Gynecological Cytology",type:"mcq",
+{id:81,img:"https://cytologystuff.com/gallery/images/slide1047.jpg",topic:"Gynecological Cytology",type:"mcq",
  q:"What is the primary specimen type collected for a Pap test (cervical cytology)?",
  opts:["Sputum","Cervical/vaginal cells (exfoliated)","Tissue biopsy","Blood smear"],
  ans:1,
  exp:"A <strong>Pap test</strong> collects exfoliated cells from the transformation zone of the cervix (squamocolumnar junction)."},
-{id:82,topic:"Gynecological Cytology",type:"mcq",
+{id:82,img:"https://cytologystuff.com/gallery/images/slide1025.jpg",topic:"Gynecological Cytology",type:"mcq",
  q:"In the <em>Bethesda System</em>, what does 'ASC-US' stand for?",
  opts:["Atypical Squamous Cells of Undetermined Significance","Adenocarcinoma Squamous Cells of Unknown Significance","Abnormal Squamous Cells of Uncertain Status","Atypical Stromal Cells of Undetermined Source"],
  ans:0,
  exp:"<strong>ASC-US</strong> (Atypical Squamous Cells of Undetermined Significance) is the most common abnormal Bethesda category."},
-{id:83,topic:"Gynecological Cytology",type:"mcq",
+{id:83,img:"https://cytologystuff.com/gallery/images/slide1035.jpg",topic:"Gynecological Cytology",type:"mcq",
  q:"Which Bethesda category represents <em>high-grade squamous intraepithelial lesion</em>?",
  opts:["ASC-US","LSIL","HSIL","SCC"],
  ans:2,
@@ -1437,26 +1494,26 @@ const QUESTIONS = [
  opts:["Kidney stones","Transitional cell carcinoma (urothelial carcinoma)","Urinary tract infection","Glomerular disease"],
  ans:1,
  exp:"<strong>Urine cytology</strong> is most effective for detecting high-grade urothelial carcinoma."},
-{id:95,topic:"Non-Gynecological Cytology",type:"fill",
+{id:95,img:"https://cytologystuff.com/gallery/images/slide0042.jpg",topic:"Non-Gynecological Cytology",type:"fill",
  q:"The rapid on-site evaluation (ROSE) technique used during FNA is typically performed with a ___ stain.",
  ans:["Diff-Quik","Giemsa","Romanowsky","toluidine blue"],
  exp:"<strong>Diff-Quik</strong> (modified Giemsa/Romanowsky) is used for ROSE because it stains in <1 minute."},
-{id:96,topic:"Non-Gynecological Cytology",type:"mcq",
+{id:96,img:"https://cytologystuff.com/gallery/images/slide0046.jpg",topic:"Non-Gynecological Cytology",type:"mcq",
  q:"What is the most common artifact seen in <em>sputum cytology</em> specimens?",
  opts:["Drying artifact","Squamous metaplasia","Benign bronchial cells with atypia","Crushing artifact"],
  ans:0,
  exp:"<strong>Drying artifact</strong> is very common in sputum due to delays in fixation. Causes nuclear enlargement and smudging."},
-{id:97,topic:"Non-Gynecological Cytology",type:"mcq",
+{id:97,img:"https://cytologystuff.com/gallery/images/slide0033.jpg",topic:"Non-Gynecological Cytology",type:"mcq",
  q:"In thyroid FNA, which Bethesda category indicates a <em>benign</em> result?",
  opts:["Bethesda I","Bethesda II","Bethesda III","Bethesda IV"],
  ans:1,
  exp:"<strong>Bethesda II (Benign)</strong> is the most common result (~60-70%)."},
-{id:98,topic:"Non-Gynecological Cytology",type:"mcq",
+{id:98,img:"https://cytologystuff.com/gallery/images/slide0044.jpg",topic:"Non-Gynecological Cytology",type:"mcq",
  q:"The Bethesda System for Reporting Thyroid Cytopathology diagnostic categories range from:",
  opts:["I to V","I to VI","I to VII","I to VIII"],
  ans:1,
  exp:"The thyroid Bethesda system has <strong>6 categories</strong> (I-VI)."},
-{id:99,topic:"Non-Gynecological Cytology",type:"mcq",
+{id:99,img:"https://cytologystuff.com/gallery/images/slide0036.jpg",topic:"Non-Gynecological Cytology",type:"mcq",
  q:"Which of the following is a feature of <em>malignant</em> cells in effusion cytology?",
  opts:["Smooth nuclear membranes","Low N:C ratio","Three-dimensional clusters with nuclear molding","Regular chromatin pattern"],
  ans:2,
@@ -1698,12 +1755,12 @@ const QUESTIONS = [
  opts:["Mayer's hematoxylin","Harris hematoxylin","Gill's hematoxylin","All are equivalent"],
  ans:0,
  exp:"The <strong>Pap stain uses Harris hematoxylin</strong> specifically formulated for cytology."},
-{id:149,topic:"High Yield",type:"mcq",
+{id:149,img:"https://cytologystuff.com/gallery/images/slide0372.jpg",topic:"High Yield",type:"mcq",
  q:"In thyroid FNA, <em>psammoma bodies</em> are most commonly associated with:",
  opts:["Hashimoto's thyroiditis","Papillary thyroid carcinoma","Follicular adenoma","Colloid goitre"],
  ans:1,
  exp:"<strong>Psammoma bodies</strong> (laminated calcifications) are strongly associated with papillary thyroid carcinoma."},
-{id:150,topic:"High Yield",type:"mcq",
+{id:150,img:"https://cytologystuff.com/gallery/images/slide0370.jpg",topic:"High Yield",type:"mcq",
  q:"Which IHC marker is used to identify <em>melanoma</em>?",
  opts:["CK7","S100, SOX10, Melan-A, HMB-45","CD34","Desmin"],
  ans:1,
@@ -2600,31 +2657,240 @@ function downloadFile(content, filename, mimeType) {
   URL.revokeObjectURL(url);
 }
 
-function handleImportFile(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const content = e.target.result;
-    const ext = file.name.split('.').pop().toLowerCase();
+// ═══════════════════════════════════════════════════════════
+// BULK FILE UPLOADER + REMNOTE / ANKI / MULTI-FORMAT
+// ═══════════════════════════════════════════════════════════
+function initBulkUpload() {
+  const area = document.getElementById('bulkUploadArea');
+  const input = document.getElementById('bulkFileInput');
+  if (!area || !input) return;
+  area.addEventListener('click', () => input.click());
+  area.addEventListener('dragover', e => { e.preventDefault(); area.style.borderColor = 'var(--accent)'; });
+  area.addEventListener('dragleave', () => { area.style.borderColor = ''; });
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.style.borderColor = '';
+    handleBulkFiles(e.dataTransfer.files);
+  });
+  input.addEventListener('change', e => { handleBulkFiles(e.target.files); e.target.value = ''; });
+}
+
+async function handleBulkFiles(fileList) {
+  const status = document.getElementById('bulkUploadStatus');
+  if (!fileList.length) return;
+  status.textContent = `Processing ${fileList.length} file(s)...`;
+  let totalImported = 0;
+  let totalSkipped = 0;
+  const errors = [];
+
+  for (const file of fileList) {
     try {
-      if (ext === 'json') {
-        await importJSON(content);
-      } else if (ext === 'csv') {
-        importCSV(content);
-      } else if (ext === 'md') {
-        alert('Markdown import is read-only. Use JSON or CSV to import question data.');
-      } else {
-        // Try auto-detect
-        if (content.trim().startsWith('[') || content.trim().startsWith('{')) await importJSON(content);
-        else if (content.includes(',"') || content.includes(',"')) importCSV(content);
-        else alert('Unrecognized format. Use JSON or CSV.');
-      }
-    } catch(err) {
-      alert('Import error: ' + err.message);
+      const content = await file.text();
+      const ext = file.name.split('.').pop().toLowerCase();
+      const result = await importAutoDetect(content, ext, file.name);
+      totalImported += result.imported;
+      totalSkipped += result.skipped;
+    } catch(e) {
+      errors.push(`${file.name}: ${e.message}`);
     }
-  };
-  reader.readAsText(file);
+  }
+
+  let msg = `Done! Imported ${totalImported} questions.`;
+  if (totalSkipped) msg += ` ${totalSkipped} duplicates skipped.`;
+  if (errors.length) msg += `\n\nErrors:\n${errors.join('\n')}`;
+  status.textContent = msg;
+  renderDashboard();
+}
+
+async function importAutoDetect(content, ext, filename) {
+  // Try JSON first
+  if (ext === 'json' || content.trim().startsWith('[') || content.trim().startsWith('{')) {
+    return await importSmartJSON(content, filename);
+  }
+  // Try RemNote (often .txt or .json)
+  if (content.includes('"remnoteId"') || content.includes('"type":"rem"') || content.includes('"children"')) {
+    return importRemNote(content);
+  }
+  // Try Anki (tab-separated)
+  if (ext === 'txt' || ext === 'tsv' || content.includes('\t')) {
+    return importAnki(content);
+  }
+  // Try CSV
+  if (ext === 'csv' || content.includes(',')) {
+    importCSV(content);
+    return { imported: 0, skipped: 0 };
+  }
+  // Try Markdown
+  if (ext === 'md' || content.includes('## Q:') || content.includes('## A:')) {
+    return importMarkdown(content);
+  }
+  throw new Error('Unrecognized format');
+}
+
+async function importSmartJSON(content, filename) {
+  const data = JSON.parse(content);
+  let imported = 0, skipped = 0;
+
+  // RemNote format detection
+  if (data.rems && Array.isArray(data.rems)) {
+    return importRemNote(JSON.stringify(data));
+  }
+  // RemNote array of cards
+  if (Array.isArray(data) && data[0] && (data[0].remnoteId || data[0].back || data[0].children)) {
+    return importRemNote(content);
+  }
+  // Full backup
+  if (data.questions && Array.isArray(data.questions)) {
+    for (const q of data.questions) {
+      const existing = QUESTIONS.find(x => x.id === q.id);
+      if (existing) { skipped++; continue; }
+      QUESTIONS.push(q);
+      imported++;
+    }
+    if (data.history) appState.history = data.history;
+    if (data.stats) Object.assign(appState, data.stats);
+    for (const q of data.questions) {
+      if (q.sm2) await dbSet('cards', { id: q.id, ...q.sm2, topic: q.topic });
+    }
+    return { imported, skipped };
+  }
+  // Questions array
+  if (Array.isArray(data)) {
+    for (const q of data) {
+      if (!q.q && !q.question) continue;
+      const normalized = normalizeQuestion(q);
+      const existing = QUESTIONS.find(x => x.id === normalized.id);
+      if (existing) { skipped++; continue; }
+      QUESTIONS.push(normalized);
+      imported++;
+    }
+    return { imported, skipped };
+  }
+  throw new Error('Unrecognized JSON structure');
+}
+
+function normalizeQuestion(q) {
+  // Normalize various formats to our schema
+  if (q.q && q.ans !== undefined) return q; // already normalized
+  const question = q.q || q.question || q.front || q.prompt || '';
+  let opts = q.opts || q.options || null;
+  const answer = q.ans !== undefined ? q.ans : q.answer || q.back || 0;
+  const exp = q.exp || q.explanation || q.hint || '';
+  const topic = q.topic || q.category || q.tag || 'Imported';
+  const type = q.type || 'mcq';
+  const id = q.id || Math.max(1, ...QUESTIONS.map(x => x.id)) + 1;
+
+  // Parse "A) text B) text" format
+  if (!opts && typeof question === 'string') {
+    const optMatch = question.match(/A\)[\s\S]*?D\)[^\n]*/);
+    if (optMatch) {
+      const parts = optMatch[0].split(/[A-D]\)/g).filter(Boolean);
+      opts = parts.map(p => p.trim());
+    }
+  }
+
+  return { id, topic, type, q: question, opts: opts || undefined, ans: answer, exp };
+}
+
+function importRemNote(content) {
+  let imported = 0, skipped = 0;
+  let data;
+  try { data = JSON.parse(content); } catch(e) { throw new Error('Invalid RemNote JSON'); }
+
+  // RemNote export format: { rems: [{ id, type, back, children, ... }] }
+  const rems = data.rems || (Array.isArray(data) ? data : []);
+
+  function processRem(rem) {
+    if (!rem) return;
+    const front = rem.front || rem.name || rem.title || '';
+    const back = rem.back || rem.content || rem.description || '';
+    const tags = rem.tags || rem.taggedWith || [];
+    const topic = Array.isArray(tags) ? (tags[0] || 'RemNote Import') : 'RemNote Import';
+
+    if (front && back) {
+      const id = Math.max(1000, ...QUESTIONS.map(x => x.id)) + imported + 1;
+      const q = {
+        id,
+        topic,
+        type: 'mcq',
+        q: front.replace(/<[^>]*>/g, ''),
+        ans: back.replace(/<[^>]*>/g, ''),
+        exp: ''
+      };
+      // Check for options in back (A) B) C) D))
+      const optMatch = q.ans.match(/^([A-D]\)[\s\S]*?)(?:\n\n|$)/);
+      if (optMatch) {
+        const parts = optMatch[1].split(/[A-D]\)/g).filter(Boolean);
+        if (parts.length >= 2) {
+          q.opts = parts.map(p => p.trim());
+          q.ans = 0;
+        }
+      }
+      const existing = QUESTIONS.find(x => x.id === id);
+      if (!existing) { QUESTIONS.push(q); imported++; }
+      else skipped++;
+    }
+    // Process children recursively
+    if (rem.children && Array.isArray(rem.children)) {
+      rem.children.forEach(cid => {
+        const child = rems.find(r => r.id === cid);
+        if (child) processRem(child);
+      });
+    }
+  }
+
+  if (Array.isArray(rems)) {
+    rems.filter(r => r && (r.type === 'card' || r.type === 'rem' || r.back)).forEach(processRem);
+  }
+
+  alert(`RemNote: Imported ${imported} cards, ${skipped} duplicates skipped.`);
+  return { imported, skipped };
+}
+
+function importAnki(content) {
+  let imported = 0, skipped = 0;
+  const lines = content.split('\n').filter(l => l.trim());
+  for (const line of lines) {
+    const parts = line.split('\t');
+    if (parts.length < 2) continue;
+    const qText = parts[0].replace(/<[^>]*>/g, '').trim();
+    const ansText = parts[1].replace(/<[^>]*>/g, '').trim();
+    const topic = parts[2] ? parts[2].trim() : 'Anki Import';
+    if (!qText || !ansText) continue;
+    const id = Math.max(1000, ...QUESTIONS.map(x => x.id)) + imported + 1;
+    const q = { id, topic, type: 'mcq', q: qText, ans: ansText, exp: '' };
+    const existing = QUESTIONS.find(x => x.q === qText);
+    if (!existing) { QUESTIONS.push(q); imported++; }
+    else skipped++;
+  }
+  alert(`Anki: Imported ${imported} cards, ${skipped} duplicates.`);
+  return { imported, skipped };
+}
+
+function importMarkdown(content) {
+  let imported = 0, skipped = 0;
+  const blocks = content.split(/---+/);
+  for (const block of blocks) {
+    const qMatch = block.match(/##\s*Q[:\s]*(.*?)(?=##\s*A:|$)/s);
+    const aMatch = block.match(/##\s*A[:\s]*(.*)/s);
+    if (qMatch && aMatch) {
+      const qText = qMatch[1].trim().replace(/<[^>]*>/g, '');
+      const aText = aMatch[1].trim().replace(/<[^>]*>/g, '');
+      if (!qText) continue;
+      const id = Math.max(1000, ...QUESTIONS.map(x => x.id)) + imported + 1;
+      const q = { id, topic: 'Markdown Import', type: 'mcq', q: qText, ans: aText, exp: '' };
+      const existing = QUESTIONS.find(x => x.q === qText);
+      if (!existing) { QUESTIONS.push(q); imported++; }
+      else skipped++;
+    }
+  }
+  alert(`Markdown: Imported ${imported} questions, ${skipped} duplicates.`);
+  return { imported, skipped };
+}
+
+function handleImportFile(event) {
+  handleBulkFiles(event.target.files);
+  event.target.value = '';
 }
 
 async function importJSON(content) {
@@ -3076,6 +3342,7 @@ if ('serviceWorker' in navigator) {
 
   renderDashboard();
   checkAiKey();
+  initBulkUpload();
 })();
 </script>
 </body>
