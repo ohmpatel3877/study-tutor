@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AcademyGraph Test</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0f0f13;font-family:'Segoe UI',system-ui,sans-serif;display:flex;flex-direction:column;height:100vh}
+  #toolbar{background:#1a1a24;border-bottom:1px solid #2a2a40;padding:10px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  #toolbar button{background:#22223a;border:1px solid #2a2a40;color:#e2e2ef;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:12px}
+  #toolbar button:hover{background:#7c5cfc;color:#fff}
+  #toolbar span{color:#8888aa;font-size:11px;margin-left:auto}
+  #graph-container{flex:1;overflow:hidden}
+  #status{color:#22c55e}
+</style>
+</head>
+<body>
+<div id="toolbar">
+  <button onclick="window.g.fitToScreen()">⟷ Fit</button>
+  <button onclick="window.g.zoomIn()">＋ Zoom In</button>
+  <button onclick="window.g.zoomOut()">− Zoom Out</button>
+  <button onclick="window.g.resetView()">⟲ Reset</button>
+  <button onclick="window.g.clearHighlight()">✕ Clear</button>
+  <button onclick="testPulse()">⚡ Pulse</button>
+  <span id="status">● Ready</span>
+</div>
+<div id="graph-container"></div>
+
+<script src="academy-graph.js"></script>
+<script>
+  const container = document.getElementById('graph-container');
+  const graph = renderAcademyGraph(container);
+  window.g = graph;
+
+  graph.onNodeClick(function(id) {
+    document.getElementById('status').textContent = '● Clicked: ' + (graph.getNodePosition(id) ? id : '?');
+  });
+
+  graph.onNodeHover(function(id) {
+    if (id) {
+      graph.highlightNode(id);
+      document.getElementById('status').textContent = '● Hovering: ' + id;
+    }
+  });
+
+  // Load from buttons after fit
+  setTimeout(() => graph.fitToScreen(), 500);
+
+  function testPulse() {
+    const edges = graph.exportData().edges;
+    if (edges.length > 0) {
+      const e = edges[Math.floor(Math.random() * edges.length)];
+      graph.pulseConnection(e.source_id, e.target_id, 12);
+      document.getElementById('status').textContent = '⚡ Pulse: ' + e.source_id + ' → ' + e.target_id;
+    }
+  }
+
+  // Test dynamic add
+  setTimeout(() => {
+    graph.addNode({ id: 'test-node', label: 'Test Node', type: 'topic', domain: 'Testing', importance: 0.5, color: '#f472b6' });
+    graph.addEdge({ source_id: 'tutor-orchestrator', target_id: 'test-node', strength: 0.6, label: 'tests', type: 'connects' });
+  }, 2000);
+</script>
+</body>
+</html>

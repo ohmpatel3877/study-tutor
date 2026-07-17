@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tutor Academy — Congregation Hub</title>
+<script src="academy-data.js"></script>
+<script src="academy-graph.js"></script>
+<style>
+:root{--bg:#0f0f13;--card:#1a1a24;--card2:#22223a;--accent:#7c5cfc;--accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--yellow:#eab308;--text:#e2e2ef;--muted:#8888aa;--border:#2a2a40;--radius:12px;--radius-sm:8px}
+body.theme-coffee{--bg:#1a120b;--card:#2c1e12;--card2:#3b2a1a;--accent:#c08b5c;--accent2:#d4a574;--text:#f0e6da;--muted:#a08872;--border:#4a3828}
+body.theme-forest{--bg:#0f1a12;--card:#1a2e1e;--card2:#243b28;--accent:#5cb87a;--accent2:#7cd49a;--text:#e2f0e6;--muted:#72a088;--border:#2a4032}
+body.theme-ocean{--bg:#0b1520;--card:#122535;--card2:#1a3348;--accent:#4a9cc7;--accent2:#6bb8e0;--text:#dce8f0;--muted:#7298b0;--border:#284058}
+body.theme-sunset{--bg:#1a0f0b;--card:#2e1a12;--card2:#3b2418;--accent:#d47a3c;--accent2:#e89a5c;--text:#f0e2d4;--muted:#a08272;--border:#483020}
+body.theme-lavender{--bg:#14101a;--card:#221a2e;--card2:#2e2440;--accent:#9a7ac7;--accent2:#b898e0;--text:#eae2f0;--muted:#9282a8;--border:#382848}
+body.theme-slate{--bg:#111318;--card:#1c1f28;--card2:#262a36;--accent:#7a8aa0;--accent2:#98a8bc;--text:#e0e4ec;--muted:#788090;--border:#343a4a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px}
+.topbar .logo{font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:8px}
+.topbar .logo-small{font-size:.7rem;color:var(--muted);-webkit-text-fill-color:var(--muted);background:none;font-weight:400;margin-left:2px}
+.mem0-status{display:flex;align-items:center;gap:6px;font-size:.72rem;color:var(--muted);padding:4px 12px;border-radius:20px;background:var(--card2);border:1px solid var(--border)}
+.mem0-dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);transition:background .4s}
+.mem0-dot.connected{background:var(--green)}
+.mem0-dot.disconnected{background:var(--red)}
+.theme-selector{display:flex;gap:4px;align-items:center}
+.theme-dot{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s;padding:0}
+.theme-dot:hover{transform:scale(1.2)}
+.theme-dot.active{border-color:var(--text);box-shadow:0 0 8px rgba(255,255,255,.2)}
+
+nav{display:flex;gap:4px;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:nowrap}
+nav button{background:var(--card2);border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:.8rem;transition:all .2s;white-space:nowrap}
+nav button:hover{border-color:var(--accent);color:var(--text)}
+nav button.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+
+.main{max-width:1200px;margin:0 auto;padding:16px;width:100%}
+.hidden{display:none!important}
+
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes particleTrail{0%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(60px) scale(0)}}
+
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.dash-card h3{color:var(--accent2);margin-bottom:12px;font-size:.95rem;font-weight:600}
+.dash-card p{color:var(--muted);font-size:.85rem;line-height:1.5}
+.glass-card{background:rgba(26,26,36,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.stat-box{background:var(--card2);border-radius:10px;padding:14px;text-align:center}
+.stat-box .num{font-size:1.8rem;font-weight:700;color:var(--accent);line-height:1.2}
+.stat-box .lbl{font-size:.7rem;color:var(--muted);margin-top:2px}
+.stat-box .sub{font-size:.65rem;color:var(--muted);margin-top:1px}
+
+.btn{background:var(--accent);color:#fff;border:none;padding:9px 20px;border-radius:var(--radius-sm);cursor:pointer;font-weight:600;font-size:.85rem;transition:all .2s}
+.btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.btn-outline:hover{background:var(--accent);color:#fff}
+.btn-sm{padding:5px 12px;font-size:.78rem}
+.btn-green{background:var(--green)}.btn-green:hover{background:#16a34a}
+.btn-red{background:var(--red)}.btn-red:hover{background:#dc2626}
+.btn-yellow{background:var(--yellow);color:#000}.btn-yellow:hover{background:#d97706;color:#fff}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+.badge-high{background:#ef444422;color:var(--red)}
+.badge-medium{background:#eab30822;color:var(--yellow)}
+.badge-low{background:#22c55e22;color:var(--green)}
+.badge-bridge{background:#7c5cfc33;color:var(--accent2)}
+.badge-tutor{padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600;background:var(--accent);color:#fff}
+
+.activity-feed{max-height:300px;overflow-y:auto}
+.activity-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.82rem;animation:slideUp .3s}
+.activity-item:last-child{border-bottom:none}
+.activity-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;flex-shrink:0}
+.activity-body{flex:1}
+.activity-time{font-size:.65rem;color:var(--muted);margin-top:2px}
+
+.graph-tab-layout{display:flex;height:calc(100vh - 110px);gap:0;margin:-16px}
+.graph-main{flex:1;position:relative;overflow:hidden;min-width:0}
+.graph-sidebar{width:320px;background:var(--card);border-left:1px solid var(--border);padding:16px;overflow-y:auto;flex-shrink:0;display:none}
+.graph-sidebar.open{display:block}
+.graph-controls{position:absolute;bottom:16px;left:16px;display:flex;gap:6px;z-index:10}
+.graph-controls button{width:34px;height:34px;background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s}
+.graph-controls button:hover{background:var(--accent);color:#fff}
+.graph-picker{position:absolute;top:16px;right:16px;z-index:10;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;width:240px}
+.graph-picker h4{font-size:.78rem;color:var(--muted);margin-bottom:6px}
+.graph-picker select{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);padding:5px 8px;border-radius:6px;font-size:.8rem;margin-bottom:6px}
+.graph-picker .pollinate-result{margin-top:8px;font-size:.78rem;color:var(--muted);padding:8px;background:var(--card2);border-radius:6px;display:none}
+
+.sidebar-node-info{text-align:center;padding:8px 0}
+.sidebar-node-info .node-color-dot{width:24px;height:24px;border-radius:50%;margin:0 auto 8px}
+.sidebar-node-info .node-label{font-weight:700;font-size:1rem;margin-bottom:2px}
+.sidebar-node-info .node-type{font-size:.72rem;color:var(--muted)}
+.sidebar-node-info .node-connections{margin-top:12px;text-align:left}
+.sidebar-node-info .conn-item{display:flex;justify-content:space-between;padding:4px 0;font-size:.78rem;border-bottom:1px solid var(--border)}
+.sidebar-node-info .conn-item:last-child{border-bottom:none}
+
+.insights-controls{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.insights-controls label{font-size:.78rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.observation-group{margin-bottom:20px}
+.observation-group h4{font-size:.85rem;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.observation-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.observation-card:hover{border-color:var(--accent)}
+.observation-card.expanded{background:var(--card);border-color:var(--accent)}
+.observation-card .obs-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px}
+.observation-card .obs-topic{font-weight:600;font-size:.85rem}
+.observation-card .obs-text{font-size:.8rem;color:var(--muted);line-height:1.4}
+.observation-card .obs-meta{font-size:.7rem;color:var(--muted);margin-top:4px}
+.observation-card .obs-details{display:none;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.observation-card.expanded .obs-details{display:block}
+.observation-card .obs-details .rel-item{font-size:.78rem;padding:6px 8px;background:var(--card2);border-radius:6px;margin-bottom:4px;border-left:3px solid var(--accent)}
+.observation-card .obs-details .insight-text{font-size:.8rem;color:var(--accent2);padding:8px;background:rgba(124,92,252,.1);border-radius:6px;margin-top:6px}
+
+.congregation-section{margin-bottom:24px}
+.congregation-section h3{font-size:.95rem;color:var(--accent2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.cluster-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.cluster-card{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;transition:all .2s}
+.cluster-card:hover{border-color:var(--accent)}
+.cluster-card .cluster-name{font-weight:600;font-size:.85rem;margin-bottom:4px;color:var(--accent2)}
+.cluster-card .cluster-count{font-size:.72rem;color:var(--muted);margin-bottom:6px}
+.cluster-card .cluster-items{font-size:.75rem;color:var(--muted);line-height:1.4}
+.gap-card{background:var(--card2);border:1px solid var(--border);border-left:3px solid var(--yellow);border-radius:var(--radius-sm);padding:14px;margin-bottom:8px;transition:all .2s}
+.gap-card:hover{border-color:var(--yellow)}
+.gap-card .gap-title{font-weight:600;font-size:.85rem;margin-bottom:4px}
+.gap-card .gap-desc{font-size:.78rem;color:var(--muted);margin-bottom:8px}
+.gap-card .gap-domains{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.gap-card .gap-domains span{background:var(--card);padding:2px 8px;border-radius:6px;font-size:.65rem;color:var(--accent2)}
+
+.settings-section{margin-bottom:20px}
+.settings-section h3{font-size:.9rem;color:var(--accent2);margin-bottom:10px}
+.settings-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.settings-row label{display:flex;flex-direction:column;gap:3px;font-size:.78rem;color:var(--muted);flex:1;min-width:160px}
+.settings-row input,.settings-row select{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.85rem}
+.settings-row textarea{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:7px 10px;border-radius:6px;font-size:.8rem;width:100%;min-height:120px;font-family:'Courier New',monospace;resize:vertical}
+
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--border)}
+.timeline-item{position:relative;padding:10px 0 10px 16px;font-size:.82rem;animation:slideUp .3s}
+.timeline-item::before{content:'';position:absolute;left:-20px;top:14px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
+.timeline-item .tl-date{font-size:.68rem;color:var(--muted)}
+.timeline-item .tl-title{font-weight:600;margin:2px 0}
+.timeline-item .tl-detail{font-size:.78rem;color:var(--muted)}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 20px;font-size:.85rem;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.5);animation:slideUp .3s;max-width:360px}
+.toast.success{border-left:3px solid var(--green)}
+.toast.error{border-left:3px solid var(--red)}
+.toast.info{border-left:3px solid var(--accent)}
+
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:9998;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;max-width:440px;width:90%;box-shadow:0 16px 48px rgba(0,0,0,.6)}
+.modal-box h3{color:var(--accent2);margin-bottom:8px}
+.modal-box p{color:var(--muted);font-size:.85rem;margin-bottom:16px;line-height:1.5}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}
+
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+@media(max-width:768px){
+  .topbar{padding:8px 12px}
+  .topbar .logo{font-size:.95rem}
+  .graph-tab-layout{flex-direction:column;height:auto}
+  .graph-sidebar{width:100%;border-left:none;border-top:1px solid var(--border)}
+  .graph-sidebar.open{display:block}
+  .graph-main{height:60vh}
+  .graph-picker{position:relative;top:auto;right:auto;width:100%;margin-bottom:8px}
+  .graph-controls{bottom:8px;left:8px}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .cluster-grid{grid-template-columns:1fr}
+  nav{padding:6px 8px}
+  nav button{font-size:.72rem;padding:5px 10px}
+}
+
+@media(max-width:480px){
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .main{padding:10px}
+  .dash-card{padding:14px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Tutor Academy <span class="logo-small">Congregation Hub</span></div>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="theme-selector">
+      <button class="theme-dot" data-theme="default" style="background:linear-gradient(135deg,#7c5cfc,#a78bfa)" title="Default Purple"></button>
+      <button class="theme-dot" data-theme="coffee" style="background:linear-gradient(135deg,#c08b5c,#d4a574)" title="Coffee"></button>
+      <button class="theme-dot" data-theme="forest" style="background:linear-gradient(135deg,#5cb87a,#7cd49a)" title="Forest"></button>
+      <button class="theme-dot" data-theme="ocean" style="background:linear-gradient(135deg,#4a9cc7,#6bb8e0)" title="Ocean"></button>
+      <button class="theme-dot" data-theme="sunset" style="background:linear-gradient(135deg,#d47a3c,#e89a5c)" title="Sunset"></button>
+      <button class="theme-dot" data-theme="lavender" style="background:linear-gradient(135deg,#9a7ac7,#b898e0)" title="Lavender"></button>
+      <button class="theme-dot" data-theme="slate" style="background:linear-gradient(135deg,#7a8aa0,#98a8bc)" title="Slate"></button>
+    </div>
+    <div class="mem0-status" id="mem0Status" title="Mem0 Connection Status">
+      <span class="mem0-dot" id="mem0Dot"></span>
+      <span id="mem0Label">mem0 checking...</span>
+    </div>
+  </div>
+</div>
+
+<nav>
+  <button class="active" data-tab="dashboard">Dashboard</button>
+  <button data-tab="graph">Tutor Graph</button>
+  <button data-tab="insights">Insights</button>
+  <button data-tab="congregation">Congregation</button>
+  <button data-tab="settings">Settings</button>
+</nav>
+
+<div class="main">
+
+<!-- ════ DASHBOARD ════ -->
+<div id="tab-dashboard" class="fade-in">
+  <div class="dash-card">
+    <div class="stat-grid">
+      <div class="stat-box"><div class="num" id="statTutors">6</div><div class="lbl">Registered Tutors</div></div>
+      <div class="stat-box"><div class="num" id="statObservations">8</div><div class="lbl">Active Observations</div></div>
+      <div class="stat-box"><div class="num" id="statCrossLinks">12</div><div class="lbl">Cross-Pollination Links</div></div>
+      <div class="stat-box"><div class="num" id="statCongregations">0</div><div class="lbl">Congregation Cycles</div></div>
+    </div>
+  </div>
+
+  <div class="dash-card">
+    <h3>Academy Health</h3>
+    <div id="academyHealth"></div>
+  </div>
+
+  <div class="dash-card">
+    <h3>Quick Actions</h3>
+    <div class="btn-group">
+      <button class="btn" onclick="runCrossPollination()">Run Cross-Pollination</button>
+      <button class="btn btn-yellow" onclick="runCongregation()">Run Congregation</button>
+    </div>
+  </div>
+
+  <div class="dash-card">
+    <h3>Activity Feed</h3>
+    <div class="activity-feed" id="activityFeed"><p style="color:var(--muted);font-size:.85rem">No recent activity.</p></div>
+  </div>
+</div>
+
+<!-- ════ TUTOR GRAPH ════ -->
+<div id="tab-graph" class="hidden">
+  <div class="graph-tab-layout">
+    <div class="graph-main" id="graphContainer">
+      <div class="graph-controls">
+        <button onclick="window._graph?.zoomIn()" title="Zoom In">+</button>
+        <button onclick="window._graph?.zoomOut()" title="Zoom Out">−</button>
+        <button onclick="window._graph?.fitToScreen()" title="Fit to Screen">⟷</button>
+        <button onclick="window._graph?.resetView()" title="Reset View">⟲</button>
+        <button onclick="graphClearSelection()" title="Clear Selection">✕</button>
+      </div>
+      <div class="graph-picker" id="graphPicker">
+        <h4>Cross-Pollination</h4>
+        <select id="cpSubjectA"><option value="">Select subject A...</option></select>
+        <select id="cpSubjectB"><option value="">Select subject B...</option></select>
+        <button class="btn btn-sm" onclick="doCrossPollinate()" style="width:100%;margin-top:4px">Pollinate</button>
+        <div class="pollinate-result" id="cpResult"></div>
+      </div>
+    </div>
+    <div class="graph-sidebar" id="graphSidebar">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 style="color:var(--accent2);font-size:.9rem">Node Details</h3>
+        <button class="btn btn-sm btn-outline" onclick="graphClearSelection()">Close</button>
+      </div>
+      <div id="sidebarContent">
+        <p style="color:var(--muted);font-size:.8rem">Click a node to see details, or double-click to pin it in place.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ INSIGHTS ════ -->
+<div id="tab-insights" class="hidden fade-in">
+  <div class="dash-card">
+    <h3>Observations Tracker</h3>
+    <div class="insights-controls">
+      <label><input type="checkbox" id="groupByDomain" onchange="renderInsights()"> Group by Domain</label>
+      <span style="color:var(--muted);font-size:.75rem;margin-left:auto" id="obsCount">8 observations</span>
+    </div>
+    <div id="insightsContent"></div>
+  </div>
+</div>
+
+<!-- ════ CONGREGATION ════ -->
+<div id="tab-congregation" class="hidden fade-in">
+  <div class="dash-card">
+    <h3>Curriculum Synthesis</h3>
+    <p style="margin-bottom:12px">Congregation clusters observations into curriculum insights, surfacing cross-domain patterns and gaps.</p>
+    <button class="btn btn-yellow btn-sm" onclick="runCongregation()">Run Congregation</button>
+  </div>
+
+  <div class="congregation-section">
+    <h3>Curriculum Clusters</h3>
+    <div class="cluster-grid" id="curriculumClusters"><p style="color:var(--muted);font-size:.85rem">Run congregation to generate clusters.</p></div>
+  </div>
+
+  <div class="congregation-section">
+    <h3>Cross-Domain Patterns</h3>
+    <div id="crossDomainPatterns"><p style="color:var(--muted);font-size:.85rem">Run congregation to identify patterns.</p></div>
+  </div>
+
+  <div class="congregation-section">
+    <h3>Curriculum Gaps</h3>
+    <div id="curriculumGaps"><p style="color:var(--muted);font-size:.85rem">Run congregation to detect gaps.</p></div>
+  </div>
+
+  <div class="dash-card">
+    <h3>Congregation Timeline</h3>
+    <div class="timeline" id="congregationTimeline">
+      <p style="color:var(--muted);font-size:.85rem">No congregation events yet.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SETTINGS ════ -->
+<div id="tab-settings" class="hidden fade-in">
+  <div class="dash-card settings-section">
+    <h3>Academy Identity</h3>
+    <div class="settings-row">
+      <label>Academy Name
+        <input type="text" id="academyName" value="Tutor Academy">
+      </label>
+      <label>Theme
+        <select id="settingsTheme" onchange="applyTheme(this.value)">
+          <option value="default">Default Purple</option>
+          <option value="coffee">Coffee</option>
+          <option value="forest">Forest</option>
+          <option value="ocean">Ocean</option>
+          <option value="sunset">Sunset</option>
+          <option value="lavender">Lavender</option>
+          <option value="slate">Slate</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn btn-sm" onclick="saveAcademyName()">Save Name</button>
+  </div>
+
+  <div class="dash-card settings-section">
+    <h3>Mem0 Connection</h3>
+    <div class="settings-row">
+      <label>Endpoint URL
+        <input type="text" id="mem0Endpoint" placeholder="http://localhost:8080">
+      </label>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-sm" onclick="checkMem0Connection()">Check Connection</button>
+      <button class="btn btn-sm btn-outline" onclick="saveMem0Settings()">Save</button>
+    </div>
+    <div id="mem0Detail" style="margin-top:8px;font-size:.78rem;color:var(--muted)"></div>
+  </div>
+
+  <div class="dash-card settings-section">
+    <h3>Export / Import</h3>
+    <p style="margin-bottom:10px">Export all academy data (observations, congregation history, settings) as JSON.</p>
+    <div class="btn-group">
+      <button class="btn btn-sm" onclick="exportAcademyData()">Export JSON</button>
+      <button class="btn btn-sm btn-outline" onclick="document.getElementById('importDataInput').click()">Import JSON</button>
+      <input type="file" id="importDataInput" accept=".json" style="display:none" onchange="importAcademyData(event)">
+    </div>
+  </div>
+
+  <div class="dash-card settings-section">
+    <h3>Danger Zone</h3>
+    <p style="margin-bottom:10px">Reset will erase all congregation history and activity logs. Observations and tutor data remain intact.</p>
+    <button class="btn btn-red btn-sm" onclick="confirmReset()">Reset Academy Data</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+
+// ═══════════════════════════════════════
+// ACADEMY ENGINE (In-browser CreativityEngine)
+// ═══════════════════════════════════════
+
+class AcademyEngine {
+
+  constructor() {
+    this.bridges = CROSS_POLLINATION_EDGES || [];
+    this.observations = OBSERVATIONS || [];
+    this.tutors = ACADEMY_TUTORS || [];
+    this.subjects = ALL_SUBJECTS || [];
+  }
+
+  crossPollinate(query, domains) {
+    if (!query || !domains || domains.length < 2) {
+      return { found: false, results: [], message: 'Provide at least 2 domains to cross-pollinate.' };
+    }
+
+    const results = [];
+    for (let i = 0; i < domains.length; i++) {
+      for (let j = i + 1; j < domains.length; j++) {
+        const a = domains[i], b = domains[j];
+        const direct = this.bridges.find(e =>
+          (e.source === a && e.target === b) || (e.source === b && e.target === a)
+        );
+        if (direct) {
+          results.push({
+            source: a, target: b,
+            strength: direct.strength,
+            insight: direct.insight,
+            path: [a, b],
+            type: 'direct'
+          });
+          continue;
+        }
+        const viaBridge = this.bridges.find(e => e.source === a || e.target === a);
+        if (viaBridge) {
+          const via = viaBridge.source === a ? viaBridge.target : viaBridge.source;
+          const second = this.bridges.find(e =>
+            (e.source === via && e.target === b) || (e.target === via && e.source === b)
+          );
+          if (second) {
+            results.push({
+              source: a, target: b,
+              strength: Math.round((viaBridge.strength + second.strength) / 2 * 100) / 100,
+              insight: `Connected via ${via}: "${viaBridge.insight}" → "${second.insight}"`,
+              path: [a, via, b],
+              type: 'bridged'
+            });
+          }
+        }
+      }
+    }
+
+    results.sort((a, b) => b.strength - a.strength);
+
+    return {
+      found: results.length > 0,
+      query,
+      results,
+      message: results.length
+        ? `Found ${results.length} cross-pollination connection(s).`
+        : 'No cross-pollination connections found between these domains.'
+    };
+  }
+
+  synthesize(observations, domainFocus) {
+    const obs = observations || this.observations;
+    if (!obs.length) {
+      return { clusters: [], patterns: [], gaps: [], message: 'No observations to synthesize.' };
+    }
+
+    const clusters = this._clusterObservations(obs);
+    const patterns = this._findCrossDomainPatterns(obs, clusters);
+    const gaps = this._findCurriculumGaps(obs, clusters, patterns);
+
+    return {
+      clusters,
+      patterns,
+      gaps,
+      observationCount: obs.length,
+      clusterCount: clusters.length,
+      patternCount: patterns.length,
+      gapCount: gaps.length,
+      generatedAt: new Date().toISOString()
+    };
+  }
+
+  _clusterObservations(obs) {
+    const keywords = obs.map(o => {
+      const words = (o.observation + ' ' + (o.topic || '')).toLowerCase()
+        .replace(/[^a-z\s]/g, '').split(/\s+/).filter(w => w.length > 3);
+      return { id: o.id, words: [...new Set(words)], observation: o };
+    });
+
+    const clusters = [];
+    const assigned = new Set();
+
+    for (let i = 0; i < keywords.length; i++) {
+      if (assigned.has(i)) continue;
+      const cluster = { id: `cluster-${clusters.length + 1}`, items: [keywords[i].observation], name: '', commonWords: [] };
+      assigned.add(i);
+      for (let j = i + 1; j < keywords.length; j++) {
+        if (assigned.has(j)) continue;
+        const overlap = keywords[i].words.filter(w => keywords[j].words.includes(w));
+        if (overlap.length >= 2) {
+          cluster.items.push(keywords[j].observation);
+          assigned.add(j);
+          cluster.commonWords = overlap.slice(0, 3);
+        }
+      }
+      if (cluster.items.length > 1) {
+        const topWord = cluster.commonWords[0] || '';
+        cluster.name = topWord
+          ? cluster.items.map(o => o.topic || '').filter(Boolean).join(' + ')
+          : `Cluster ${clusters.length + 1}`;
+        clusters.push(cluster);
+      }
+    }
+
+    const unclustered = obs.filter((_, i) => !assigned.has(i));
+    for (const o of unclustered) {
+      clusters.push({
+        id: `cluster-${clusters.length + 1}`,
+        items: [o],
+        name: o.topic || 'Solo',
+        commonWords: [],
+        singleton: true
+      });
+    }
+
+    return clusters;
+  }
+
+  _findCrossDomainPatterns(obs, clusters) {
+    const patterns = [];
+
+    for (const cluster of clusters) {
+      if (cluster.items.length < 2) continue;
+      const domains = [...new Set(cluster.items.map(o => o.subject || '').filter(Boolean))];
+      const tutors = [...new Set(cluster.items.map(o => o.tutor || '').filter(Boolean))];
+      if (domains.length > 1) {
+        patterns.push({
+          name: `Cross-Domain: ${domains.join(' ↔ ')}`,
+          domains,
+          tutors,
+          observationCount: cluster.items.length,
+          insight: `Students struggle with similar concepts across ${domains.join(' and ')}, suggesting a foundational concept is missing from the curriculum.`,
+          items: cluster.items.map(o => ({ topic: o.topic, subject: o.subject }))
+        });
+      }
+    }
+
+    return patterns;
+  }
+
+  _findCurriculumGaps(obs, clusters, patterns) {
+    const gaps = [];
+    const domainPairs = new Map();
+
+    for (const o of obs) {
+      if (o.cross_domain_relevance && o.cross_domain_relevance.length) {
+        for (const rel of o.cross_domain_relevance) {
+          if (o.subject === rel) continue;
+          const key = [o.subject, rel].sort().join('::');
+          if (!domainPairs.has(key)) {
+            domainPairs.set(key, { a: o.subject, b: rel, observations: [], tutors: new Set() });
+          }
+          const entry = domainPairs.get(key);
+          entry.observations.push(o);
+          entry.tutors.add(o.tutor);
+        }
+      }
+    }
+
+    for (const [, entry] of domainPairs) {
+      if (entry.observations.length >= 1) {
+        const hasBridge = this.bridges.some(e =>
+          (e.source === entry.a && e.target === entry.b) || (e.source === entry.b && e.target === entry.a)
+        );
+        gaps.push({
+          title: `${entry.a} ↔ ${entry.b}`,
+          description: hasBridge
+            ? `Existing bridge concept could be strengthened — ${entry.observations.length} observation(s) span these domains.`
+            : `No curriculum bridge exists between ${entry.a} and ${entry.b}, yet ${entry.observations.length} observation(s) indicate a cross-domain learning gap.`,
+          domains: [entry.a, entry.b],
+          observationCount: entry.observations.length,
+          tutors: [...entry.tutors],
+          hasBridge,
+          bridgeTopic: hasBridge ? null : `Bridging ${entry.a} & ${entry.b}`
+        });
+      }
+    }
+
+    return gaps;
+  }
+}
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+
+const STORAGE_KEY = 'tutor-academy-state';
+const ACTIVITY_KEY = 'tutor-academy-activity';
+const CONGREGATIONS_KEY = 'tutor-academy-congregations';
+
+let academyState = loadState();
+let engine = new AcademyEngine();
+let academyGraphInstance = null;
+let congregationData = null;
+
+function defaultState() {
+  return {
+    academyName: 'Tutor Academy',
+    theme: localStorage.getItem('st_theme') || 'default',
+    mem0Endpoint: '',
+    congregationCount: 0
+  };
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return { ...defaultState(), ...parsed };
+    }
+  } catch (e) {}
+  return defaultState();
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(academyState));
+  } catch (e) {}
+}
+
+function getActivityFeed() {
+  try {
+    const raw = localStorage.getItem(ACTIVITY_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+
+function addActivity(type, summary, detail) {
+  const feed = getActivityFeed();
+  feed.unshift({
+    type,
+    summary,
+    detail: detail || '',
+    timestamp: new Date().toISOString()
+  });
+  if (feed.length > 100) feed.length = 100;
+  try { localStorage.setItem(ACTIVITY_KEY, JSON.stringify(feed)); } catch (e) {}
+  renderActivityFeed();
+}
+
+function getCongregationHistory() {
+  try {
+    const raw = localStorage.getItem(CONGREGATIONS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) { return []; }
+}
+
+function addCongregationEvent(data) {
+  const history = getCongregationHistory();
+  history.unshift({
+    ...data,
+    timestamp: new Date().toISOString()
+  });
+  if (history.length > 50) history.length = 50;
+  try { localStorage.setItem(CONGREGATIONS_KEY, JSON.stringify(history)); } catch (e) {}
+  academyState.congregationCount = history.length;
+  saveState();
+  updateStats();
+}
+
+// ═══════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════
+
+function applyTheme(t) {
+  academyState.theme = t;
+  document.body.className = t === 'default' ? '' : `theme-${t}`;
+  document.querySelectorAll('.theme-dot').forEach(d => {
+    d.classList.toggle('active', d.dataset.theme === t);
+  });
+  const sel = document.getElementById('settingsTheme');
+  if (sel) sel.value = t;
+  saveState();
+}
+
+document.querySelectorAll('.theme-dot').forEach(d => {
+  d.addEventListener('click', () => applyTheme(d.dataset.theme));
+});
+applyTheme(academyState.theme);
+
+// ═══════════════════════════════════════
+// TAB NAVIGATION
+// ═══════════════════════════════════════
+
+const TABS = ['dashboard', 'graph', 'insights', 'congregation', 'settings'];
+
+document.querySelectorAll('nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    TABS.forEach(t => {
+      const el = document.getElementById('tab-' + t);
+      if (el) el.classList.toggle('hidden', t !== tab);
+    });
+    if (tab === 'dashboard') renderDashboard();
+    if (tab === 'graph') initGraphTab();
+    if (tab === 'insights') renderInsights();
+    if (tab === 'congregation') renderCongregation();
+    if (tab === 'settings') renderSettings();
+  });
+});
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+
+function updateStats() {
+  const crossLinkCount = CROSS_POLLINATION_EDGES ? CROSS_POLLINATION_EDGES.length : 0;
+  document.getElementById('statTutors').textContent = ACADEMY_TUTORS ? ACADEMY_TUTORS.length : 0;
+  document.getElementById('statObservations').textContent = OBSERVATIONS ? OBSERVATIONS.length : 0;
+  document.getElementById('statCrossLinks').textContent = crossLinkCount;
+  document.getElementById('statCongregations').textContent = academyState.congregationCount || 0;
+}
+
+function renderDashboard() {
+  updateStats();
+  renderHealth();
+  renderActivityFeed();
+  document.querySelector('.logo').innerHTML = `${academyState.academyName || 'Tutor Academy'} <span class="logo-small">Congregation Hub</span>`;
+}
+
+function renderHealth() {
+  const container = document.getElementById('academyHealth');
+  const activeTutors = ACADEMY_TUTORS || [];
+  const lastCongregation = getCongregationHistory()[0];
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:10px">';
+  activeTutors.forEach(t => {
+    html += `<div style="background:var(--card2);border-radius:8px;padding:10px;text-align:center;border-left:3px solid ${t.color || 'var(--accent)'}">
+      <div style="font-size:.78rem;font-weight:600">${t.name}</div>
+      <div style="font-size:.65rem;color:var(--muted)">${t.domain || ''}</div>
+    </div>`;
+  });
+  html += '</div>';
+  html += '<div style="font-size:.8rem;color:var(--muted);padding:8px;background:var(--card2);border-radius:8px">';
+  html += 'Last congregation: ';
+  if (lastCongregation) {
+    html += `<strong style="color:var(--accent2))">${new Date(lastCongregation.timestamp).toLocaleString()}</strong> — ${lastCongregation.clusters || 0} clusters, ${lastCongregation.gaps || 0} gaps identified.`;
+  } else {
+    html += '<span style="color:var(--yellow)">Never</span>';
+  }
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderActivityFeed() {
+  const feed = getActivityFeed();
+  const container = document.getElementById('activityFeed');
+  if (!feed.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No recent activity. Run cross-pollination or congregation to get started.</p>';
+    return;
+  }
+  const icons = { cross_pollination: '🌿', congregation: '🧬', observation: '👁', system: '⚙', bridge: '🌉' };
+  let html = '';
+  feed.slice(0, 20).forEach(a => {
+    const icon = icons[a.type] || '📌';
+    html += `<div class="activity-item">
+      <div class="activity-icon" style="background:var(--card2)">${icon}</div>
+      <div class="activity-body">
+        <div>${a.summary}</div>
+        <div class="activity-time">${formatTimeAgo(a.timestamp)}${a.detail ? ' · ' + a.detail : ''}</div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function formatTimeAgo(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  const days = Math.floor(hrs / 24);
+  return days + 'd ago';
+}
+
+// ═══════════════════════════════════════
+// QUICK ACTIONS
+// ═══════════════════════════════════════
+
+function runCrossPollination() {
+  const result = engine.crossPollinate('all domains', ALL_SUBJECTS.slice(0, 6));
+  addActivity('cross_pollination',
+    `Cross-pollination ran across ${result.results.length} domain pairs`,
+    result.found ? `Strongest: ${result.results[0]?.source} ↔ ${result.results[0]?.target} (${(result.results[0]?.strength * 100).toFixed(0)}%)` : 'No connections found'
+  );
+  showToast('Cross-pollination complete! ' + result.message, 'success');
+  renderDashboard();
+}
+
+function runCongregation() {
+  const result = engine.synthesize(OBSERVATIONS);
+  congregationData = result;
+
+  const clusterCount = result.clusters.filter(c => !c.singleton).length + result.clusters.filter(c => c.singleton).length;
+  const gapCount = result.gaps.length;
+  const patternCount = result.patterns.length;
+
+  addCongregationEvent({
+    clusters: clusterCount,
+    patterns: patternCount,
+    gaps: gapCount,
+    observations: result.observationCount,
+  });
+
+  addActivity('congregation',
+    `Congregation cycle complete — ${clusterCount} clusters, ${gapCount} gaps, ${patternCount} patterns`,
+    `Based on ${result.observationCount} observations`
+  );
+
+  showToast(`Congregation complete! ${clusterCount} clusters, ${gapCount} gaps identified.`, 'success');
+  renderDashboard();
+  renderCongregation();
+}
+
+// ═══════════════════════════════════════
+// GRAPH TAB
+// ═══════════════════════════════════════
+
+function initGraphTab() {
+  const container = document.getElementById('graphContainer');
+  if (academyGraphInstance) {
+    setTimeout(() => academyGraphInstance.fitToScreen(), 100);
+    populateSubjectPickers();
+    return;
+  }
+
+  setTimeout(() => {
+    const graphData = (typeof buildAcademyGraph === 'function') ? buildAcademyGraph() : (window.ACADEMY_DATA || DEFAULT_ACADEMY_DATA);
+    try {
+      const graph = renderAcademyGraph(container, graphData);
+      academyGraphInstance = graph;
+      window._graph = graph;
+
+      graph.onNodeClick(function(id) {
+        const node = graphData.nodes.find(n => n.id === id);
+        if (node) showNodeSidebar(node);
+      });
+
+      graph.onNodeHover(function(id) {
+        if (id) graph.highlightNode(id);
+        else graph.clearHighlight();
+      });
+
+      setTimeout(() => graph.fitToScreen(), 300);
+      populateSubjectPickers();
+    } catch (e) {
+      container.innerHTML = `<div style="padding:40px;text-align:center;color:var(--red)">
+        <p>Failed to initialize graph: ${e.message}</p>
+        <button class="btn btn-sm" onclick="initGraphTab()" style="margin-top:12px">Retry</button>
+      </div>`;
+    }
+  }, 100);
+}
+
+function populateSubjectPickers() {
+  const selA = document.getElementById('cpSubjectA');
+  const selB = document.getElementById('cpSubjectB');
+  if (!selA) return;
+  const subjects = ALL_SUBJECTS || [];
+  selA.innerHTML = '<option value="">Select subject A...</option>' + subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+  selB.innerHTML = '<option value="">Select subject B...</option>' + subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+}
+
+function showNodeSidebar(node) {
+  const sidebar = document.getElementById('graphSidebar');
+  const content = document.getElementById('sidebarContent');
+  sidebar.classList.add('open');
+
+  const connections = academyGraphInstance ? academyGraphInstance.edges.filter(e => e.source === node.id || e.target === node.id) : [];
+  const nEdges = connections.length;
+
+  let html = `<div class="sidebar-node-info">
+    <div class="node-color-dot" style="background:${node.color || 'var(--accent)'}"></div>
+    <div class="node-label">${node.label || node.id}</div>
+    <div class="node-type">${(node.type || '').charAt(0).toUpperCase() + (node.type || '').slice(1)}${node.domain ? ' · ' + node.domain : ''}</div>
+    <div class="node-connections">
+      <div style="margin-top:8px;font-size:.78rem;color:var(--muted);font-weight:600">Connections (${nEdges})</div>`;
+
+  connections.slice(0, 15).forEach(e => {
+    const otherId = e.source === node.id ? e.target : e.source;
+    const otherNode = academyGraphInstance ? academyGraphInstance.nodes.find(n => n.id === otherId) : null;
+    const label = otherNode ? otherNode.label : otherId;
+    const edgeLabel = e.label || e.type || 'connects';
+    html += `<div class="conn-item"><span>${label}</span><span style="color:var(--muted);font-size:.7rem">${edgeLabel}</span></div>`;
+  });
+
+  html += `</div></div>`;
+  content.innerHTML = html;
+}
+
+function graphClearSelection() {
+  document.getElementById('graphSidebar').classList.remove('open');
+  if (academyGraphInstance) academyGraphInstance.clearHighlight();
+}
+
+function doCrossPollinate() {
+  const a = document.getElementById('cpSubjectA').value;
+  const b = document.getElementById('cpSubjectB').value;
+  const result = document.getElementById('cpResult');
+  if (!a || !b) {
+    result.style.display = 'block';
+    result.innerHTML = '<span style="color:var(--red)">Select both subjects.</span>';
+    return;
+  }
+  if (a === b) {
+    result.style.display = 'block';
+    result.innerHTML = '<span style="color:var(--yellow)">Select two different subjects.</span>';
+    return;
+  }
+
+  const pollinateResult = (typeof simulateCrossPollination === 'function')
+    ? simulateCrossPollination(a, b)
+    : engine.crossPollinate('', [a, b]);
+
+  if (pollinateResult.found) {
+    const strength = pollinateResult.strength || (pollinateResult.results && pollinateResult.results[0] ? pollinateResult.results[0].strength : 0);
+    const insight = pollinateResult.insight || (pollinateResult.results && pollinateResult.results[0] ? pollinateResult.results[0].insight : '');
+    const path = pollinateResult.path || (pollinateResult.results && pollinateResult.results[0] ? pollinateResult.results[0].path : [a, b]);
+
+    result.style.display = 'block';
+    result.innerHTML = `<div style="color:var(--green);font-weight:600;margin-bottom:4px">✓ Connected! (${(strength * 100).toFixed(0)}% strength)</div>
+      <div style="font-size:.72rem;line-height:1.4">${insight}</div>
+      <div style="margin-top:4px;font-size:.65rem;color:var(--muted)">Path: ${path.join(' → ')}</div>`;
+
+    if (academyGraphInstance) {
+      academyGraphInstance.pulseConnection(path[0], path[path.length - 1], 16);
+      academyGraphInstance.highlightNode(path[0]);
+    }
+
+    addActivity('cross_pollination',
+      `Pollinated: ${a} ↔ ${b}`,
+      `Strength: ${(strength * 100).toFixed(0)}%`
+    );
+  } else {
+    result.style.display = 'block';
+    result.innerHTML = `<span style="color:var(--muted)">${pollinateResult.message || 'No connection found.'}</span>`;
+  }
+}
+
+// ═══════════════════════════════════════
+// INSIGHTS TAB
+// ═══════════════════════════════════════
+
+function renderInsights() {
+  const content = document.getElementById('insightsContent');
+  const groupByDomain = document.getElementById('groupByDomain').checked;
+  const obs = OBSERVATIONS || [];
+  document.getElementById('obsCount').textContent = obs.length + ' observations';
+
+  if (!obs.length) {
+    content.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No observations recorded yet.</p>';
+    return;
+  }
+
+  const severityOrder = { 5: 'high', 4: 'high', 3: 'medium', 2: 'low', 1: 'low' };
+
+  if (groupByDomain) {
+    const byDomain = {};
+    obs.forEach(o => {
+      const domain = o.subject || 'Unknown';
+      if (!byDomain[domain]) byDomain[domain] = [];
+      byDomain[domain].push(o);
+    });
+    let html = '';
+    Object.keys(byDomain).sort().forEach(domain => {
+      html += `<div class="observation-group">
+        <h4>${domain} <span style="font-weight:400;font-size:.72rem;color:var(--muted)">(${byDomain[domain].length})</span></h4>`;
+      byDomain[domain].forEach(o => { html += renderObservationCard(o); });
+      html += '</div>';
+    });
+    content.innerHTML = html;
+  } else {
+    const groups = { high: [], medium: [], low: [] };
+    obs.forEach(o => {
+      const level = severityOrder[o.severity] || 'low';
+      groups[level].push(o);
+    });
+    let html = '';
+    ['high', 'medium', 'low'].forEach(level => {
+      if (!groups[level].length) return;
+      const label = { high: 'High Severity', medium: 'Medium Severity', low: 'Low Severity' }[level];
+      const cls = { high: 'badge-high', medium: 'badge-medium', low: 'badge-low' }[level];
+      html += `<div class="observation-group">
+        <h4><span class="badge ${cls}">${label}</span> <span style="font-weight:400;font-size:.72rem;color:var(--muted)">(${groups[level].length})</span></h4>`;
+      groups[level].forEach(o => { html += renderObservationCard(o); });
+      html += '</div>';
+    });
+    content.innerHTML = html;
+  }
+
+  attachObservationHandlers();
+}
+
+function renderObservationCard(o) {
+  const isCrossDomain = o.cross_domain_relevance && o.cross_domain_relevance.length > 0;
+  const tutor = ACADEMY_TUTORS ? ACADEMY_TUTORS.find(t => t.id === o.tutor) : null;
+  const sevClass = { 5: 'badge-high', 4: 'badge-high', 3: 'badge-medium', 2: 'badge-low', 1: 'badge-low' }[o.severity] || 'badge-medium';
+
+  let html = `<div class="observation-card" data-id="${o.id}">
+    <div class="obs-header">
+      <div class="obs-topic">${o.topic || 'Observation'}</div>
+      <div style="display:flex;gap:4px;align-items:center">
+        <span class="badge ${sevClass}">S${o.severity}</span>
+        ${isCrossDomain ? '<span class="badge badge-bridge">🌉 Bridge</span>' : ''}
+      </div>
+    </div>
+    <div class="obs-text">${o.observation}</div>
+    <div class="obs-meta">${tutor ? '<span style="color:' + tutor.color + '">●</span> ' + tutor.name : ''} · ${o.subject || ''}</div>
+    <div class="obs-details">`;
+
+  if (isCrossDomain) {
+    html += '<div style="margin-bottom:8px"><strong style="font-size:.78rem;color:var(--accent2)">🌉 Cross-Domain Links</strong>';
+    o.cross_domain_relevance.forEach(rel => {
+      const relatedObs = OBSERVATIONS ? OBSERVATIONS.filter(r => r.id !== o.id && (r.subject === rel || r.cross_domain_relevance?.includes(rel))) : [];
+      html += `<div class="rel-item">${rel}${relatedObs.length ? ' — related to ' + relatedObs.map(r => r.topic).join(', ') : ''}</div>`;
+    });
+    html += '</div>';
+    const engResult = engine.crossPollinate(o.topic, [o.subject, ...o.cross_domain_relevance]);
+    if (engResult.found && engResult.results.length) {
+      html += `<div class="insight-text">💡 Teaching insight: ${engResult.results[0].insight}</div>`;
+    }
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+function attachObservationHandlers() {
+  document.querySelectorAll('.observation-card').forEach(card => {
+    card.addEventListener('click', function() {
+      this.classList.toggle('expanded');
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+// CONGREGATION TAB
+// ═══════════════════════════════════════
+
+function renderCongregation() {
+  if (!congregationData) {
+    const last = getCongregationHistory()[0];
+    if (last) {
+      congregationData = engine.synthesize(OBSERVATIONS);
+    } else {
+      renderCongregationEmpty();
+      renderCongregationTimeline();
+      return;
+    }
+  }
+  renderClusters(congregationData.clusters);
+  renderPatterns(congregationData.patterns);
+  renderGaps(congregationData.gaps);
+  renderCongregationTimeline();
+}
+
+function renderCongregationEmpty() {
+  document.getElementById('curriculumClusters').innerHTML = '<p style="color:var(--muted);font-size:.85rem">Run congregation to generate clusters.</p>';
+  document.getElementById('crossDomainPatterns').innerHTML = '<p style="color:var(--muted);font-size:.85rem">Run congregation to identify patterns.</p>';
+  document.getElementById('curriculumGaps').innerHTML = '<p style="color:var(--muted);font-size:.85rem">Run congregation to detect gaps.</p>';
+}
+
+function renderClusters(clusters) {
+  const container = document.getElementById('curriculumClusters');
+  if (!clusters || !clusters.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No clusters generated.</p>';
+    return;
+  }
+  let html = '';
+  clusters.forEach(c => {
+    const items = c.items || [];
+    html += `<div class="cluster-card">
+      <div class="cluster-name">${c.name || 'Cluster'}</div>
+      <div class="cluster-count">${items.length} observation(s)${c.singleton ? ' (singleton)' : ''}</div>
+      <div class="cluster-items">${items.map(o => (o.topic || o.observation || '').substring(0, 60)).join(' · ')}</div>
+      ${c.commonWords && c.commonWords.length ? `<div style="margin-top:4px;font-size:.65rem;color:var(--yellow)">Keywords: ${c.commonWords.join(', ')}</div>` : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderPatterns(patterns) {
+  const container = document.getElementById('crossDomainPatterns');
+  if (!patterns || !patterns.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No cross-domain patterns identified.</p>';
+    return;
+  }
+  let html = '';
+  patterns.forEach(p => {
+    html += `<div class="dash-card" style="margin-bottom:8px">
+      <div style="font-weight:600;font-size:.85rem;color:var(--accent2);margin-bottom:4px">${p.name}</div>
+      <div style="font-size:.78rem;color:var(--muted);margin-bottom:6px">${p.insight}</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        ${p.domains.map(d => `<span class="badge badge-bridge">${d}</span>`).join('')}
+      </div>
+      <div style="font-size:.7rem;color:var(--muted);margin-top:4px">${p.observationCount} observation(s) involved</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function renderGaps(gaps) {
+  const container = document.getElementById('curriculumGaps');
+  if (!gaps || !gaps.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No curriculum gaps detected.</p>';
+    return;
+  }
+  let html = '';
+  gaps.forEach(g => {
+    html += `<div class="gap-card">
+      <div class="gap-title">${g.title}</div>
+      <div class="gap-desc">${g.description}</div>
+      <div class="gap-domains">
+        ${g.domains.map(d => `<span>${d}</span>`).join('')}
+        <span class="badge" style="background:var(--card);color:var(--muted)">${g.observationCount} obs</span>
+      </div>
+      ${g.bridgeTopic ? `<button class="btn btn-sm btn-outline" onclick="createBridgeTopic('${g.domains[0]}', '${g.domains[1]}')">Create Bridge Topic</button>` : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function createBridgeTopic(domainA, domainB) {
+  const topicName = `Bridging ${domainA} & ${domainB}`;
+  const engResult = engine.crossPollinate(topicName, [domainA, domainB]);
+
+  addActivity('bridge',
+    `Bridge topic created: ${topicName}`,
+    engResult.found ? `Insight: ${engResult.results[0]?.insight?.substring(0, 80)}...` : 'New interdisciplinary topic'
+  );
+
+  showToast(`Bridge topic "${topicName}" created!`, 'success');
+
+  const gaps = document.querySelectorAll('.gap-card');
+  gaps.forEach(g => {
+    const btn = g.querySelector('.btn-outline');
+    if (btn && btn.textContent.includes('Create Bridge')) {
+      btn.textContent = '✓ Bridge Created';
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+    }
+  });
+
+  renderDashboard();
+}
+
+function renderCongregationTimeline() {
+  const container = document.getElementById('congregationTimeline');
+  const history = getCongregationHistory();
+  if (!history.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No congregation events yet.</p>';
+    return;
+  }
+  let html = '';
+  history.forEach(e => {
+    const date = new Date(e.timestamp);
+    html += `<div class="timeline-item">
+      <div class="tl-date">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="tl-title">Congregation Cycle</div>
+      <div class="tl-detail">${e.clusters || 0} clusters · ${e.patterns || 0} patterns · ${e.gaps || 0} gaps (from ${e.observations || 0} observations)</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ═══════════════════════════════════════
+// SETTINGS TAB
+// ═══════════════════════════════════════
+
+function renderSettings() {
+  document.getElementById('academyName').value = academyState.academyName || 'Tutor Academy';
+  document.getElementById('mem0Endpoint').value = academyState.mem0Endpoint || '';
+  document.getElementById('settingsTheme').value = academyState.theme || 'default';
+}
+
+function saveAcademyName() {
+  const name = document.getElementById('academyName').value.trim() || 'Tutor Academy';
+  academyState.academyName = name;
+  saveState();
+  document.querySelector('.logo').innerHTML = `${name} <span class="logo-small">Congregation Hub</span>`;
+  showToast('Academy name saved.', 'success');
+}
+
+function saveMem0Settings() {
+  academyState.mem0Endpoint = document.getElementById('mem0Endpoint').value.trim();
+  saveState();
+  showToast('mem0 settings saved.', 'success');
+}
+
+async function checkMem0Connection() {
+  const dot = document.getElementById('mem0Dot');
+  const label = document.getElementById('mem0Label');
+  const detail = document.getElementById('mem0Detail');
+  const endpoint = document.getElementById('mem0Endpoint').value.trim() || academyState.mem0Endpoint;
+
+  dot.className = 'mem0-dot';
+  label.textContent = 'checking...';
+
+  if (!endpoint) {
+    dot.classList.add('disconnected');
+    label.textContent = 'No endpoint configured';
+    detail.innerHTML = 'Set a mem0 endpoint URL in settings.';
+    return;
+  }
+
+  try {
+    const resp = await fetch(endpoint + '/health', { method: 'GET', signal: AbortSignal.timeout(5000) });
+    if (resp.ok) {
+      dot.className = 'mem0-dot connected';
+      label.textContent = 'mem0 connected';
+      const data = await resp.json().catch(() => ({}));
+      detail.innerHTML = `Connected to ${endpoint}${data.status ? ' · Status: ' + data.status : ''}`;
+      addActivity('system', 'mem0 connection verified', endpoint);
+    } else {
+      dot.className = 'mem0-dot disconnected';
+      label.textContent = 'mem0 error';
+      detail.innerHTML = `HTTP ${resp.status}: ${resp.statusText}`;
+    }
+  } catch (e) {
+    dot.className = 'mem0-dot disconnected';
+    label.textContent = 'mem0 unreachable';
+    detail.innerHTML = `Could not reach ${endpoint}: ${e.message}`;
+  }
+}
+
+function exportAcademyData() {
+  const data = {
+    version: '1.0',
+    exportedAt: new Date().toISOString(),
+    academyState: academyState,
+    activity: getActivityFeed(),
+    congregations: getCongregationHistory(),
+    observations: OBSERVATIONS || [],
+    tutors: ACADEMY_TUTORS || [],
+    crossPollinationEdges: CROSS_POLLINATION_EDGES || []
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${(academyState.academyName || 'tutor-academy').replace(/\s+/g, '-').toLowerCase()}-export.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Data exported successfully.', 'success');
+}
+
+function importAcademyData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.academyState) {
+        academyState = { ...academyState, ...data.academyState };
+        saveState();
+      }
+      if (data.activity) {
+        localStorage.setItem(ACTIVITY_KEY, JSON.stringify(data.activity));
+      }
+      if (data.congregations) {
+        localStorage.setItem(CONGREGATIONS_KEY, JSON.stringify(data.congregations));
+      }
+      applyTheme(academyState.theme);
+      showToast('Data imported successfully!', 'success');
+      renderDashboard();
+    } catch (err) {
+      showToast('Import failed: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function confirmReset() {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `<div class="modal-box">
+    <h3>Reset Academy Data?</h3>
+    <p>This will erase all congregation history, activity logs, and settings. Tutor data, observations, and cross-pollination data will remain intact.</p>
+    <div class="modal-actions">
+      <button class="btn btn-sm btn-outline" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+      <button class="btn btn-sm btn-red" onclick="doReset();this.closest('.modal-overlay').remove()">Reset Everything</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+}
+
+function doReset() {
+  academyState = defaultState();
+  saveState();
+  localStorage.removeItem(ACTIVITY_KEY);
+  localStorage.removeItem(CONGREGATIONS_KEY);
+  congregationData = null;
+  applyTheme(academyState.theme);
+  showToast('Academy data has been reset.', 'info');
+  renderDashboard();
+  if (document.getElementById('tab-congregation')) renderCongregation();
+}
+
+// ═══════════════════════════════════════
+// MEM0 STATUS CHECK (on load)
+// ═══════════════════════════════════════
+
+async function initMem0Status() {
+  const endpoint = academyState.mem0Endpoint;
+  const dot = document.getElementById('mem0Dot');
+  const label = document.getElementById('mem0Label');
+  if (!endpoint) {
+    dot.className = 'mem0-dot disconnected';
+    label.textContent = 'mem0 not configured';
+    return;
+  }
+  try {
+    const resp = await fetch(endpoint + '/health', { method: 'GET', signal: AbortSignal.timeout(3000) });
+    if (resp.ok) {
+      dot.className = 'mem0-dot connected';
+      label.textContent = 'mem0 connected';
+    } else {
+      dot.className = 'mem0-dot disconnected';
+      label.textContent = 'mem0 error';
+    }
+  } catch (e) {
+    dot.className = 'mem0-dot disconnected';
+    label.textContent = 'mem0 unreachable';
+  }
+}
+
+// ═══════════════════════════════════════
+// TOAST NOTIFICATIONS
+// ═══════════════════════════════════════
+
+function showToast(message, type) {
+  type = type || 'info';
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity .3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderDashboard();
+  initMem0Status();
+
+  if (window.navigator.serviceWorker) {
+    navigator.serviceWorker.register('service-worker.js').catch(() => {});
+  }
+});
+
+window.AcademyEngine = AcademyEngine;
+window.applyTheme = applyTheme;
+window.runCrossPollination = runCrossPollination;
+window.runCongregation = runCongregation;
+window.doCrossPollinate = doCrossPollinate;
+window.graphClearSelection = graphClearSelection;
+window.initGraphTab = initGraphTab;
+window.renderInsights = renderInsights;
+window.renderCongregation = renderCongregation;
+window.renderSettings = renderSettings;
+window.saveAcademyName = saveAcademyName;
+window.saveMem0Settings = saveMem0Settings;
+window.checkMem0Connection = checkMem0Connection;
+window.exportAcademyData = exportAcademyData;
+window.importAcademyData = importAcademyData;
+window.confirmReset = confirmReset;
+window.doReset = doReset;
+window.showToast = showToast;
+window.createBridgeTopic = createBridgeTopic;
+
+})();
+</script>
+</body>
+</html>
